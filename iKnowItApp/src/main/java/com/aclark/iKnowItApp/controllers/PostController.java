@@ -33,12 +33,8 @@ public class PostController {
     }
 
     @PutMapping
-    public void updatePostTitle(@RequestBody PostDto postDto) {
+    public void updatePost(@RequestBody PostDto postDto) {
         postService.updatePostTitle(postDto);
-    }
-
-    @PutMapping
-    public void updatePostBody(@RequestBody PostDto postDto) {
         postService.updatePostBody(postDto);
     }
 
