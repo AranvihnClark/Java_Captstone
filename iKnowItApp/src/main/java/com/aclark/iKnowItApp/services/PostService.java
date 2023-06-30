@@ -17,7 +17,10 @@ public interface PostService {
     void deletePost(Long postId);
 
     @Transactional
-    void updatePost(PostDto postDto);
+    void updatePostTitle(PostDto postDto);
+
+    @Transactional
+    void updatePostBody(PostDto postDto);
 
     @Transactional
     Optional<PostDto> findPost(Long postId);

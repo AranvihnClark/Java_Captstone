@@ -82,7 +82,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void updatePost(PostDto postDto) {
+    public void updatePostTitle(PostDto postDto) {
         // Searches for the note we want to update.
         Optional<Post> postOptional = postRepository.findById(postDto.getId());
 
@@ -90,6 +90,20 @@ public class PostServiceImpl implements PostService {
         // Changed the below to Intellij's format for practice.
         postOptional.ifPresent(post -> {
             post.setPostTitle(postDto.getPostTitle());
+            postRepository.saveAndFlush(post);
+        });
+    }
+
+    @Override
+    @Transactional
+    public void updatePostBody(PostDto postDto) {
+        // Searches for the note we want to update.
+        Optional<Post> postOptional = postRepository.findById(postDto.getId());
+
+        // If the note exists, we will update the note as below.
+        // Changed the below to Intellij's format for practice.
+        postOptional.ifPresent(post -> {
+            post.setPostBody(postDto.getPostBody());
             postRepository.saveAndFlush(post);
         });
     }
