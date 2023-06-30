@@ -24,7 +24,7 @@ public class Post {
     @Column
     private String postTitle;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String postBody;
 
     // Creates 'user_id' column in Posts table.
