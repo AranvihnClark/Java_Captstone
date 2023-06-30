@@ -1,7 +1,6 @@
 package com.aclark.iKnowItApp.dtos;
 
 import com.aclark.iKnowItApp.entities.Post;
-import com.aclark.iKnowItApp.entities.Section;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
