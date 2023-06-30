@@ -19,7 +19,16 @@ public class UserDto implements Serializable {
     private Long id;
     private String username;
     private String password;
-//    private Set<NoteDto> noteDtoSet = new HashSet<>();
+
+//    [EXTRA]
+//    private Boolean isAdmin;
+//    private String emailAddress;
+//    private String nickname;
+//    private String imageUrl;
+
+//    private Set<SectionDto> sectionDtoSet = new HashSet<>();
+//    private Set<PostDto> postDtoSet = new HashSet<>();
+//    private Set<CommentDto> commentDtoSet = new HashSet<>();
 
     // Creates dto based on user info in our database.
     public UserDto(User user) {
