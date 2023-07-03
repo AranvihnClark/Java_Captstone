@@ -9,23 +9,44 @@
     <body>
     <section class="container">
         <div class="row justify-content-end">
-            <a class="btn btn-danger col-sm-1" href="./login.html" onclick="logout()">Logout</a>
+            <!-- Just for now, need to figure out how to create a link path -->
+            <div id="where-am-i-div" class="col-10">Where am I? <a id="where-am-i" href="home.html"></a></div>
+            <a class="btn btn-danger col col-2" href="./login.html" onclick="logout()">Logout</a>
         </div>
     </section>
 
+
     <section id="home-container" class="container">
-        <div class="row my-4">
-            <h1>Create a Note</h1>
+
+        <!-- Top of screen -->
+
+        <div class="row">
+            <div class="col text-center">
+                <!-- APP NAME TITLE - Needs changing to look fancy -->
+                <h1>I Know It!</h1>
+            </div>
         </div>
 
-        <div id="note-form-container" class="row my-4">
-            <form id="note-form" class="col mx-4">
-                <textarea id="note-body" class="form-control" placeholder="Enter your note: " rows="6"></textarea>
-                <button type="submit" id="submit-button" class="col-sm-1 btn btn-primary mt-4">Submit</button>
+        <!-- Section Title Form -->
+        <!-- [EXTRA] We need to account for an admin account!! -->
+        <div id="section-form-container" class="row mt-4">
+            <h3 class="col-3">Add A New Section?</h3>
+            <form id="section-form" class="col-9">
+                <textarea id="section-body" class="form-control" maxlength="64" placeholder="Enter your section title: " rows="1"></textarea>
+                <button type="submit" id="submit-button" class="col-xxl btn btn-primary mt-4">Submit</button>
             </form>
-
-            <div id="note-container" class="row my-2 container"></div>
         </div>
+
+        <!-- Middle of Screen -->
+
+        <div class="row my-5">
+            <div class="col text-center">
+                <h2>Area of Expertise</h2>
+            </div>
+        </div>
+
+
+        <div id="section-container" class="row my-2 container"></div>
     </section>
 
 
@@ -34,15 +55,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="note-edit-modal-title">Edit your note</h5>
+                    <h5 class="modal-title" id="note-edit-modal-title">Edit your section.</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex">
-                    <textarea id="update-note-body" class="form-control" rows="5"></textarea>
+                    <textarea id="update-section-body" class="form-control" rows="5"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="update-note-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                    <button type="button" id="update-section-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>

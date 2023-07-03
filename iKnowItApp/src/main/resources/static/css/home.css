@@ -1,13 +1,32 @@
  .card-style {
-    width: 18rem;
-    height: 18rem;
+    width: 100%;
+    height: 3rem;
     margin-right: auto;
     margin-left: auto;
  }
 
  .card-size {
-    padding-top: 2.5rem;
+    padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     padding-left: 2.8rem;
     padding-right: 2.8rem;
+ }
+
+ #section-body {
+   overflow:hidden;
+   resize: none;
+ }
+
+ #where-am-i-div {
+   font-size: 20px;
+ }
+
+ .padding-zero-overide {
+   padding: 0;
+ }
+
+ .margin-buttonCard-override {
+   margin: auto;
+   margin-left: 4px;
+   margin-right: 4px;
  }

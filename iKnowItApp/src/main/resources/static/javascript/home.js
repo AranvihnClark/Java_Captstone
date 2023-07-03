@@ -7,13 +7,14 @@ const cookieArr = document.cookie.split("=");
 const userId = cookieArr[1];
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
-const noteForm = document.getElementById('note-form');
-const noteContainer = document.getElementById('note-container');
-const newBody = document.getElementById('note-body');
+const sectionForm = document.getElementById('section-form');
+const sectionContainer = document.getElementById('section-container');
+const newBody = document.getElementById('section-body');
+const whereAmILink = document.getElementById('where-am-i');
 
 // Modal Elements
-let noteBody = document.getElementById('update-note-body');
-let updateNoteBtn = document.getElementById('update-note-button')
+let sectionBody = document.getElementById('update-section-body');
+let updateSectionBtn = document.getElementById('update-section-button')
 
 // Header
 const headers = {
@@ -21,7 +22,7 @@ const headers = {
 };
 
 // URL
-const baseUrl = 'http://localhost:8080/api/v1/notes';
+const baseUrl = 'http://localhost:8080/api/v1/sections';
 
 // [2] - Clear cookie for logging out
 function logout() {
@@ -39,29 +40,29 @@ function logout() {
 
 // [3] - Form routes
 
-// How adding a note starts - grabs note text and starts via button press.
-const submitNote = async (e) => {
+// How adding a section starts - grabs section text and starts via button press.
+const submitSection = async (e) => {
     // Overrides a form's default actions.
     e.preventDefault();
-
     // We create a 'body' to send to the database to update it.
     let bodyObj = {
 
         // This grabs the DOM's textarea body
-        body: newBody.value
+        sectionTitle: newBody.value
     }
 
     // Just following the instructions. I suppose we could have the entire function just written below if desired.
-    await addNote(bodyObj);
+    await addSection(bodyObj);
 
     // This resets the textarea's body to be blank.
-    // Also 'lets' the user know that the note was successfully created.
+    // Also 'lets' the user know that the section was successfully created.
     newBody.value = '';
 }
 
-// Function that handles http request to add note.
-async function addNote(obj) {
-
+// Function that handles http request to add section.
+async function addSection(obj) {
+console.log(obj);
+console.log(JSON.stringify(obj));
     // Http request
     const response = await fetch(`${baseUrl}/user/${userId}`, {
             method: "POST",
@@ -73,63 +74,67 @@ async function addNote(obj) {
     // If http request is ok (code 200), run the if statement.
     if (response.status === 200) {
 
-        // Run another function to 'display' all our notes
-        return getNotes(userId);
+        // Run another function to 'display' all our sections
+        return getSections(userId);
     }
 
-    // At the end, after getting our note to display on the page, this will let 'submitNote' function to complete itself.
+    // At the end, after getting our section to display on the page, this will let 'submitSection' function to complete itself.
 }
 
-// [4]-[1] - Retrieve all notes from user when page loads
-async function getNotes(userId) {
+// [4]-[1] - Retrieve all sections from user when page loads
+async function getSections(userId) {
     await fetch(`${baseUrl}/user/${userId}`, {
             method: "GET",
             headers: headers
         })
         // If the request is good, we complete the 'promises'.
         .then(response => response.json())
-        .then(data => createNoteCards(data))
+        .then(data => createSectionCards(data))
 
         // Error handling.
         .catch(err => console.error(err));
 }
 
-// [4]-[2] - Create 'cards' for each note.
-const createNoteCards = (arr) => {
-    // We clear the update note container first so we can add the notes.
-    noteContainer.innerHTML = '';
+// [4]-[2] - Create 'cards' for each section.
+const createSectionCards = (arr) => {
+    // We clear the update section container first so we can add the sections.
+    sectionContainer.innerHTML = '';
     arr.forEach(obj => {
         let card = document.createElement("div");
-
-        card.classList.add("m-2");
         card.classList.add("col");
+        card.classList.add("col-sm-10");
         card.innerHTML = `
             <div class="card d-flex card-style">
-                <img src="https://cdn.pixabay.com/photo/2017/02/01/19/53/leaves-2031234_1280.png" class="card-img" alt="card-frame">
                 <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <p class="card-text overflow-auto">${obj.body}</p>
-                    <div class="d-flex justify-content-between">
-                        <button onclick="getNoteById(${obj.id})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#note-edit-modal">Edit</button>
-                        <button class="btn btn-danger" onclick="handleDelete(${obj.id})">Delete</button>
-                    </div>
+                    <p class="card-text overflow-auto">${obj.sectionTitle}</p>
                 </div>
             </div>
         `
-        noteContainer.append(card);
+        let buttonCard = document.createElement("div");
+        buttonCard.classList.add("d-flex");
+        buttonCard.classList.add("stify-content-between");
+        buttonCard.classList.add("col-sm-2");
+        buttonCard.classList.add("padding-zero-override");
+        buttonCard.innerHTML = `
+            <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-auto-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
+            <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+        `
+        sectionContainer.append(card);
+        sectionContainer.append(buttonCard);
     })
 }
 
 // [4]-[3] - Append them to the HTML container
 // 'Populates' our modal for us.
 const populateModal = (obj) => {
-    noteBody.innerText = '';
-    noteBody.innerText = obj.body;
-    updateNoteBtn.setAttribute('data-note-id', obj.id);
+    sectionBody.innerText = '';
+    sectionBody.innerText = obj.body;
+    updateSectionBtn.setAttribute('data-section-id', obj.id);
 }
 
-// [5] - Update a note (GET request)
-async function getNoteById(noteId) {
-    await fetch(`${baseUrl}/${noteId}`, {
+// [5] - Update a section (GET request)
+async function getSectionById(sectionId) {
+    await fetch(`${baseUrl}/${sectionId}`, {
             method: "GET",
             headers: headers
         })
@@ -138,10 +143,10 @@ async function getNoteById(noteId) {
         .catch(err => console.err(err.message))
 }
 
-async function handleNoteEdit(noteId) {
+async function handleSectionEdit(sectionId) {
     let bodyObj = {
-        id: noteId,
-        body: noteBody.value
+        id: sectionId,
+        body: sectionBody.value
     }
 
     await fetch(baseUrl, {
@@ -151,25 +156,44 @@ async function handleNoteEdit(noteId) {
         })
         .catch(err => console.error(err));
 
-    return getNotes(userId);
+    return getSections(userId);
 }
-// [6] - Delete a note
-async function handleDelete(noteId) {
-    await fetch(`${baseUrl}/${noteId}`, {
+// [6] - Delete a section
+async function handleDelete(sectionId) {
+    await fetch(`${baseUrl}/${sectionId}`, {
         method: "DELETE",
         headers: headers
         })
         .catch(err => console.error(err));
 
-        return getNotes(userId);
+        return getSections(userId);
 }
 
+// Prevents line breaks in our textarea
+const noEnter = (e) => {
+    if (e.keyCode === 13 && e.shiftKey) {
+        e.preventDefault();
+    } else if (e.keyCode === 13) {
+        e.preventDefault();
+    }
+    console.log(e);
+}
+
+
+const youAreHere = () => {
+    // Just basic shit until I have time to figure it out.
+    whereAmILink.innerHTML = "/Home";
+}
+
+
 // Event listeners
-noteForm.addEventListener("submit", submitNote);
-updateNoteBtn.addEventListener("click", (e) => {
-    let noteId = e.target.getAttribute('data-note-id');
-    handleNoteEdit(noteId);
+sectionForm.addEventListener("submit", submitSection);
+newBody.addEventListener("keypress", noEnter);
+updateSectionBtn.addEventListener("click", (e) => {
+    let sectionId = e.target.getAttribute('data-section-id');
+    handleSectionEdit(sectionId);
 })
 
 // Instant runs
-getNotes(userId);
+getSections(userId);
+youAreHere();
