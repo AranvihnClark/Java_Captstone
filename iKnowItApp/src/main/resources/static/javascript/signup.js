@@ -1,7 +1,7 @@
 // HTML Elements
-const registrationForm = document.getElementById('register-form');
-const registerUsername = document.getElementById('register-username');
-const registerPassword = document.getElementById('register-password');
+const signupForm = document.getElementById('register-form');
+const signupUsername = document.getElementById('register-username');
+const signupPassword = document.getElementById('register-password');
 
 // Header
 const headers = {
@@ -21,10 +21,10 @@ const submitForm = async (e) => {
     let bodyObj = {
 
         // 'username' is the name of the column in our database
-        username: registerUsername.value,
+        username: signupUsername.value,
 
         // 'password' is the name of the column in our database
-        password: registerPassword.value
+        password: signupPassword.value
     }
 
     // Not familiar with this but I assume this is JavaScript's default http request syntax.
@@ -56,4 +56,4 @@ const submitForm = async (e) => {
 }
 
 // Event Listeners
-registrationForm.addEventListener("submit", submitForm);
+signupForm.addEventListener("submit", submitForm);
