@@ -82,8 +82,8 @@ console.log(JSON.stringify(obj));
 }
 
 // [4]-[1] - Retrieve all sections from user when page loads
-async function getSections(userId) {
-    await fetch(`${baseUrl}/user/${userId}`, {
+async function getSections() {
+    await fetch(`${baseUrl}`, {
             method: "GET",
             headers: headers
         })
@@ -106,7 +106,7 @@ const createSectionCards = (arr) => {
         card.innerHTML = `
             <div class="card d-flex card-style">
                 <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <p class="card-text overflow-auto">${obj.sectionTitle}</p>
+                    <a class="card-text overflow-auto" href="./${obj.sectionHtmlPath}">${obj.sectionTitle}</a>
                 </div>
             </div>
         `

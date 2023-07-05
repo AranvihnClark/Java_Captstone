@@ -1,7 +1,7 @@
 // HTML Elements
-const signupForm = document.getElementById('register-form');
-const signupUsername = document.getElementById('register-username');
-const signupPassword = document.getElementById('register-password');
+const signupForm = document.getElementById('signup-form');
+const signupUsername = document.getElementById('signup-username');
+const signupPassword = document.getElementById('signup-password');
 
 // Header
 const headers = {
@@ -29,7 +29,7 @@ const submitForm = async (e) => {
 
     // Not familiar with this but I assume this is JavaScript's default http request syntax.
     // fetch/catch is the equivalent to Axios' then/catch.
-    const response = await fetch( `${baseUrl}/register`, {
+    const response = await fetch( `${baseUrl}/signup`, {
 
         // We identify the type of http request we want with 'method:'
         method: "POST",
