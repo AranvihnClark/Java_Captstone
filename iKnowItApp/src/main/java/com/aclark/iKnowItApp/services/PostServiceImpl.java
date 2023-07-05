@@ -25,27 +25,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public List<PostDto> getAllUserPosts(Long userId) {
+    public List<PostDto> getAllPosts() {
+        // A list of posts is created based on all posts of the userOptional (user) from the database.
+        List<Post> posts = postRepository.findAll();
 
-        // We need an optional for users as we will be using their id as the identifier
-        Optional<User> userOptional = userRepository.findById(userId);
+        // The .stream() lets us search for all posts and the .map() converts each post found into a new PostDto.
+        // This is needed as one, we want to return a list of PostDto and, two, we need it to be so because we don't want to use the actual posts themselves but a copy of them.
+        // The .collect() is used to create an Object Collection that holds the list of PostDto.
+        List<PostDto> postDtoList = posts.stream().map(post -> new PostDto(post)).collect(Collectors.toList());
 
-        // Now to check if the user id exists.
-        if (userOptional.isPresent()) {
-
-            // A list of posts is created based on all posts of the userOptional (user) from the database.
-            List<Post> posts = postRepository.findAllByUserEquals(userOptional.get());
-
-            // The .stream() lets us search for all posts and the .map() converts each post found into a new PostDto.
-            // This is needed as one, we want to return a list of PostDto and, two, we need it to be so because we don't want to use the actual posts themselves but a copy of them.
-            // The .collect() is used to create an Object Collection that holds the list of PostDto.
-            List<PostDto> postDtoList = posts.stream().map(post -> new PostDto(post)).collect(Collectors.toList());
-
+        if (!posts.isEmpty()) {
             return postDtoList;
+        } else {
+            // Returns an empty list if no 'Post's have been created.
+            return Collections.emptyList();
         }
-
-        // Returns an empty list if no 'Post's have been created.
-        return Collections.emptyList();
     }
 
     @Override

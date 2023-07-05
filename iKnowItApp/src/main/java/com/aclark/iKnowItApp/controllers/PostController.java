@@ -17,9 +17,9 @@ public class PostController {
 
     // End-points
 
-    @GetMapping("/user/{userId}")
-    public List<PostDto> getAllUserPosts(@PathVariable Long userId) {
-        return postService.getAllUserPosts(userId);
+    @GetMapping("")
+    public List<PostDto> getAllPosts() {
+        return postService.getAllPosts();
     }
 
     @PostMapping("user/{userId}")

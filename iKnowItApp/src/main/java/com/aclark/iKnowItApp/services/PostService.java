@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface PostService {
     @Transactional
-    List<PostDto> getAllUserPosts(Long userId);
+    List<PostDto> getAllPosts();
 
     @Transactional
     void addPost(PostDto postDto, Long userId);

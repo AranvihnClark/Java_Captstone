@@ -13,6 +13,7 @@ public class PostDto {
     private Long id;
     private String postTitle;
     private String postBody;
+    private String postHtmlPath;
 
     private UserDto userDto;
 
@@ -28,6 +29,9 @@ public class PostDto {
         }
         if (post.getPostBody() != null) {
             this.postBody = post.getPostBody();
+        }
+        if (post.getPostHtmlPath() != null) {
+            this.postHtmlPath = post.getPostHtmlPath();
         }
     }
 }
