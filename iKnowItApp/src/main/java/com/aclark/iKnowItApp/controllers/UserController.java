@@ -28,7 +28,7 @@ public class UserController {
      * @param userDto the user's inputted User data
      * @return a List String based on the userService's addUser method.
      */
-    @PostMapping("/register") // Ensures that the method triggers when we reach the '/register' endpoint
+    @PostMapping("/signup") // Ensures that the method triggers when we reach the '/register' endpoint
     public List<String> addUser(@RequestBody UserDto userDto) { // @RequestBody maps the JSON body object on the request to our DTO (I assume this means what the user inputs in the html becomes usable on the Java end).
 
         // This hashes the user's inputted password.
