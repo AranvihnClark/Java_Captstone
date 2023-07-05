@@ -13,10 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.aclark.iKnowItApp.configuration.CopyFile.copyFileUsingStream;
 
 @Service
 public class SectionServiceImpl implements SectionService {
@@ -29,27 +32,21 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     @Transactional
-    public List<SectionDto> getAllUserSections(Long userId) {
+    public List<SectionDto> getAllSections() {
+        // A list of sections is created based on all sections of the userOptional (user) from the database.
+        List<Section> sections = sectionRepository.findAll();
 
-        // We need an optional for users as we will be using their id as the identifier
-        Optional<User> userOptional = userRepository.findById(userId);
+        // The .stream() lets us search for all notes and the .map() converts each section found into a new SectionDto.
+        // This is needed as one, we want to return a list of SectionDto and, two, we need it to be so because we don't want to use the actual sections themselves but a copy of them.
+        // The .collect() is used to create an Object Collection that holds the list of SectionDto.
+        List<SectionDto> sectionDtoList = sections.stream().map(section -> new SectionDto(section)).collect(Collectors.toList());
 
-        // Now to check if the user id exists.
-        if (userOptional.isPresent()) {
-
-            // A list of sections is created based on all sections of the userOptional (user) from the database.
-            List<Section> sections = sectionRepository.findAllByUserEquals(userOptional.get());
-
-            // The .stream() lets us search for all notes and the .map() converts each section found into a new SectionDto.
-            // This is needed as one, we want to return a list of SectionDto and, two, we need it to be so because we don't want to use the actual sections themselves but a copy of them.
-            // The .collect() is used to create an Object Collection that holds the list of SectionDto.
-            List<SectionDto> sectionDtoList = sections.stream().map(section -> new SectionDto(section)).collect(Collectors.toList());
-
+        if (!sections.isEmpty()) {
             return sectionDtoList;
+        } else {
+            // Returns an empty list if no 'Section's have been created.
+            return Collections.emptyList();
         }
-
-        // Returns an empty list if no 'Section's have been created.
-        return Collections.emptyList();
     }
 
     @Override
@@ -65,31 +62,41 @@ public class SectionServiceImpl implements SectionService {
             section.setUser(userOptional.get());
 
             try {
-                // First we need to remove spaces and add underscores for naming conventions.
-                String[] fileNameSplit = sectionDto.getSectionTitle().toLowerCase().split(" ");
+                // We need our template html file (our source file)
+                File source = new File("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/template_section.html");
 
-                // We create a string builder to append our naming conventions together.
-                StringBuilder fileName = new StringBuilder();
+                // Somewhat convoluted method to create a file path I liked.
+                String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
 
-                // We append the rules below in our for loop.
-                for (String s : fileNameSplit) {
-                    fileName.append(s).append("_");
+                // We need to get the file name and split up any spaces to match our naming conventions when creating files.
+                String[] buildPathSplit = sectionDto.getSectionTitle().toLowerCase().split(" ");
+
+                // We create a string builder to put the string back together.
+                StringBuilder buildName = new StringBuilder();
+
+                // We enforce our naming convention with a loop and appends.
+                for (String s : buildPathSplit) {
+                    buildName.append(s.replaceAll("[^a-zA-Z0-9]", ""));
+                    buildName.append("_");
                 }
 
                 // We remove the last underscore.
                 // Probably a better way but this was what I came up with on the fly.
-                fileName.deleteCharAt(fileName.length() - 1);
+                buildName.deleteCharAt(buildName.length() - 1);
 
-                // We create a directory in our project first, just in case if it is deleted somehow.
-                Files.createDirectories(Paths.get("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/sections/"));
+                // Then we set this section's html path manually.
+                section.setSectionHtmlPath(buildName + ".html");
 
-                // Then we create the actual html file in our path.
-                File newSectionHtml = new File ("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/sections/" + fileName + ".html");
+                // Then we create the actual html file in our path (also our destination file).
+                File newSectionHtml = new File (basePath + section.getSectionHtmlPath());
 
                 // Because we are creating a new file in a try/catch statement, I only the if statement here for if the file was created.
                 if (newSectionHtml.createNewFile()) {
-                    System.out.println("Html file created: " + newSectionHtml.getName());
+                    System.out.println("\nHtml file created: " + newSectionHtml.getName() + "\n");
+
+                    copyFileUsingStream(source, newSectionHtml);
                 }
+
             } catch (IOException e) {
                 // If the file failed to create itself, thus throwing an IO exception, the below will print out.
                 System.out.println("Error in creating section HTML file.\n");
@@ -114,24 +121,8 @@ public class SectionServiceImpl implements SectionService {
         if (sectionOptional.isPresent()) {
             sectionRepository.delete(sectionOptional.get());
 
-            // We need to get the file name and split up any spaces to match our naming conventions when creating files.
-            String[] deletedObjFileNameSplit = sectionOptional.get().getSectionTitle().toLowerCase().split(" ");
-
-            // We create a string builder to put the string back together.
-            StringBuilder deletedObjFileName = new StringBuilder();
-
-            // We enforce our naming convention with a loop and appends.
-            for (String s : deletedObjFileNameSplit) {
-                deletedObjFileName.append(s);
-                deletedObjFileName.append("_");
-            }
-
-            // We remove the last underscore.
-            // Probably a better way but this was what I came up with on the fly.
-            deletedObjFileName.deleteCharAt(deletedObjFileName.length() - 1);
-
             // Then we locate where we save our file and delete it.
-            File deletedObj = new File("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/sections/" + deletedObjFileName + ".html");
+            File deletedObj = new File(sectionOptional.get().getSectionHtmlPath());
 
             // The below is just in case if for some reason deleting failed, so we can see what file it was for.
             System.out.println();

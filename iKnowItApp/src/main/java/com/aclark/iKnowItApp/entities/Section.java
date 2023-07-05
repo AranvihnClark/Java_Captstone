@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+
 @Entity
 @Table(name = "Sections")
 @Data
@@ -21,6 +23,9 @@ public class Section {
     @Column
     private String sectionTitle;
 
+    @Column
+    private String sectionHtmlPath;
+
     // creates 'user_id' column in Sections table.
     @ManyToOne
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
@@ -29,6 +34,9 @@ public class Section {
     public Section(SectionDto sectionDto) {
         if (sectionDto.getSectionTitle() != null) {
             this.sectionTitle = sectionDto.getSectionTitle();
+        }
+        if (sectionDto.getSectionHtmlPath() != null) {
+            this.sectionHtmlPath = sectionDto.getSectionHtmlPath();
         }
     }
 

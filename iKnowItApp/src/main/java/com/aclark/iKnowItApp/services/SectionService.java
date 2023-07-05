@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface SectionService {
     @Transactional
-    List<SectionDto> getAllUserSections(Long userId);
+    List<SectionDto> getAllSections();
 
     @Transactional
     void addSection(SectionDto sectionDto, Long userId);

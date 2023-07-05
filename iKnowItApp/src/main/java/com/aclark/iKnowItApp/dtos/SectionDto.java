@@ -12,9 +12,7 @@ public class SectionDto {
 
     private Long id;
     private String sectionTitle;
-
-//    [EXTRA] - Not sure if needed yet.
-//    private String threadPath;
+    private String sectionHtmlPath;
 
     private UserDto userDto;
 
@@ -24,6 +22,9 @@ public class SectionDto {
         }
         if (section.getSectionTitle() != null) {
             this.sectionTitle = section.getSectionTitle();
+        }
+        if (section.getSectionHtmlPath() != null) {
+            this.sectionHtmlPath = section.getSectionHtmlPath();
         }
     }
 }

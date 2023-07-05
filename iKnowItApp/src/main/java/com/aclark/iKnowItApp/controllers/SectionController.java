@@ -1,7 +1,6 @@
 package com.aclark.iKnowItApp.controllers;
 
 import com.aclark.iKnowItApp.dtos.SectionDto;
-import com.aclark.iKnowItApp.dtos.PostDto;
 import com.aclark.iKnowItApp.services.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,9 @@ public class SectionController {
 
     // End-points
 
-    @GetMapping("/user/{userId}")
-    public List<SectionDto> getAllUserSections(@PathVariable Long userId) {
-        return sectionService.getAllUserSections(userId);
+    @GetMapping("")
+    public List<SectionDto> getAllSections() {
+        return sectionService.getAllSections();
     }
 
     @PostMapping("user/{userId}")
