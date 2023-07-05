@@ -23,8 +23,8 @@ public class SectionDto {
         if (section.getSectionTitle() != null) {
             this.sectionTitle = section.getSectionTitle();
         }
-        if (section.getSectionHtmlPath() != null) {
-            this.sectionHtmlPath = section.getSectionHtmlPath();
+        if (section.getSectionHtmlName() != null) {
+            this.sectionHtmlPath = section.getSectionHtmlName();
         }
     }
 }

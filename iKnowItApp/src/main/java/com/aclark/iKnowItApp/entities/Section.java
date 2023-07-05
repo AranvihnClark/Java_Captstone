@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
-
 @Entity
 @Table(name = "Sections")
 @Data
@@ -24,7 +22,7 @@ public class Section {
     private String sectionTitle;
 
     @Column
-    private String sectionHtmlPath;
+    private String sectionHtmlName;
 
     // creates 'user_id' column in Sections table.
     @ManyToOne
@@ -36,7 +34,7 @@ public class Section {
             this.sectionTitle = sectionDto.getSectionTitle();
         }
         if (sectionDto.getSectionHtmlPath() != null) {
-            this.sectionHtmlPath = sectionDto.getSectionHtmlPath();
+            this.sectionHtmlName = sectionDto.getSectionHtmlPath();
         }
     }
 

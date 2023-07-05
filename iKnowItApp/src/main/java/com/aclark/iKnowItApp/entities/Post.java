@@ -28,7 +28,7 @@ public class Post {
     private String postBody;
 
     @Column
-    private String postHtmlPath;
+    private String postHtmlName;
 
     // Creates 'user_id' column in Posts table.
     @ManyToOne
@@ -62,7 +62,7 @@ public class Post {
             buildPath.deleteCharAt(buildPath.length() - 1);
 
             // Then we build our path to store.
-            this.postHtmlPath = basePath + buildPath;
+            this.postHtmlName = basePath + buildPath;
         }
         if (postDto.getPostBody() != null) {
             this.postTitle = postDto.getPostBody();

@@ -30,8 +30,8 @@ public class PostDto {
         if (post.getPostBody() != null) {
             this.postBody = post.getPostBody();
         }
-        if (post.getPostHtmlPath() != null) {
-            this.postHtmlPath = post.getPostHtmlPath();
+        if (post.getPostHtmlName() != null) {
+            this.postHtmlPath = post.getPostHtmlName();
         }
     }
 }

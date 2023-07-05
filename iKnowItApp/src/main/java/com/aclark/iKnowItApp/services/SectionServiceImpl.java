@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -85,10 +82,10 @@ public class SectionServiceImpl implements SectionService {
                 buildName.deleteCharAt(buildName.length() - 1);
 
                 // Then we set this section's html path manually.
-                section.setSectionHtmlPath(buildName + ".html");
+                section.setSectionHtmlName(buildName + ".html");
 
                 // Then we create the actual html file in our path (also our destination file).
-                File newSectionHtml = new File (basePath + section.getSectionHtmlPath());
+                File newSectionHtml = new File (basePath + section.getSectionHtmlName());
 
                 // Because we are creating a new file in a try/catch statement, I only the if statement here for if the file was created.
                 if (newSectionHtml.createNewFile()) {
@@ -122,7 +119,7 @@ public class SectionServiceImpl implements SectionService {
             sectionRepository.delete(sectionOptional.get());
 
             // Then we locate where we save our file and delete it.
-            File deletedObj = new File(sectionOptional.get().getSectionHtmlPath());
+            File deletedObj = new File(sectionOptional.get().getSectionHtmlName());
 
             // The below is just in case if for some reason deleting failed, so we can see what file it was for.
             System.out.println();
