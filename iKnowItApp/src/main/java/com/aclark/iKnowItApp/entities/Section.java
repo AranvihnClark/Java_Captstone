@@ -33,8 +33,8 @@ public class Section {
         if (sectionDto.getSectionTitle() != null) {
             this.sectionTitle = sectionDto.getSectionTitle();
         }
-        if (sectionDto.getSectionHtmlPath() != null) {
-            this.sectionHtmlName = sectionDto.getSectionHtmlPath();
+        if (sectionDto.getSectionHtmlName() != null) {
+            this.sectionHtmlName = sectionDto.getSectionHtmlName();
         }
     }
 

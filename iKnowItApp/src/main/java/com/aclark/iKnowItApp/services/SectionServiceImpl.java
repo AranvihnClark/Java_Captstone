@@ -82,7 +82,7 @@ public class SectionServiceImpl implements SectionService {
                 buildName.deleteCharAt(buildName.length() - 1);
 
                 // Then we set this section's html path manually.
-                section.setSectionHtmlName(buildName + ".html");
+                section.setSectionHtmlName("section_" + buildName + ".html");
 
                 // Then we create the actual html file in our path (also our destination file).
                 File newSectionHtml = new File (basePath + section.getSectionHtmlName());
@@ -118,8 +118,11 @@ public class SectionServiceImpl implements SectionService {
         if (sectionOptional.isPresent()) {
             sectionRepository.delete(sectionOptional.get());
 
+            // For readability, putting file path in a variable.
+            String htmlPath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+
             // Then we locate where we save our file and delete it.
-            File deletedObj = new File(sectionOptional.get().getSectionHtmlName());
+            File deletedObj = new File(htmlPath + sectionOptional.get().getSectionHtmlName());
 
             // The below is just in case if for some reason deleting failed, so we can see what file it was for.
             System.out.println();
@@ -142,6 +145,38 @@ public class SectionServiceImpl implements SectionService {
         // Changed the below to Intellij's format for practice.
         sectionOptional.ifPresent(section -> {
             section.setSectionTitle(sectionDto.getSectionTitle());
+
+            // Need to update html name in our database and in the file.
+            StringBuilder htmlName = new StringBuilder();
+            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+
+            // We also need to save the old file name to change it as well.
+            String oldName = section.getSectionHtmlName();
+
+            htmlName.append("section_");
+
+            for (String s : sectionDto.getSectionTitle().toLowerCase().split(" ")) {
+                htmlName.append(s.replaceAll("[^a-zA-Z0-9]", ""));
+                htmlName.append("_");
+            }
+
+            htmlName.deleteCharAt(htmlName.length() - 1);
+            htmlName.append(".html");
+
+            section.setSectionHtmlName(htmlName.toString());
+
+            File updateFile = new File(basePath + oldName);
+
+            File renameFile = new File(basePath + htmlName);
+
+            boolean isUpdated = updateFile.renameTo(renameFile);
+
+            if (isUpdated) {
+                System.out.println(oldName + " was changed to " + htmlName);
+            } else {
+                System.out.println("Renaming failed.");
+            }
+
             sectionRepository.saveAndFlush(section);
         });
     }
