@@ -1,0 +1,14 @@
+.remove-left-right-padding {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.margin-buttonCard-override {
+    margin: auto;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#add-post-title {
+   resize: none;
+}

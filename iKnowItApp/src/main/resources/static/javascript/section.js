@@ -1,5 +1,7 @@
-// [1] - Cookie reader
+// We don't need to update posts or create posts.
+// We just need to display the posts.
 
+// [1] - Cookie reader
 // Separates the cookie into an array.
 const cookieArr = document.cookie.split("=");
 
@@ -7,15 +9,10 @@ const cookieArr = document.cookie.split("=");
 const userId = cookieArr[1];
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
-const postForm = document.getElementById('post-form');
-const postContainer = document.getElementById('post-container');
-const newTitle = document.getElementById('post-title');
-const newBody = document.getElementById('post-body');
+const postQuestionContainer = document.getElementById('post-question-container');
+const postAnswerContainer = document.getElementById('post-answer-container');
 const whereAmILink = document.getElementById('where-am-i');
-
-// Modal Elements
-let postBody = document.getElementById('update-post-body');
-let updatePostBtn = document.getElementById('update-post-button')
+const addPostBtn = document.getElementById('add-post-button')
 
 // Header
 const headers = {
@@ -62,8 +59,6 @@ const submitPost = async (e) => {
 
 // Function that handles http request to add post.
 async function addPost(obj) {
-console.log(obj);
-console.log(JSON.stringify(obj));
     // Http request
     const response = await fetch(`${baseUrl}/user/${userId}`, {
             method: "POST",
@@ -76,28 +71,57 @@ console.log(JSON.stringify(obj));
     if (response.status === 200) {
 
         // Run another function to 'display' all our posts
-        return getAllPosts();
+        return getPosts();
     }
 
     // At the end, after getting our post to display on the page, this will let 'submitPost' function to complete itself.
 }
 
 // [4]-[1] - Retrieve all posts from user when page loads
-async function getAllPosts() {
+async function getAllQuestionPosts() {
     await fetch(`${baseUrl}`, {
             method: "GET",
             headers: headers
         })
         // If the request is good, we complete the 'promises'.
         .then(response => response.json())
-        .then(data => createPostCards(data))
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].isAnswered) {
+                    data.splice(i, 1);
+                    i--;
+                }
+            }
+            createPostQuestionCards(data)
+        })
+
+        // Error handling.
+        .catch(err => console.error(err));
+}
+
+async function getAllAnsweredPosts() {
+    await fetch(`${baseUrl}`, {
+            method: "GET",
+            headers: headers
+        })
+        // If the request is good, we complete the 'promises'.
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                if (!data[i].isAnswered) {
+                    data.splice(i, 1);
+                    i--;
+                }
+            }
+            createPostAnsweredCards(data)
+        })
 
         // Error handling.
         .catch(err => console.error(err));
 }
 
 // [4]-[2] - Create 'cards' for each post.
-const createPostCards = (arr) => {
+const createPostQuestionCards = (arr) => {
     // We clear the update post container first so we can add the posts.
     postContainer.innerHTML = '';
     arr.forEach(obj => {
@@ -107,7 +131,7 @@ const createPostCards = (arr) => {
         card.innerHTML = `
             <div class="card d-flex card-style">
                 <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <a class="card-text overflow-auto" href="${obj.postHtmlPath}">${obj.postTitle}</a>
+                    <a class="card-text overflow-auto" href="${obj.postHtmlName}">${obj.postTitle}</a>
                 </div>
             </div>
         `
@@ -117,7 +141,35 @@ const createPostCards = (arr) => {
         buttonCard.classList.add("col-sm-2");
         buttonCard.classList.add("padding-zero-override");
         buttonCard.innerHTML = `
-            <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-auto-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
+            <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
+            <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+        `
+        postContainer.append(card);
+        postContainer.append(buttonCard);
+    })
+}
+
+const createPostAnsweredCards = (arr) => {
+    // We clear the update post container first so we can add the posts.
+    postContainer.innerHTML = '';
+    arr.forEach(obj => {
+        let card = document.createElement("div");
+        card.classList.add("col");
+        card.classList.add("col-sm-10");
+        card.innerHTML = `
+            <div class="card d-flex card-style">
+                <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
+                    <a class="card-text overflow-auto" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                </div>
+            </div>
+        `
+        let buttonCard = document.createElement("div");
+        buttonCard.classList.add("d-flex");
+        buttonCard.classList.add("stify-content-between");
+        buttonCard.classList.add("col-sm-2");
+        buttonCard.classList.add("padding-zero-override");
+        buttonCard.innerHTML = `
+            <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
             <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
         `
         postContainer.append(card);
@@ -127,14 +179,13 @@ const createPostCards = (arr) => {
 
 // [4]-[3] - Append them to the HTML container
 // 'Populates' our modal for us.
-const populateModal = (obj) => {
+const populateModal = () => {
     postBody.innerText = '';
-    postBody.innerText = obj.body;
-    updatePostBtn.setAttribute('data-post-id', obj.id);
+    postTitle.innerText = '';
 }
 
 // [5] - Update a post (GET request)
-async function getPostById() {
+async function getPostById(postId) {
     await fetch(`${baseUrl}/${postId}`, {
             method: "GET",
             headers: headers
@@ -144,10 +195,10 @@ async function getPostById() {
         .catch(err => console.err(err.message))
 }
 
-async function handlePostEdit(postId) {
+async function handlePostEdit() {
     let bodyObj = {
         id: postId,
-        body: postBody.value
+        postTitle: postBody.value
     }
 
     await fetch(baseUrl, {
@@ -157,7 +208,7 @@ async function handlePostEdit(postId) {
         })
         .catch(err => console.error(err));
 
-    return getAllPosts(userId);
+    return getPosts();
 }
 // [6] - Delete a post
 async function handleDelete(postId) {
@@ -167,7 +218,7 @@ async function handleDelete(postId) {
         })
         .catch(err => console.error(err));
 
-        return getAllPosts(userId);
+        return getPosts();
 }
 
 // Prevents line breaks in our textarea
@@ -189,8 +240,8 @@ const youAreHere = () => {
 const titleText = document.getElementById('title-text');
 
 // HTML changes
-async function displaySectionInfo() {
-    await fetch(`http://localhost:8080/api/v1/sections`, {
+async function displayPostInfo() {
+    await fetch(`http://localhost:8080/api/v1/posts`, {
         method: "GET",
         headers: headers
     })
@@ -207,12 +258,10 @@ async function displaySectionInfo() {
 // Event listeners
 postForm.addEventListener("submit", submitPost);
 newBody.addEventListener("keypress", noEnter);
-updatePostBtn.addEventListener("click", (e) => {
-    let postId = e.target.getAttribute('data-post-id');
-    handlePostEdit(postId);
-})
+addPostBtn.addEventListener("click", addPost());
 
 // Instant runs
-// displaySectionInfo();  --> something like this.
-getAllPosts(userId);
+// displayPostInfo();  --> something like this.
+getAllQuestionPosts();
+getAllAnsweredPosts();
 youAreHere();
