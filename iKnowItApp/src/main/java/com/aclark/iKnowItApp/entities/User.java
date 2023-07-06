@@ -53,11 +53,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     // Prevents infinite recursion
     @JsonManagedReference
-    private Set<Post> postSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    // Prevents infinite recursion
-    @JsonManagedReference
     private Set<Comment> commentSet = new HashSet<>();
 */
     // This creates a new User using the UserDto (or a user's input).
