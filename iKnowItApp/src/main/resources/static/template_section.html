@@ -15,57 +15,59 @@
         </div>
     </section>
 
-
     <section id="home-container" class="container">
 
         <!-- Top of screen -->
-
         <div class="row">
             <div class="col text-center">
                 <!-- Post Title -->
-                <h1 class="header-text">I Know About</h1> <!-- NEEDS JS HELP -->
+                <h1 class="header-text">I Know About [Section]</h1> <!-- NEEDS JS HELP -->
             </div>
         </div>
 
-        <!-- Post Form -->
-        <!-- haven't worked on yet -->
-        <div id="post-form-container" class="row mt-4">
-            <h3 class="col-3">Add A New Post?</h3>
-            <form id="post-form" class="col-9">
-                <textarea id="post-title" class="form-control" maxlength="64" placeholder="Enter your post title: " rows="1"></textarea>
-                <textarea id="post-body" class="form-control" placeholder="Enter your post body: " rows="6"></textarea>
-                <button type="submit" id="submit-button" class="col-xxl btn btn-primary mt-4">Submit</button>
-            </form>
+        <div class="row justify-content-center mt-4">
+            <div class="col-auto remove-left-right-padding">
+                <button type="submit" id="submit-button" class="btn btn-primary margin-buttonCard-override" onclick="" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Ask</button>
+            </div>
+            <div class="col-auto remove-left-right-padding">
+                <h2>A Question?</h2>
+            </div>
         </div>
 
         <!-- Middle of Screen -->
-<!-- May not be needed - not sure yet
         <div class="row my-5">
             <div class="col text-center">
-                <h2>Area of Expertise</h2>
+                <h2>Answer A Question</h2>
             </div>
         </div>
--->
-
-        <div id="post-container" class="row my-2 container"></div>
+        <div id="post-question-container" class="row my-2 container"></div>
+        <div class="row my-5">
+            <div class="col text-center">
+                <h2>Answered Questions</h2>
+            </div>
+        </div>
+        <div id="post-answer-container" class="row my-2 container"></div>
     </section>
 
-
     <!-- Modal -->
-    <section class="modal fade" id="note-edit-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="note-edit-modal-title" aria-hidden="true">
+    <section class="modal fade" id="post-edit-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="post-edit-modal-title" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="note-edit-modal-title">Edit your post.</h5>
+                    <h5 class="modal-title" id="post-edit-modal-title">Ask your question.</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex">
-                    <textarea id="update-post-title" class="form-control" rows="1"></textarea> <!-- NEEDS JS HELP -->
-                    <textarea id="update-post-body" class="form-control" rows="5"></textarea> <!-- NEEDS JS HELP -->
+                <div class="modal-body d-flex-column">
+                    <div class="d-inline">
+                        <p>Question Title:</p>
+                        <textarea id="add-post-title" class="form-control" maxlength="64" rows="2"></textarea>
+                        <p class="mt-3">Explain the situation:</p>
+                        <textarea id="add-post-body" class="form-control" rows="5"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="update-post-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="add-post-button" class="btn btn-primary" data-bs-dismiss="modal">Ask!</button>
                 </div>
             </div>
         </div>
