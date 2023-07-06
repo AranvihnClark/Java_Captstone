@@ -61,8 +61,6 @@ const submitSection = async (e) => {
 
 // Function that handles http request to add section.
 async function addSection(obj) {
-console.log(obj);
-console.log(JSON.stringify(obj));
     // Http request
     const response = await fetch(`${baseUrl}/user/${userId}`, {
             method: "POST",
@@ -106,7 +104,7 @@ const createSectionCards = (arr) => {
         card.innerHTML = `
             <div class="card d-flex card-style">
                 <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <a class="card-text overflow-auto" href="./${obj.sectionHtmlPath}">${obj.sectionTitle}</a>
+                    <a class="card-text overflow-auto" href="./${obj.sectionHtmlName}">${obj.sectionTitle}</a>
                 </div>
             </div>
         `
@@ -116,7 +114,7 @@ const createSectionCards = (arr) => {
         buttonCard.classList.add("col-sm-2");
         buttonCard.classList.add("padding-zero-override");
         buttonCard.innerHTML = `
-            <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-auto-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
+            <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
             <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
         `
         sectionContainer.append(card);
@@ -128,7 +126,7 @@ const createSectionCards = (arr) => {
 // 'Populates' our modal for us.
 const populateModal = (obj) => {
     sectionBody.innerText = '';
-    sectionBody.innerText = obj.body;
+    sectionBody.innerText = obj.sectionTitle;
     updateSectionBtn.setAttribute('data-section-id', obj.id);
 }
 
@@ -146,7 +144,7 @@ async function getSectionById(sectionId) {
 async function handleSectionEdit(sectionId) {
     let bodyObj = {
         id: sectionId,
-        body: sectionBody.value
+        sectionTitle: sectionBody.value
     }
 
     await fetch(baseUrl, {
@@ -156,7 +154,7 @@ async function handleSectionEdit(sectionId) {
         })
         .catch(err => console.error(err));
 
-    return getSections(userId);
+    return getSections();
 }
 // [6] - Delete a section
 async function handleDelete(sectionId) {
@@ -166,7 +164,7 @@ async function handleDelete(sectionId) {
         })
         .catch(err => console.error(err));
 
-        return getSections(userId);
+        return getSections();
 }
 
 // Prevents line breaks in our textarea
@@ -195,5 +193,5 @@ updateSectionBtn.addEventListener("click", (e) => {
 })
 
 // Instant runs
-getSections(userId);
+getSections();
 youAreHere();
