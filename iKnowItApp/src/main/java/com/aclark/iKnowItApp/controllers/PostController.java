@@ -18,11 +18,11 @@ public class PostController {
     // End-points
 
     @GetMapping("")
-    public List<PostDto> getAllPosts() {
-        return postService.getAllPosts();
+    public List<PostDto> getAllSectionPosts(@PathVariable Long sectionId) {
+        return postService.getAllSectionPosts(sectionId);
     }
 
-    @PostMapping("user/{userId}")
+    @PostMapping("/user/{userId}")
     public void addPost(@RequestBody PostDto postDto, @PathVariable Long userId) {
         postService.addPost(postDto, userId);
     }
@@ -41,5 +41,10 @@ public class PostController {
     @GetMapping("/{postId}")
     public Optional<PostDto> findPost(@PathVariable Long postId) {
         return postService.findPost(postId);
+    }
+
+    @PutMapping("/{postId}")
+    public void updateIsAnswered(@RequestBody PostDto postDto) {
+        postService.updateIsAnswered(postDto);
     }
 }

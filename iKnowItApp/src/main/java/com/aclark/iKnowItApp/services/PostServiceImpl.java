@@ -2,13 +2,16 @@ package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.PostDto;
 import com.aclark.iKnowItApp.entities.Post;
+import com.aclark.iKnowItApp.entities.Section;
 import com.aclark.iKnowItApp.entities.User;
 import com.aclark.iKnowItApp.repositories.PostRepository;
+import com.aclark.iKnowItApp.repositories.SectionRepository;
 import com.aclark.iKnowItApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,36 +26,44 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SectionRepository sectionRepository;
+
     @Override
     @Transactional
-    public List<PostDto> getAllPosts() {
-        // A list of posts is created based on all posts of the userOptional (user) from the database.
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> getAllSectionPosts(Long sectionId) {
+        // We're going to use an optional for our sections by using their id as the identifier
+        Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
 
-        // The .stream() lets us search for all posts and the .map() converts each post found into a new PostDto.
-        // This is needed as one, we want to return a list of PostDto and, two, we need it to be so because we don't want to use the actual posts themselves but a copy of them.
-        // The .collect() is used to create an Object Collection that holds the list of PostDto.
-        List<PostDto> postDtoList = posts.stream().map(post -> new PostDto(post)).collect(Collectors.toList());
+        if (sectionOptional.isPresent()) {
+            List<Post> posts = postRepository.findAllBySectionEquals(sectionOptional.get());
 
-        if (!posts.isEmpty()) {
-            return postDtoList;
-        } else {
-            // Returns an empty list if no 'Post's have been created.
-            return Collections.emptyList();
+            // The .stream() lets us search for all posts and the .map() converts each post found into a new PostDto.
+            // This is needed as one, we want to return a list of PostDto and, two, we need it to be so because we don't want to use the actual posts themselves but a copy of them.
+            // The .collect() is used to create an Object Collection that holds the list of PostDto.
+            List<PostDto> postDtoList = posts.stream().map(post -> new PostDto(post)).collect(Collectors.toList());
+
+            if (!posts.isEmpty()) {
+                return postDtoList;
+            } else {
+                // Returns an empty list if no 'Post's have been created.
+                return Collections.emptyList();
+            }
         }
+        return Collections.emptyList();
     }
 
     @Override
     @Transactional
-    public void addPost(PostDto postDto, Long userId) {
+    public void addPost(PostDto postDto, Long sectionId) {
 
         // We need an optional for users as we will be using their id as the identifier for users to call their posts.
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
 
         Post post = new Post(postDto);
 
-        if (userOptional.isPresent()) {
-            post.setUser(userOptional.get());
+        if (sectionOptional.isPresent()) {
+            post.setSection(sectionOptional.get());
         }
 
         // Then, of course, we add this Post to our database.
@@ -84,6 +95,38 @@ public class PostServiceImpl implements PostService {
         // Changed the below to Intellij's format for practice.
         postOptional.ifPresent(post -> {
             post.setPostTitle(postDto.getPostTitle());
+
+            // Need to update html name in our database and in the file.
+            StringBuilder htmlName = new StringBuilder();
+            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+
+            // We also need to save the old file name to change it as well.
+            String oldName = post.getPostHtmlName();
+
+            htmlName.append("post_");
+
+            for (String s : postDto.getPostTitle().toLowerCase().split(" ")) {
+                htmlName.append(s.replaceAll("[^a-zA-Z0-9]", ""));
+                htmlName.append("_");
+            }
+
+            htmlName.deleteCharAt(htmlName.length() - 1);
+            htmlName.append(".html");
+
+            post.setPostHtmlName(htmlName.toString());
+
+            File updateFile = new File(basePath + oldName);
+
+            File renameFile = new File(basePath + htmlName);
+
+            boolean isUpdated = updateFile.renameTo(renameFile);
+
+            if (isUpdated) {
+                System.out.println(oldName + " was changed to " + htmlName);
+            } else {
+                System.out.println("Renaming failed.");
+            }
+
             postRepository.saveAndFlush(post);
         });
     }
@@ -121,5 +164,21 @@ public class PostServiceImpl implements PostService {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateIsAnswered(PostDto postDto) {
+        // Searching for the post we want to be considered answered.
+        Optional<Post> postOptional = postRepository.findById(postDto.getId());
+
+        // If the post exists and is not yet answered, we will set the post to 'answered'.
+
+        postOptional.ifPresent(post -> {
+            if (!postOptional.get().getIsAnswered()) {
+                post.setIsAnswered(true);
+
+            }
+        });
     }
 }

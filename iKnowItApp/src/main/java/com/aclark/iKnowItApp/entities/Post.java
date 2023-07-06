@@ -27,6 +27,9 @@ public class Post {
     @Column(columnDefinition = "text")
     private String postBody;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isAnswered;
+
     @Column
     private String postHtmlName;
 
@@ -34,6 +37,10 @@ public class Post {
     @ManyToOne
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
+
+    @ManyToOne
+    @JsonBackReference
+    private Section section;
 
     public Post(PostDto postDto) {
         if (postDto.getPostTitle() != null) {

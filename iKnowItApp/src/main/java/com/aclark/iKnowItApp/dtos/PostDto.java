@@ -13,6 +13,7 @@ public class PostDto {
     private Long id;
     private String postTitle;
     private String postBody;
+    private Boolean isAnswered;
     private String postHtmlPath;
 
     private UserDto userDto;
