@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.PostDto;
+import com.aclark.iKnowItApp.dtos.SectionDto;
 import com.aclark.iKnowItApp.entities.Post;
 import com.aclark.iKnowItApp.entities.Section;
 import com.aclark.iKnowItApp.entities.User;
@@ -35,11 +36,18 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public List<PostDto> getAllSectionPosts(Long sectionId) {
+
         // We're going to use an optional for our sections by using their id as the identifier
         Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
 
         if (sectionOptional.isPresent()) {
-            List<Post> posts = postRepository.findAllBySectionEquals(sectionOptional.get());
+            List<Post> posts = postRepository.findAll();
+
+            for (int i = 0; i < posts.size(); i++) {
+                if (!posts.get(i).getSection().getId().equals(sectionId)) {
+                    posts.remove(i);
+                }
+            }
 
             // The .stream() lets us search for all posts and the .map() converts each post found into a new PostDto.
             // This is needed as one, we want to return a list of PostDto and, two, we need it to be so because we don't want to use the actual posts themselves but a copy of them.
@@ -136,6 +144,21 @@ public class PostServiceImpl implements PostService {
         // If the post exists, it will be deleted.
         if (postOptional.isPresent()) {
             postRepository.delete(postOptional.get());
+
+            // For readability, putting file path in a variable.
+            String htmlPath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+
+            // Then we locate where we save our file and delete it.
+            File deletedObj = new File(htmlPath + postOptional.get().getPostHtmlName());
+
+            // The below is just in case if for some reason deleting failed, so we can see what file it was for.
+            System.out.println();
+            if (deletedObj.delete()) {
+                System.out.println("Deleted section file: " + deletedObj.getName());
+            } else {
+                System.out.println("Failed to delete a section file: " + deletedObj.getName());
+            }
+            System.out.println();
         }
     }
 
@@ -235,4 +258,19 @@ public class PostServiceImpl implements PostService {
             }
         });
     }
+
+//    @Override
+//    @Transactional
+//    public String getSection(Long sectionId) {
+//        String response = "";
+//
+//        // We're going to use an optional for our sections by using their id as the identifier
+//        Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
+//
+//        if (sectionOptional.isPresent()) {
+//            response = sectionOptional.get().getUser().getUsername();
+//        }
+//
+//        return response;
+//    }
 }

@@ -51,4 +51,9 @@ public class PostController {
     public void updateIsAnswered(@RequestBody PostDto postDto) {
         postService.updateIsAnswered(postDto);
     }
+
+//    @GetMapping("")
+//    String getSection(@PathVariable Long sectionId) {
+//        return postService.getSection(sectionId);
+//    }
 }

@@ -27,4 +27,7 @@ public interface PostService {
 
     @Transactional
     void updateIsAnswered(PostDto postDto);
+
+//    @Transactional
+//    String getSection(Long sectionId);
 }

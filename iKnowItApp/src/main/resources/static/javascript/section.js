@@ -5,13 +5,11 @@
 // Separates the cookie into an array.
 const cookieArr = document.cookie.split(/[&=]/g);
 
-console.log("CookieArr: " + cookieArr);
-console.log("Cookie: " + document.cookie);
-
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
 const sectionId = cookieArr[3];
-console.log("Section ID: " + sectionId);
+console.log("Cookie User ID: " + userId);
+console.log("Cookie Section ID: " + sectionId);
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
 const postQuestionContainer = document.getElementById('post-question-container');
@@ -21,6 +19,7 @@ const whereAmILink = document.getElementById('where-am-i');
 const addPostBtn = document.getElementById('add-post-button')
 const postTitle = document.getElementById('post-title');
 const postBody = document.getElementById('post-body');
+const sectionCreatorName = document.getElementById('section-creator-name');
 
 // Header
 const headers = {
@@ -84,7 +83,7 @@ async function addPost(obj) {
     if (response.status === 200) {
 
         // Run another function to 'display' all our posts
-        return getAllSectionPosts();
+        return getAllSectionPosts(sectionId);
     }
 
     // At the end, after getting our post to display on the page, this will let 'submitPost' function to complete itself.
@@ -97,19 +96,16 @@ async function getAllSectionPosts(sectionId) {
             headers: headers
         })
         // If the request is good, we complete the 'promises'.
-        .then(response => {
-            response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-//            for (let i = 0; i < data.length; i++) {
-//                if (data[i].isAnswered) {
-//                    data.splice(i, 1);
-//                    i--;
-//                }
-//            }
-            console.log(data);
+        let answeredObjects = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].isAnswered) {
+                    answeredObjects.push(data.splice(i, 1).pop());
+                }
+            }
             createPostQuestionCards(data);
-            createPostAnsweredCards(data);
+            createPostAnsweredCards(answeredObjects);
         })
 
         // Error handling.
@@ -120,29 +116,42 @@ async function getAllSectionPosts(sectionId) {
 const createPostQuestionCards = (arr) => {
     // We clear the update post container first so we can add the posts.
     postQuestionContainer.innerHTML = '';
-    console.log("What is this? " + arr);
+
     arr.forEach(obj => {
-        let card = document.createElement("div");
-        card.classList.add("col");
-        card.classList.add("col-sm-10");
-        card.innerHTML = `
-            <div class="card d-flex card-style">
-                <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <a class="card-text overflow-auto" href="${obj.postHtmlName}">${obj.postTitle}</a>
+        if (obj.userId == userId) {
+            let card = document.createElement("div");
+            card.classList.add("col");
+            card.classList.add("col-sm-11");
+            card.innerHTML = `
+                <div class="card d-flex card-style">
+                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
+                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                    </div>
                 </div>
-            </div>
-        `
-        let buttonCard = document.createElement("div");
-        buttonCard.classList.add("d-flex");
-        buttonCard.classList.add("stify-content-between");
-        buttonCard.classList.add("col-sm-2");
-        buttonCard.classList.add("padding-zero-override");
-        buttonCard.innerHTML = `
-            <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
-            <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
-        `
-        postQuestionContainer.append(card);
-        postQuestionContainer.append(buttonCard);
+            `
+            let buttonCard = document.createElement("div");
+            buttonCard.classList.add("d-flex");
+            buttonCard.classList.add("stify-content-between");
+            buttonCard.classList.add("col-sm-1");
+            buttonCard.classList.add("padding-zero-override");
+            buttonCard.innerHTML = `
+                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+            `
+            postQuestionContainer.append(card);
+            postQuestionContainer.append(buttonCard);
+        } else if (obj.userId !== userId) {
+            let card = document.createElement("div");
+            card.classList.add("col");
+            card.classList.add("col-sm-12");
+            card.innerHTML = `
+                <div class="card d-flex card-style">
+                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
+                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                    </div>
+                </div>
+            `
+            postQuestionContainer.append(card);
+        }
     })
 }
 
@@ -150,27 +159,40 @@ const createPostAnsweredCards = (arr) => {
     // We clear the update post container first so we can add the posts.
     postAnsweredContainer.innerHTML = '';
     arr.forEach(obj => {
-        let card = document.createElement("div");
-        card.classList.add("col");
-        card.classList.add("col-sm-10");
-        card.innerHTML = `
-            <div class="card d-flex card-style">
-                <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <a class="card-text overflow-auto" href="${obj.postHtmlName}">${obj.postTitle}</a>
+        if (obj.userId == userId) {
+            let card = document.createElement("div");
+            card.classList.add("col");
+            card.classList.add("col-sm-11");
+            card.innerHTML = `
+                <div class="card d-flex card-style">
+                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
+                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                    </div>
                 </div>
-            </div>
-        `
-        let buttonCard = document.createElement("div");
-        buttonCard.classList.add("d-flex");
-        buttonCard.classList.add("stify-content-between");
-        buttonCard.classList.add("col-sm-2");
-        buttonCard.classList.add("padding-zero-override");
-        buttonCard.innerHTML = `
-            <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
-            <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
-        `
-        postAnsweredContainer.append(card);
-        postAnsweredContainer.append(buttonCard);
+            `
+            let buttonCard = document.createElement("div");
+            buttonCard.classList.add("d-flex");
+            buttonCard.classList.add("stify-content-between");
+            buttonCard.classList.add("col-sm-1");
+            buttonCard.classList.add("padding-zero-override");
+            buttonCard.innerHTML = `
+                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+            `
+            postAnsweredContainer.append(card);
+            postAnsweredContainer.append(buttonCard);
+        } else if (obj.userId !== userId) {
+            let card = document.createElement("div");
+            card.classList.add("col");
+            card.classList.add("col-sm-12");
+            card.innerHTML = `
+                <div class="card d-flex card-style">
+                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
+                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                    </div>
+                </div>
+            `
+            postAnsweredContainer.append(card);
+        }
     })
 }
 
@@ -200,7 +222,7 @@ async function handleDelete(postId) {
         })
         .catch(err => console.error(err));
 
-        return getPosts();
+        return getAllSectionPosts(sectionId);
 }
 
 // Prevents line breaks in our textarea
@@ -216,26 +238,24 @@ const noEnter = (e) => {
 const youAreHere = () => {
     // Just basic shit until I have time to figure it out.
     whereAmILink.innerHTML = "/Home";
+//    displayPostInfo(sectionId);
 }
 
 // DOM elements
 const titleText = document.getElementById('title-text');
 
 // HTML changes
-async function displayPostInfo() {
-    await fetch(`http://localhost:8080/api/v1/posts`, {
-        method: "GET",
-        headers: headers
-    })
-    // If the request is good, we complete the 'promises'.
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    })
-
-    // Error handling.
-    .catch(err => console.error(err));
-}
+//async function displayPostInfo(sectionId) {
+//    const response = await fetch(`${baseUrl}`, {
+//        method: "GET",
+//        headers: headers
+//    })
+////    .then(res => res.json())
+//    // Error handling.
+//    .catch(err => console.error(err));
+//    console.log(response);
+////    sectionCreatorName.innerHtml = `Section created by: ${response}`
+//}
 
 // Needed to remove section from cookie
 const revertCookie = async () => {

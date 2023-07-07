@@ -17,6 +17,11 @@ public class PostDto {
     private String postHtmlName;
 
     private UserDto userDto;
+
+    // Using this since JS can't read Java Objects.
+//    private String userName;
+    private Long userId;
+
     private SectionDto sectionDto;
 
 //    [EXTRA] - Not sure if needed yet.
@@ -37,6 +42,10 @@ public class PostDto {
         }
         if (post.getIsAnswered() != null) {
             this.isAnswered = post.getIsAnswered();
+        }
+        if (post.getUser() != null) {
+            this.userId = post.getUser().getId();
+//            this.userName = post.getUser().getUsername();
         }
     }
 }
