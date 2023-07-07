@@ -3,6 +3,9 @@ const loginForm = document.getElementById('login-form');
 const loginUsername = document.getElementById('login-username');
 const loginPassword = document.getElementById('login-password');
 
+//TESTING
+console.log(document.cookie);
+
 // Header
 const headers = {
     'Content-Type': 'application/json'
