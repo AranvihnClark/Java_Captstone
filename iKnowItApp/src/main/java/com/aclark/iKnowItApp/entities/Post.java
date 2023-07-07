@@ -45,34 +45,15 @@ public class Post {
     public Post(PostDto postDto) {
         if (postDto.getPostTitle() != null) {
             this.postTitle = postDto.getPostTitle();
-
-            // Somewhat convoluted method to create a file path I liked.
-            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts";
-
-            // We want to get rid of any special characters due to fact that they would get in the way of file naming.
-            basePath = basePath.replaceAll("[^a-zA-Z0-9]", "");
-
-            // We need to get the file name and split up any spaces to match our naming conventions when creating files.
-            String[] basePathSplit = this.postTitle.toLowerCase().split(" ");
-
-            // We create a string builder to put the string back together.
-            StringBuilder buildPath = new StringBuilder();
-
-            // We enforce our naming convention with a loop and appends.
-            for (String s : basePathSplit) {
-                buildPath.append(s);
-                buildPath.append("_");
-            }
-
-            // We remove the last underscore.
-            // Probably a better way but this was what I came up with on the fly.
-            buildPath.deleteCharAt(buildPath.length() - 1);
-
-            // Then we build our path to store.
-            this.postHtmlName = basePath + buildPath;
         }
         if (postDto.getPostBody() != null) {
-            this.postTitle = postDto.getPostBody();
+            this.postBody = postDto.getPostBody();
+        }
+        if (postDto.getPostHtmlPath() != null) {
+            this.postHtmlName = postDto.getPostHtmlPath();
+        }
+        if (postDto.getIsAnswered() != null) {
+            this.isAnswered = postDto.getIsAnswered();
         }
     }
 

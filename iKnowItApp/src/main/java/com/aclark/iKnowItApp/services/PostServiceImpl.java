@@ -3,6 +3,7 @@ package com.aclark.iKnowItApp.services;
 import com.aclark.iKnowItApp.dtos.PostDto;
 import com.aclark.iKnowItApp.entities.Post;
 import com.aclark.iKnowItApp.entities.Section;
+import com.aclark.iKnowItApp.entities.User;
 import com.aclark.iKnowItApp.repositories.PostRepository;
 import com.aclark.iKnowItApp.repositories.SectionRepository;
 import com.aclark.iKnowItApp.repositories.UserRepository;
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.aclark.iKnowItApp.configuration.CopyFile.copyFileUsingStream;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -54,15 +58,66 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void addPost(PostDto postDto, Long sectionId) {
+    public void addPost(PostDto postDto, Long sectionId, Long userId) {
 
         // We need an optional for users as we will be using their id as the identifier for users to call their posts.
         Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
+        Optional<User> userOptional = userRepository.findById(userId);
 
         Post post = new Post(postDto);
 
         if (sectionOptional.isPresent()) {
-            post.setSection(sectionOptional.get());
+
+                // This is how we set the section_id in our Post table database.
+                post.setSection(sectionOptional.get());
+
+                // Set to false as default.
+                post.setIsAnswered(false);
+            if (userOptional.isPresent()) {
+
+                // This is how we set the user_id in our Post table database.
+                post.setUser(userOptional.get());
+                try {
+                    // We need our template html file (our source file)
+                    File source = new File("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/template_post.html");
+
+                    // Somewhat convoluted method to create a file path I liked.
+                    String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+
+                    // We need to get the file name and split up any spaces to match our naming conventions when creating files.
+                    String[] buildPathSplit = postDto.getPostTitle().toLowerCase().split(" ");
+
+                    // We create a string builder to put the string back together.
+                    StringBuilder buildName = new StringBuilder();
+
+                    // We enforce our naming convention with a loop and appends.
+                    for (String s : buildPathSplit) {
+                        buildName.append(s.replaceAll("[^a-zA-Z0-9]", ""));
+                        buildName.append("_");
+                    }
+
+                    // We remove the last underscore.
+                    // Probably a better way but this was what I came up with on the fly.
+                    buildName.deleteCharAt(buildName.length() - 1);
+
+                    // Then we set this section's html path manually.
+                    post.setPostHtmlName("post_" + buildName + ".html");
+
+                    // Then we create the actual html file in our path (also our destination file).
+                    File newSectionHtml = new File (basePath + post.getPostHtmlName());
+
+                    // Because we are creating a new file in a try/catch statement, I only the if statement here for if the file was created.
+                    if (newSectionHtml.createNewFile()) {
+                        System.out.println("\nHtml file created: " + newSectionHtml.getName() + "\n");
+
+                        copyFileUsingStream(source, newSectionHtml);
+                    }
+                } catch (IOException e) {
+                    // If the file failed to create itself, thus throwing an IO exception, the below will print out.
+                    System.out.println("Error in creating section HTML file.\n");
+                    e.printStackTrace();
+                }
+            }
         }
 
         // Then, of course, we add this Post to our database.

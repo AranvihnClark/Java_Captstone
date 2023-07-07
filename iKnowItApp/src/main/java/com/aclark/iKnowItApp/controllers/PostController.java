@@ -21,14 +21,14 @@ public class PostController {
 
     // End-points
 
-    @GetMapping("")
+    @GetMapping("/sections/{sectionId}")
     public List<PostDto> getAllSectionPosts(@PathVariable Long sectionId) {
         return postService.getAllSectionPosts(sectionId);
     }
 
-    @PostMapping("/user/{userId}")
-    public void addPost(@RequestBody PostDto postDto, @PathVariable Long userId) {
-        postService.addPost(postDto, userId);
+    @PostMapping("/sections/{sectionId}/users/{userId}")
+    public void addPost(@RequestBody PostDto postDto, @PathVariable Long sectionId, @PathVariable Long userId) {
+        postService.addPost(postDto, sectionId, userId);
     }
 
     @DeleteMapping("/{postId}")

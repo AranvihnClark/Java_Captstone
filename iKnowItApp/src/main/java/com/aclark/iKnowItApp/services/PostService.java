@@ -11,7 +11,7 @@ public interface PostService {
     List<PostDto> getAllSectionPosts(Long sectionId);
 
     @Transactional
-    void addPost(PostDto postDto, Long userId);
+    void addPost(PostDto postDto, Long sectionId, Long userId);
 
     @Transactional
     void deletePost(Long postId);

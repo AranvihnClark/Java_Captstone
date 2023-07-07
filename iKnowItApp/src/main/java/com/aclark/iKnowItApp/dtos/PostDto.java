@@ -35,5 +35,8 @@ public class PostDto {
         if (post.getPostHtmlName() != null) {
             this.postHtmlPath = post.getPostHtmlName();
         }
+        if (post.getIsAnswered() != null) {
+            this.isAnswered = post.getIsAnswered();
+        }
     }
 }
