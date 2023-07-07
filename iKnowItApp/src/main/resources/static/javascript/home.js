@@ -101,27 +101,42 @@ const createSectionCards = (arr) => {
     console.log(arr);
 
     arr.forEach(obj => {
-        let card = document.createElement("div");
-        card.classList.add("col");
-        card.classList.add("col-sm-10");
-        card.innerHTML = `
-            <div class="card d-flex card-style">
-                <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
+        if (obj.userId == userId) {
+            let card = document.createElement("div");
+            card.classList.add("col");
+            card.classList.add("col-sm-10");
+            card.innerHTML = `
+                <div class="card d-flex card-style">
+                    <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
+                        <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
+                    </div>
                 </div>
-            </div>
-        `// href="./${obj.sectionHtmlName}" 
-        let buttonCard = document.createElement("div");
-        buttonCard.classList.add("d-flex");
-        buttonCard.classList.add("stify-content-between");
-        buttonCard.classList.add("col-sm-2");
-        buttonCard.classList.add("padding-zero-override");
-        buttonCard.innerHTML = `
-            <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
-            <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
-        `
-        sectionContainer.append(card);
-        sectionContainer.append(buttonCard);
+            `// href="./${obj.sectionHtmlName}"
+            let buttonCard = document.createElement("div");
+            buttonCard.classList.add("d-flex");
+            buttonCard.classList.add("stify-content-between");
+            buttonCard.classList.add("col-sm-2");
+            buttonCard.classList.add("padding-zero-override");
+            buttonCard.innerHTML = `
+                <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
+                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+            `
+            sectionContainer.append(card);
+            sectionContainer.append(buttonCard);
+        } else if (obj.userId != userId) {
+            let card = document.createElement("div");
+            card.classList.add("col");
+            card.classList.add("col-sm-12");
+            card.innerHTML = `
+                <div class="card d-flex card-style">
+                    <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
+                        <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
+                    </div>
+                </div>
+            `
+            sectionContainer.append(card);
+        }
+
     })
 }
 
