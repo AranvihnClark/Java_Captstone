@@ -4,7 +4,7 @@
 // [1] - Cookie reader
 // Separates the cookie into an array.
 const cookieArr = document.cookie.split("&");
-//
+
 for (let i = 0; i < cookieArr.length; i+=2) {
     cookieArr[i].split("=");
 }
