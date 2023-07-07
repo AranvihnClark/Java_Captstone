@@ -17,6 +17,7 @@ public class PostDto {
     private String postHtmlPath;
 
     private UserDto userDto;
+    private SectionDto sectionDto;
 
 //    [EXTRA] - Not sure if needed yet.
 //    private String postPath;

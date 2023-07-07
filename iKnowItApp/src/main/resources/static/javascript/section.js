@@ -3,16 +3,25 @@
 
 // [1] - Cookie reader
 // Separates the cookie into an array.
-const cookieArr = document.cookie.split("=");
+const cookieArr = document.cookie.split("&");
+//
+for (let i = 0; i < cookieArr.length; i+=2) {
+    cookieArr[i].split("=");
+}
+
+console.log(cookieArr);
 
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
 const postQuestionContainer = document.getElementById('post-question-container');
+const postForm = document.getElementById('post-form')
 const postAnswerContainer = document.getElementById('post-answer-container');
 const whereAmILink = document.getElementById('where-am-i');
 const addPostBtn = document.getElementById('add-post-button')
+const newTitle = document.getElementById('post-title');
+const newBody = document.getElementById('post-body');
 
 // Header
 const headers = {
@@ -29,7 +38,7 @@ function logout() {
     let cookies = document.cookie.split(";");
 
     // Then we iterate through the cookie to clear the cookie (I guess?)
-    // Not familiar with cookies and how to manipulate them but I left the date as the instuctions.
+    // Not familiar with cookies and how to manipulate them but I left the date as the instruction indicated.
     // I assume the old date is used to 'expire' the cookie because it has long since been passed.
     for (let i in cookies) {
         document.cookie = /^[^=]+/.exec(cookies[i])[0]+"=; expires = Thu, 01 Jan 1970 00:00:00 GMT"
@@ -46,7 +55,8 @@ const submitPost = async (e) => {
     let bodyObj = {
 
         // This grabs the DOM's textarea body
-        postTitle: newBody.value
+        postTitle: newTitle.value,
+        postBody: postBody.value
     }
 
     // Just following the instructions. I suppose we could have the entire function just written below if desired.
@@ -54,6 +64,7 @@ const submitPost = async (e) => {
 
     // This resets the textarea's body to be blank.
     // Also 'lets' the user know that the post was successfully created.
+    newTitle.value = '';
     newBody.value = '';
 }
 
@@ -71,15 +82,15 @@ async function addPost(obj) {
     if (response.status === 200) {
 
         // Run another function to 'display' all our posts
-        return getPosts();
+        return getAllQuestionPosts();
     }
 
     // At the end, after getting our post to display on the page, this will let 'submitPost' function to complete itself.
 }
 
 // [4]-[1] - Retrieve all posts from user when page loads
-async function getAllQuestionPosts() {
-    await fetch(`${baseUrl}`, {
+async function getAllQuestionPosts(sectionId) {
+    await fetch(`${baseUrl}/section/${sectionId}`, {
             method: "GET",
             headers: headers
         })
@@ -255,10 +266,18 @@ async function displayPostInfo() {
     .catch(err => console.error(err));
 }
 
+// Needed to remove section from cookie
+const revertCookie = async () => {
+    let newCookie = document.cookie;
+    newCookie = newCookie.split("&");
+    document.cookie = cookieArr[0];
+}
+
 // Event listeners
 postForm.addEventListener("submit", submitPost);
-newBody.addEventListener("keypress", noEnter);
+newTitle.addEventListener("keypress", noEnter);
 addPostBtn.addEventListener("click", addPost());
+whereAmILink.addEventListener("click", revertCookie);
 
 // Instant runs
 // displayPostInfo();  --> something like this.

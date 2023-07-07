@@ -3,7 +3,6 @@ package com.aclark.iKnowItApp.services;
 import com.aclark.iKnowItApp.dtos.PostDto;
 import com.aclark.iKnowItApp.entities.Post;
 import com.aclark.iKnowItApp.entities.Section;
-import com.aclark.iKnowItApp.entities.User;
 import com.aclark.iKnowItApp.repositories.PostRepository;
 import com.aclark.iKnowItApp.repositories.SectionRepository;
 import com.aclark.iKnowItApp.repositories.UserRepository;

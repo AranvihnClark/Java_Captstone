@@ -2,6 +2,7 @@ package com.aclark.iKnowItApp.controllers;
 
 import com.aclark.iKnowItApp.dtos.PostDto;
 import com.aclark.iKnowItApp.services.PostService;
+import com.aclark.iKnowItApp.services.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,9 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private SectionService sectionService;
 
     // End-points
 

@@ -57,18 +57,21 @@
                     <h5 class="modal-title" id="post-edit-modal-title">Ask your question.</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex-column">
-                    <div class="d-inline">
-                        <p>Question Title:</p>
-                        <textarea id="add-post-title" class="form-control" maxlength="64" rows="2"></textarea>
-                        <p class="mt-3">Explain the situation:</p>
-                        <textarea id="add-post-body" class="form-control" rows="5"></textarea>
+
+                <form id="post-form">
+                    <div class="modal-body d-flex-column">
+                        <div class="d-inline">
+                            <p>Question Title:</p>
+                            <textarea id="post-title" class="form-control" maxlength="64" rows="2"></textarea>
+                            <p class="mt-3">Explain the situation:</p>
+                            <textarea id="post-body" class="form-control" rows="5"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="add-post-button" class="btn btn-primary" data-bs-dismiss="modal">Ask!</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="add-post-button" class="btn btn-primary" data-bs-dismiss="modal">Ask!</button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
