@@ -40,10 +40,10 @@ public class SectionController {
         sectionService.updateSection(sectionDto);
     }
 
-//    @GetMapping("/{sectionId}")
-//    public Optional<SectionDto> findSection(@PathVariable Long sectionId) {
-//        return sectionService.findSection(sectionId);
-//    }
+    @GetMapping("/{sectionId}")
+    public Optional<SectionDto> findSection(@PathVariable Long sectionId) {
+        return sectionService.findSection(sectionId);
+    }
     @PostMapping ("/{sectionId}")
     public List<String> getToSection(@PathVariable Long sectionId) {
         return sectionService.getToSection(sectionId);

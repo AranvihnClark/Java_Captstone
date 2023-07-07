@@ -20,8 +20,8 @@ public interface SectionService {
     @Transactional
     void updateSection(SectionDto sectionDto);
 
-//    @Transactional
-//    Optional<SectionDto> findSection(Long sectionId);
+    @Transactional
+    Optional<SectionDto> findSection(Long sectionId);
 
     @Transactional
     List<String> getToSection(Long sectionId);

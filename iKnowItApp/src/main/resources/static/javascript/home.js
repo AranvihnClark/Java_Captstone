@@ -2,11 +2,7 @@
 
 // Separates the cookie into an array.
 const cookieArr = document.cookie.split("=");
-
-for (let i = 0; i < cookieArr.length; i++) {
-    console.log(cookieArr[i]);
-}
-
+console.log(cookieArr);
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
 

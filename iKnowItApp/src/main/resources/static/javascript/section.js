@@ -3,25 +3,24 @@
 
 // [1] - Cookie reader
 // Separates the cookie into an array.
-const cookieArr = document.cookie.split("&");
+const cookieArr = document.cookie.split(/[&=]/g);
 
-for (let i = 0; i < cookieArr.length; i+=2) {
-    cookieArr[i].split("=");
-}
-
-console.log(cookieArr);
+console.log("CookieArr: " + cookieArr);
+console.log("Cookie: " + document.cookie);
 
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
+const sectionId = cookieArr[3];
+console.log("Section ID: " + sectionId);
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
 const postQuestionContainer = document.getElementById('post-question-container');
 const postForm = document.getElementById('post-form')
-const postAnswerContainer = document.getElementById('post-answer-container');
+const postAnsweredContainer = document.getElementById('post-answer-container');
 const whereAmILink = document.getElementById('where-am-i');
 const addPostBtn = document.getElementById('add-post-button')
-const newTitle = document.getElementById('post-title');
-const newBody = document.getElementById('post-body');
+const postTitle = document.getElementById('post-title');
+const postBody = document.getElementById('post-body');
 
 // Header
 const headers = {
@@ -55,8 +54,11 @@ const submitPost = async (e) => {
     let bodyObj = {
 
         // This grabs the DOM's textarea body
-        postTitle: newTitle.value,
-        postBody: postBody.value
+        postTitle: postTitle.value,
+        postBody: postBody.value,
+        isAnswered: "false",
+        user: userId,
+        section: sectionId
     }
 
     // Just following the instructions. I suppose we could have the entire function just written below if desired.
@@ -64,14 +66,14 @@ const submitPost = async (e) => {
 
     // This resets the textarea's body to be blank.
     // Also 'lets' the user know that the post was successfully created.
-    newTitle.value = '';
-    newBody.value = '';
+    postTitle.value = '';
+    postBody.value = '';
 }
 
 // Function that handles http request to add post.
 async function addPost(obj) {
     // Http request
-    const response = await fetch(`${baseUrl}/user/${userId}`, {
+    const response = await fetch(`${baseUrl}/sections/${sectionId}/users/${userId}`, {
             method: "POST",
             body: JSON.stringify(obj),
             headers: headers
@@ -82,49 +84,32 @@ async function addPost(obj) {
     if (response.status === 200) {
 
         // Run another function to 'display' all our posts
-        return getAllQuestionPosts();
+        return getAllSectionPosts();
     }
 
     // At the end, after getting our post to display on the page, this will let 'submitPost' function to complete itself.
 }
 
 // [4]-[1] - Retrieve all posts from user when page loads
-async function getAllQuestionPosts(sectionId) {
-    await fetch(`${baseUrl}/section/${sectionId}`, {
+async function getAllSectionPosts(sectionId) {
+    await fetch(`${baseUrl}/sections/${sectionId}`, {
             method: "GET",
             headers: headers
         })
         // If the request is good, we complete the 'promises'.
-        .then(response => response.json())
-        .then(data => {
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].isAnswered) {
-                    data.splice(i, 1);
-                    i--;
-                }
-            }
-            createPostQuestionCards(data)
+        .then(response => {
+            response.json();
         })
-
-        // Error handling.
-        .catch(err => console.error(err));
-}
-
-async function getAllAnsweredPosts() {
-    await fetch(`${baseUrl}`, {
-            method: "GET",
-            headers: headers
-        })
-        // If the request is good, we complete the 'promises'.
-        .then(response => response.json())
         .then(data => {
-            for (let i = 0; i < data.length; i++) {
-                if (!data[i].isAnswered) {
-                    data.splice(i, 1);
-                    i--;
-                }
-            }
-            createPostAnsweredCards(data)
+//            for (let i = 0; i < data.length; i++) {
+//                if (data[i].isAnswered) {
+//                    data.splice(i, 1);
+//                    i--;
+//                }
+//            }
+            console.log(data);
+            createPostQuestionCards(data);
+            createPostAnsweredCards(data);
         })
 
         // Error handling.
@@ -134,7 +119,8 @@ async function getAllAnsweredPosts() {
 // [4]-[2] - Create 'cards' for each post.
 const createPostQuestionCards = (arr) => {
     // We clear the update post container first so we can add the posts.
-    postContainer.innerHTML = '';
+    postQuestionContainer.innerHTML = '';
+    console.log("What is this? " + arr);
     arr.forEach(obj => {
         let card = document.createElement("div");
         card.classList.add("col");
@@ -155,14 +141,14 @@ const createPostQuestionCards = (arr) => {
             <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
             <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
         `
-        postContainer.append(card);
-        postContainer.append(buttonCard);
+        postQuestionContainer.append(card);
+        postQuestionContainer.append(buttonCard);
     })
 }
 
 const createPostAnsweredCards = (arr) => {
     // We clear the update post container first so we can add the posts.
-    postContainer.innerHTML = '';
+    postAnsweredContainer.innerHTML = '';
     arr.forEach(obj => {
         let card = document.createElement("div");
         card.classList.add("col");
@@ -183,8 +169,8 @@ const createPostAnsweredCards = (arr) => {
             <button onclick="getPostById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
             <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
         `
-        postContainer.append(card);
-        postContainer.append(buttonCard);
+        postAnsweredContainer.append(card);
+        postAnsweredContainer.append(buttonCard);
     })
 }
 
@@ -206,21 +192,6 @@ async function getPostById(postId) {
         .catch(err => console.err(err.message))
 }
 
-async function handlePostEdit() {
-    let bodyObj = {
-        id: postId,
-        postTitle: postBody.value
-    }
-
-    await fetch(baseUrl, {
-        method: "PUT",
-        body: JSON.stringify(bodyObj),
-        headers: headers
-        })
-        .catch(err => console.error(err));
-
-    return getPosts();
-}
 // [6] - Delete a post
 async function handleDelete(postId) {
     await fetch(`${baseUrl}/${postId}`, {
@@ -269,18 +240,17 @@ async function displayPostInfo() {
 // Needed to remove section from cookie
 const revertCookie = async () => {
     let newCookie = document.cookie;
-    newCookie = newCookie.split("&");
-    document.cookie = cookieArr[0];
+    newCookie = newCookie.split(/[&]/g);
+    document.cookie = newCookie[0];
 }
 
 // Event listeners
 postForm.addEventListener("submit", submitPost);
-newTitle.addEventListener("keypress", noEnter);
+postTitle.addEventListener("keypress", noEnter);
 addPostBtn.addEventListener("click", addPost());
 whereAmILink.addEventListener("click", revertCookie);
 
 // Instant runs
 // displayPostInfo();  --> something like this.
-getAllQuestionPosts();
-getAllAnsweredPosts();
+getAllSectionPosts(sectionId);
 youAreHere();
