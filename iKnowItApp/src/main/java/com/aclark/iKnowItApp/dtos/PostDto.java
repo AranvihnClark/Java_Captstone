@@ -14,7 +14,7 @@ public class PostDto {
     private String postTitle;
     private String postBody;
     private Boolean isAnswered;
-    private String postHtmlPath;
+    private String postHtmlName;
 
     private UserDto userDto;
     private SectionDto sectionDto;
@@ -33,7 +33,7 @@ public class PostDto {
             this.postBody = post.getPostBody();
         }
         if (post.getPostHtmlName() != null) {
-            this.postHtmlPath = post.getPostHtmlName();
+            this.postHtmlName = post.getPostHtmlName();
         }
         if (post.getIsAnswered() != null) {
             this.isAnswered = post.getIsAnswered();

@@ -49,8 +49,8 @@ public class Post {
         if (postDto.getPostBody() != null) {
             this.postBody = postDto.getPostBody();
         }
-        if (postDto.getPostHtmlPath() != null) {
-            this.postHtmlName = postDto.getPostHtmlPath();
+        if (postDto.getPostHtmlName() != null) {
+            this.postHtmlName = postDto.getPostHtmlName();
         }
         if (postDto.getIsAnswered() != null) {
             this.isAnswered = postDto.getIsAnswered();
