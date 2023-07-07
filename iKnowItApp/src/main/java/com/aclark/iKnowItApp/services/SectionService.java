@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.SectionDto;
+import com.aclark.iKnowItApp.entities.Section;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface SectionService {
     @Transactional
     void updateSection(SectionDto sectionDto);
 
+//    @Transactional
+//    Optional<SectionDto> findSection(Long sectionId);
+
     @Transactional
-    Optional<SectionDto> findSection(Long sectionId);
+    List<String> getToSection(Long sectionId);
 }

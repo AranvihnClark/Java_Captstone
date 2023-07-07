@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -181,24 +182,41 @@ public class SectionServiceImpl implements SectionService {
         });
     }
 
+//    @Override
+//    @Transactional
+//    public Optional<SectionDto> findSection(Long sectionId) {
+//        // First we need to create an optional to search for the note to avoid nulls.
+//        Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
+//
+//        // If the note is exists, we will return the note to the user.
+//        // Left the code below as is and didn't use IntelliJ's functional style option.
+//        if (sectionOptional.isPresent()) {
+//
+//            // I did have to look at the instructions' picture for this and had to reconstruct this method.
+//            // I was originally going to just have the return type be just 'Note'.
+//            // But looking at the instructions' example, I see that we use Optional<NoteDto> for two reasons.
+//            // Optional is used to avoid a null return (as below we return an empty optional).
+//            // NoteDto is used because we can't return a Note as it is not a data transfer object. <-- Need to remember this.
+//            return Optional.of(new SectionDto(sectionOptional.get()));
+//        } else {
+//            return Optional.empty();
+//        }
+//    }
+
     @Override
     @Transactional
-    public Optional<SectionDto> findSection(Long sectionId) {
-        // First we need to create an optional to search for the note to avoid nulls.
+    public List<String> getToSection(Long sectionId) {
+        List<String> response = new ArrayList<>();
+
         Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
 
-        // If the note is exists, we will return the note to the user.
-        // Left the code below as is and didn't use IntelliJ's functional style option.
         if (sectionOptional.isPresent()) {
-
-            // I did have to look at the instructions' picture for this and had to reconstruct this method.
-            // I was originally going to just have the return type be just 'Note'.
-            // But looking at the instructions' example, I see that we use Optional<NoteDto> for two reasons.
-            // Optional is used to avoid a null return (as below we return an empty optional).
-            // NoteDto is used because we can't return a Note as it is not a data transfer object. <-- Need to remember this.
-            return Optional.of(new SectionDto(sectionOptional.get()));
+            response.add("http://localhost:8080/" + sectionOptional.get().getSectionHtmlName());
+            response.add(String.valueOf(sectionOptional.get().getId()));
         } else {
-            return Optional.empty();
+            response.add("Section does not exist.");
         }
+
+        return response;
     }
 }

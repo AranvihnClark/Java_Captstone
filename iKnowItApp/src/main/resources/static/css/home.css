@@ -1,32 +1,37 @@
- .card-style {
-    width: 100%;
-    height: 3rem;
-    margin-right: auto;
-    margin-left: auto;
- }
+.card-style {
+  width: 100%;
+  height: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+}
 
- .card-size {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 2.8rem;
-    padding-right: 2.8rem;
- }
+.card-size {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 2.8rem;
+  padding-right: 2.8rem;
+}
 
- #section-body {
-   overflow:hidden;
-   resize: none;
- }
+#section-title {
+  overflow:hidden;
+  resize: none;
+}
 
- #where-am-i-div {
-   font-size: 20px;
- }
+#update-section-title {
+  overflow:hidden;
+  resize: none;
+}
 
- .padding-zero-overide {
-   padding: 0;
- }
+#where-am-i-div {
+  font-size: 20px;
+}
 
- .margin-buttonCard-override {
-   margin: auto;
-   margin-left: 4px;
-   margin-right: 4px;
- }
+.padding-zero-overide {
+  padding: 0;
+}
+
+.margin-buttonCard-override {
+  margin: auto;
+  margin-left: 4px;
+  margin-right: 4px;
+}

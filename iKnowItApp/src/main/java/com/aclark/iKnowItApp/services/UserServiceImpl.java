@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
                 // Adds the username's string value into our array list.
                 // This will be [1]of our JS code when we reference it later.
                 response.add(String.valueOf(userOptional.get().getId()));
+                System.out.println("\nHERE: " + userOptional.get().getId() + "\n");
             } else {
                 response.add("Username or password is incorrect.");
             }

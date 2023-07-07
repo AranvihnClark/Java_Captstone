@@ -3,17 +3,21 @@
 // Separates the cookie into an array.
 const cookieArr = document.cookie.split("=");
 
+for (let i = 0; i < cookieArr.length; i++) {
+    console.log(cookieArr[i]);
+}
+
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
 const sectionForm = document.getElementById('section-form');
 const sectionContainer = document.getElementById('section-container');
-const newBody = document.getElementById('section-body');
+const newBody = document.getElementById('section-title');
 const whereAmILink = document.getElementById('where-am-i');
 
 // Modal Elements
-let sectionBody = document.getElementById('update-section-body');
+let sectionTitle = document.getElementById('update-section-title');
 let updateSectionBtn = document.getElementById('update-section-button')
 
 // Header
@@ -73,7 +77,7 @@ async function addSection(obj) {
     if (response.status === 200) {
 
         // Run another function to 'display' all our sections
-        return getSections(userId);
+        return getSections();
     }
 
     // At the end, after getting our section to display on the page, this will let 'submitSection' function to complete itself.
@@ -97,6 +101,9 @@ async function getSections() {
 const createSectionCards = (arr) => {
     // We clear the update section container first so we can add the sections.
     sectionContainer.innerHTML = '';
+
+    console.log(arr);
+
     arr.forEach(obj => {
         let card = document.createElement("div");
         card.classList.add("col");
@@ -104,10 +111,10 @@ const createSectionCards = (arr) => {
         card.innerHTML = `
             <div class="card d-flex card-style">
                 <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                    <a class="card-text overflow-auto" href="./${obj.sectionHtmlName}">${obj.sectionTitle}</a>
+                    <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
                 </div>
             </div>
-        `
+        `// href="./${obj.sectionHtmlName}" 
         let buttonCard = document.createElement("div");
         buttonCard.classList.add("d-flex");
         buttonCard.classList.add("stify-content-between");
@@ -125,8 +132,8 @@ const createSectionCards = (arr) => {
 // [4]-[3] - Append them to the HTML container
 // 'Populates' our modal for us.
 const populateModal = (obj) => {
-    sectionBody.innerText = '';
-    sectionBody.innerText = obj.sectionTitle;
+    sectionTitle.innerText = '';
+    sectionTitle.innerText = obj.sectionTitle;
     updateSectionBtn.setAttribute('data-section-id', obj.id);
 }
 
@@ -144,7 +151,7 @@ async function getSectionById(sectionId) {
 async function handleSectionEdit(sectionId) {
     let bodyObj = {
         id: sectionId,
-        sectionTitle: sectionBody.value
+        sectionTitle: sectionTitle.value
     }
 
     await fetch(baseUrl, {
@@ -165,6 +172,30 @@ async function handleDelete(sectionId) {
         .catch(err => console.error(err));
 
         return getSections();
+}
+
+// Going to the a section
+async function getToSection(sectionId) {
+    
+    const response = await fetch( `${baseUrl}/${sectionId}`, {
+        // We identify the type of http request we want with 'method:'
+        method: "POST",
+        
+        // We use the header we set above.
+        headers: headers
+    })
+    .catch(err => console.err(err));
+    
+    const responseArr = await response.json();
+
+    console.log("This is a response: " + responseArr[0]);
+    console.log("This is a second response: " + responseArr[1]);
+    console.log("We made it: " + response);
+
+    if (response.status === 200) {
+        document.cookie += `&sectionId=${responseArr[1]}`
+        window.location.replace(responseArr[0]);
+    }
 }
 
 // Prevents line breaks in our textarea
