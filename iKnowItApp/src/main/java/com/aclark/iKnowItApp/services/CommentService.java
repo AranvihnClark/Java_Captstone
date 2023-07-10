@@ -11,7 +11,7 @@ public interface CommentService {
     List<CommentDto> getAllUserComments(Long userId);
 
     @Transactional
-    void addComment(CommentDto commentDto, Long userId);
+    void addComment(CommentDto commentDto, Long userId, Long postId);
 
     @Transactional
     void deleteComment(Long commentId);

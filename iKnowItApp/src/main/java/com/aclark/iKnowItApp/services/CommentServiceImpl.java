@@ -50,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void addComment(CommentDto commentDto, Long userId) {
+    public void addComment(CommentDto commentDto, Long userId, Long postId) {
 
         // We need an optional for users as we will be using their id as the identifier for users to call their comments.
         Optional<User> userOptional = userRepository.findById(userId);

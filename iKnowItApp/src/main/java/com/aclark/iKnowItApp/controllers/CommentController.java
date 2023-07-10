@@ -23,8 +23,8 @@ public class CommentController {
     }
 
     @PostMapping("user/{userId}")
-    public void addComment(@RequestBody CommentDto commentDto, @PathVariable Long userId) {
-        commentService.addComment(commentDto, userId);
+    public void addComment(@RequestBody CommentDto commentDto, @PathVariable Long userId, @PathVariable Long postId) {
+        commentService.addComment(commentDto, userId, postId);
     }
 
     @DeleteMapping("/{commentId}")
