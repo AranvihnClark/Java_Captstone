@@ -199,10 +199,6 @@ async function getToSection(sectionId) {
     
     const responseArr = await response.json();
 
-    console.log("This is a response: " + responseArr[0]);
-    console.log("This is a second response: " + responseArr[1]);
-    console.log("We made it: " + response);
-
     if (response.status === 200) {
         document.cookie += `&sectionId=${responseArr[1]}`
         window.location.replace(responseArr[0]);

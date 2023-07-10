@@ -126,7 +126,7 @@ const createPostQuestionCards = (arr) => {
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                        <a class="card-text overflow-auto link" onclick="getToPost(${obj.id})">${obj.postTitle}</a>
                     </div>
                 </div>
             `
@@ -147,7 +147,7 @@ const createPostQuestionCards = (arr) => {
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                        <a class="card-text overflow-auto link" onclick="getToPost(${obj.id})">${obj.postTitle}</a>
                     </div>
                 </div>
             `
@@ -167,7 +167,7 @@ const createPostAnsweredCards = (arr) => {
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                        <a class="card-text overflow-auto link" onclick="getToPost(${obj.id})">${obj.postTitle}</a>
                     </div>
                 </div>
             `
@@ -188,13 +188,33 @@ const createPostAnsweredCards = (arr) => {
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                        <a class="card-text overflow-auto link" onclick="getToPost(${obj.id})">${obj.postTitle}</a>
                     </div>
                 </div>
             `
             postAnsweredContainer.append(card);
         }
     })
+}
+
+// Going to a Post
+async function getToPost(postId) {
+
+    const response = await fetch( `${baseUrl}/${postId}`, {
+        // We identify the type of http request we want with 'method:'
+        method: "POST",
+
+        // We use the header we set above.
+        headers: headers
+    })
+    .catch(err => console.err(err));
+
+    const responseArr = await response.json();
+
+    if (response.status === 200) {
+        document.cookie += `&postId=${responseArr[1]}`
+        window.location.replace(responseArr[0]);
+    }
 }
 
 // [4]-[3] - Append them to the HTML container
