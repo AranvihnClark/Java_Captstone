@@ -21,6 +21,7 @@ const postTitle = document.getElementById('post-title');
 const postBody = document.getElementById('post-body');
 const sectionCreatorName = document.getElementById('section-creator-name');
 const pageTitle = document.getElementById('page-title');
+const titleText = document.getElementById('title-text');
 
 // Header
 const headers = {
@@ -241,9 +242,6 @@ const youAreHere = () => {
 //    displayPostInfo(sectionId);
 }
 
-// DOM elements
-const titleText = document.getElementById('title-text');
-
 // HTML changes
 async function displayPostInfo(sectionId) {
     await fetch(`${baseUrl}/post-section/${sectionId}`, {
@@ -253,6 +251,7 @@ async function displayPostInfo(sectionId) {
     .then(res => res.json())
     .then(data => {
         console.log(data);
+        titleText.innerHTML = `I Know About ${data.sectionTitle}`;
         sectionCreatorName.innerHTML = `${data.userName}`;
         pageTitle.innerHTML = `${data.sectionTitle}`;
     })
