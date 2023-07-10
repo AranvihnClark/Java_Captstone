@@ -18,11 +18,13 @@ public class SectionDto {
 
     // Doing this for JS since it can't use Java objects - or at least I can't figure it out lol
     private Long userId;
+    private String userName;
 
     public SectionDto(Section section) {
         if (section.getId() != null) {
             this.id = section.getId();
             this.userId = section.getUser().getId();
+            this.userName = section.getUser().getUsername();
         }
         if (section.getSectionTitle() != null) {
             this.sectionTitle = section.getSectionTitle();
