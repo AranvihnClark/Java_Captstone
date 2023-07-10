@@ -20,6 +20,7 @@ const addPostBtn = document.getElementById('add-post-button')
 const postTitle = document.getElementById('post-title');
 const postBody = document.getElementById('post-body');
 const sectionCreatorName = document.getElementById('section-creator-name');
+const pageTitle = document.getElementById('page-title');
 
 // Header
 const headers = {
@@ -28,7 +29,6 @@ const headers = {
 
 // URL
 const baseUrl = 'http://localhost:8080/api/v1/posts';
-
 // [2] - Clear cookie for logging out
 function logout() {
 
@@ -121,7 +121,7 @@ const createPostQuestionCards = (arr) => {
         if (obj.userId == userId) {
             let card = document.createElement("div");
             card.classList.add("col");
-            card.classList.add("col-sm-11");
+            card.classList.add("col-xxl-11");
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
@@ -132,10 +132,10 @@ const createPostQuestionCards = (arr) => {
             let buttonCard = document.createElement("div");
             buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
-            buttonCard.classList.add("col-sm-1");
+            buttonCard.classList.add("col-auto");
             buttonCard.classList.add("padding-zero-override");
             buttonCard.innerHTML = `
-                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+                <button class="btn btn-danger margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
             `
             postQuestionContainer.append(card);
             postQuestionContainer.append(buttonCard);
@@ -245,17 +245,22 @@ const youAreHere = () => {
 const titleText = document.getElementById('title-text');
 
 // HTML changes
-//async function displayPostInfo(sectionId) {
-//    const response = await fetch(`${baseUrl}`, {
-//        method: "GET",
-//        headers: headers
-//    })
-////    .then(res => res.json())
-//    // Error handling.
-//    .catch(err => console.error(err));
-//    console.log(response);
-////    sectionCreatorName.innerHtml = `Section created by: ${response}`
-//}
+async function displayPostInfo(sectionId) {
+    await fetch(`${baseUrl}/post-section/${sectionId}`, {
+        method: "GET",
+        headers: headers
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        sectionCreatorName.innerHTML = `${data.userName}`;
+        pageTitle.innerHTML = `${data.sectionTitle}`;
+    })
+
+    // Error handling.
+    .catch(err => console.error(err));
+
+}
 
 // Needed to remove section from cookie
 const revertCookie = async () => {
@@ -271,6 +276,6 @@ addPostBtn.addEventListener("click", addPost());
 whereAmILink.addEventListener("click", revertCookie);
 
 // Instant runs
-// displayPostInfo();  --> something like this.
+displayPostInfo(sectionId);
 getAllSectionPosts(sectionId);
 youAreHere();

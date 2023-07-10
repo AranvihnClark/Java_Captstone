@@ -12,3 +12,7 @@
 #add-post-title {
    resize: none;
 }
+
+#page-title {
+    text-decoration: underline;
+}

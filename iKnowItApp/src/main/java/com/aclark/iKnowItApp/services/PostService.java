@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.PostDto;
+import com.aclark.iKnowItApp.dtos.SectionDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,6 +29,6 @@ public interface PostService {
     @Transactional
     void updateIsAnswered(PostDto postDto);
 
-//    @Transactional
-//    String getSection(Long sectionId);
+    @Transactional
+    SectionDto getSection(Long sectionId);
 }

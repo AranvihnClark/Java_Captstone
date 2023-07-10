@@ -259,18 +259,11 @@ public class PostServiceImpl implements PostService {
         });
     }
 
-//    @Override
-//    @Transactional
-//    public String getSection(Long sectionId) {
-//        String response = "";
-//
-//        // We're going to use an optional for our sections by using their id as the identifier
-//        Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
-//
-//        if (sectionOptional.isPresent()) {
-//            response = sectionOptional.get().getUser().getUsername();
-//        }
-//
-//        return response;
-//    }
+    @Override
+    @Transactional
+    public SectionDto getSection(Long sectionId) {
+
+        // We're going to use the sectionId to locate our section and make a new dto out of it to send to the front end.
+        return new SectionDto(sectionRepository.getReferenceById(sectionId));
+    }
 }

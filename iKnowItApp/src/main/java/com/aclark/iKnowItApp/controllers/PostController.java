@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.controllers;
 
 import com.aclark.iKnowItApp.dtos.PostDto;
+import com.aclark.iKnowItApp.dtos.SectionDto;
 import com.aclark.iKnowItApp.services.PostService;
 import com.aclark.iKnowItApp.services.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class PostController {
         postService.updateIsAnswered(postDto);
     }
 
-//    @GetMapping("")
-//    String getSection(@PathVariable Long sectionId) {
-//        return postService.getSection(sectionId);
-//    }
+    @GetMapping("/post-section/{sectionId}")
+    SectionDto getSection(@PathVariable Long sectionId) {
+        return postService.getSection(sectionId);
+    }
 }
