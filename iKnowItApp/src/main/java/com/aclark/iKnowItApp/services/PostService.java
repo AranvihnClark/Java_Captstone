@@ -31,4 +31,7 @@ public interface PostService {
 
     @Transactional
     SectionDto getSection(Long sectionId);
+
+    @Transactional
+    List<String> getToPost(Long postId);
 }

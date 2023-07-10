@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class PostServiceImpl implements PostService {
             for (int i = 0; i < posts.size(); i++) {
                 if (!posts.get(i).getSection().getId().equals(sectionId)) {
                     posts.remove(i);
+                    i--;
                 }
             }
 
@@ -265,5 +267,22 @@ public class PostServiceImpl implements PostService {
 
         // We're going to use the sectionId to locate our section and make a new dto out of it to send to the front end.
         return new SectionDto(sectionRepository.getReferenceById(sectionId));
+    }
+
+    @Override
+    @Transactional
+    public List<String> getToPost(Long postId) {
+        List<String> response = new ArrayList<>();
+
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if (postOptional.isPresent()) {
+            response.add("http://localhost:8080/" + postOptional.get().getPostHtmlName());
+            response.add(String.valueOf(postOptional.get().getId()));
+        } else {
+            response.add("Post does not exist.");
+        }
+
+        return response;
     }
 }

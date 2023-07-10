@@ -57,4 +57,9 @@ public class PostController {
     SectionDto getSection(@PathVariable Long sectionId) {
         return postService.getSection(sectionId);
     }
+
+    @PostMapping ("/{postId}")
+    public List<String> getToPost(@PathVariable Long postId) {
+        return postService.getToPost(postId);
+    }
 }
