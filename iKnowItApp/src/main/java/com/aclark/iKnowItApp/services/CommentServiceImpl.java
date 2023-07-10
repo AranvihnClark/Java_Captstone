@@ -4,6 +4,7 @@ import com.aclark.iKnowItApp.dtos.CommentDto;
 import com.aclark.iKnowItApp.entities.Comment;
 import com.aclark.iKnowItApp.entities.User;
 import com.aclark.iKnowItApp.repositories.CommentRepository;
+import com.aclark.iKnowItApp.repositories.PostRepository;
 import com.aclark.iKnowItApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Override
     @Transactional
