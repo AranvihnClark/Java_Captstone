@@ -89,10 +89,10 @@ public class PostServiceImpl implements PostService {
                 post.setUser(userOptional.get());
                 try {
                     // We need our template html file (our source file)
-                    File source = new File("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/template_post.html");
+                    File source = new File("C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts/template_post.html");
 
                     // Somewhat convoluted method to create a file path I liked.
-                    String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+                    String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts/";
 
                     // We need to get the file name and split up any spaces to match our naming conventions when creating files.
                     String[] buildPathSplit = postDto.getPostTitle().toLowerCase().split(" ");
@@ -148,7 +148,7 @@ public class PostServiceImpl implements PostService {
             postRepository.delete(postOptional.get());
 
             // For readability, putting file path in a variable.
-            String htmlPath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+            String htmlPath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts/";
 
             // Then we locate where we save our file and delete it.
             File deletedObj = new File(htmlPath + postOptional.get().getPostHtmlName());
@@ -177,7 +177,7 @@ public class PostServiceImpl implements PostService {
 
             // Need to update html name in our database and in the file.
             StringBuilder htmlName = new StringBuilder();
-            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/";
+            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts/";
 
             // We also need to save the old file name to change it as well.
             String oldName = post.getPostHtmlName();
