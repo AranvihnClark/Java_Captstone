@@ -17,9 +17,6 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comments_id")
     private Long id;
-//    [UNSURE] - not sure if needed to create user_id column.
-//    @Column(name = "user_id")
-//    private Long userId;
 
     @Column(columnDefinition = "text")
     private String commentBody;
@@ -28,6 +25,11 @@ public class Comment {
     @ManyToOne
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
+
+    // Creates 'post_id' column in Posts table.
+    @ManyToOne
+    @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
+    private Post post;
 
     public Comment(CommentDto commentDto) {
         if (commentDto.getCommentBody() != null) {
