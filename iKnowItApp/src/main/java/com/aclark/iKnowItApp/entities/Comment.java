@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comments_id")
+    @Column(name = "comment_id")
     private Long id;
 
     @Column(columnDefinition = "text")
@@ -23,11 +23,13 @@ public class Comment {
 
     // Creates 'user_id' column in Posts table.
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
 
     // Creates 'post_id' column in Posts table.
     @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private Post post;
 

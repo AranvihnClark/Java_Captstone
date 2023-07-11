@@ -38,10 +38,12 @@ public class Post {
 
     // Creates 'user_id' column in Posts table.
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "section_id", nullable = false)
     @JsonBackReference
     private Section section;
 

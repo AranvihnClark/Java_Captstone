@@ -30,6 +30,7 @@ public class Section {
 
     // creates 'user_id' column in Sections table.
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
 
