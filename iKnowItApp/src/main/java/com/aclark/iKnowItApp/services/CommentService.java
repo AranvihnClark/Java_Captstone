@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.CommentDto;
+import com.aclark.iKnowItApp.dtos.PostDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface CommentService {
     @Transactional
-    List<CommentDto> getAllUserComments(Long userId);
+    List<CommentDto> getAllPostComments(Long postId);
 
     @Transactional
     void addComment(CommentDto commentDto, Long userId, Long postId);
@@ -21,4 +22,7 @@ public interface CommentService {
 
     @Transactional
     Optional<CommentDto> findComment(Long commentId);
+
+    @Transactional
+    PostDto getPost(Long postId);
 }

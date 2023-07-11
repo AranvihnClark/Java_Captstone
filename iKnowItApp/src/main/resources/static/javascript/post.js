@@ -14,10 +14,13 @@ console.log("Cookie Section ID: " + sectionId);
 console.log("Cookie Post ID: " + postId);
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
-const commentForm = document.getElementById('comment-form')
+const commentForm = document.getElementById('add-comment-form')
 const commentContainer = document.getElementById('comment-container');
+const postTitleContainer = document.getElementById('post-title-container');
+const postBodyContainer = document.getElementById('post-body-container');
 const whereAmILink = document.getElementById('where-am-i');
-const addCommentBtn = document.getElementById('add-comment-button');
+const addCommentBody = document.getElementById('add-comment-body');
+//const addCommentBtn = document.getElementById('add-comment-button');
 const updatePostTitleBtn = document.getElementById('update-post-title-button');
 const updatePostBodyBtn = document.getElementById('update-post-body-button');
 const updateCommentBody = document.getElementById('update-comment-body');
@@ -33,7 +36,7 @@ const headers = {
 };
 
 // URL
-const baseUrl = 'http://localhost:8080/api/v1/posts';
+const baseUrl = 'http://localhost:8080/api/v1/comments';
 // [2] - Clear cookie for logging out
 function logout() {
 
@@ -58,23 +61,24 @@ const submitPost = async (e) => {
     let bodyObj = {
 
         // This grabs the DOM's textarea body
-        commentBody: updateCommentBody.value,
+        commentBody: addCommentBody.value,
         user: userId,
         post: postId
     }
 
     // Just following the instructions. I suppose we could have the entire function just written below if desired.
+    console.log(bodyObj);
     await addComment(bodyObj);
 
     // This resets the textarea's body to be blank.
     // Also 'lets' the user know that the post was successfully created.
-    updateCommentBody.value = '';
+    addCommentBody.value = '';
 }
 
 // Function that handles http request to add post.
 async function addComment(obj) {
     // Http request
-    const response = await fetch(`${baseUrl}/users/${userId}`, {
+    const response = await fetch(`${baseUrl}/post/${postId}/user/${userId}`, {
             method: "POST",
             body: JSON.stringify(obj),
             headers: headers
@@ -85,65 +89,69 @@ async function addComment(obj) {
     if (response.status === 200) {
 
         // Run another function to 'display' all our posts
-        return getAllSectionPosts(sectionId);
+        return getAllPostComments(postId);
     }
 
     // At the end, after getting our post to display on the page, this will let 'submitPost' function to complete itself.
 }
 
 // [4]-[1] - Retrieve all posts from user when page loads
-async function getAllSectionPosts(sectionId) {
-    await fetch(`${baseUrl}/sections/${sectionId}`, {
+async function getAllPostComments(postId) {
+    await fetch(`${baseUrl}/posts/${postId}`, {
             method: "GET",
             headers: headers
         })
         // If the request is good, we complete the 'promises'.
         .then(response => response.json())
         .then(data => {
-            createPostAnsweredCards(data);
+            createCommentCards(data);
         })
 
         // Error handling.
         .catch(err => console.error(err));
 }
 
-const createPostAnsweredCards = (arr) => {
+const createCommentCards = (arr) => {
     // We clear the update post container first so we can add the posts.
-    postAnsweredContainer.innerHTML = '';
+    commentContainer.innerHTML = '';
+    console.log(arr);
     arr.forEach(obj => {
-        if (obj.userId == userId) {
+        if (obj.userDto.id == userId) {
             let card = document.createElement("div");
-            card.classList.add("col");
-            card.classList.add("col-sm-11");
+            card.classList.add("row");
             card.innerHTML = `
-                <div class="card d-flex card-style">
-                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                <div class="col-11 col-auto card d-flex mb-5">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <p class="card-text">${obj.commentBody}</p>
+                        <p>${obj.userDto.username}</p>
                     </div>
                 </div>
             `
             let buttonCard = document.createElement("div");
             buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
-            buttonCard.classList.add("col-sm-1");
+            buttonCard.classList.add("col-1");
             buttonCard.classList.add("padding-zero-override");
+            buttonCard.classList.add("align-self-end");
             buttonCard.innerHTML = `
                 <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
             `
-            postAnsweredContainer.append(card);
-            postAnsweredContainer.append(buttonCard);
-        } else if (obj.userId !== userId) {
+            card.append(buttonCard)
+            commentContainer.append(card);
+//            commentContainer.append(buttonCard);
+        } else if (obj.userDto.id !== userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-12");
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <a class="card-text overflow-auto link" href="${obj.postHtmlName}">${obj.postTitle}</a>
+                        <p>${obj.userDto.username}</p>
+                        <p class="card-text">${obj.commentBody}</p>
                     </div>
                 </div>
             `
-            postAnsweredContainer.append(card);
+            commentContainer.append(card);
         }
     })
 }
@@ -151,11 +159,12 @@ const createPostAnsweredCards = (arr) => {
 // [4]-[3] - Append them to the HTML container
 // 'Populates' our modal for us.
 const populateModal = () => {
-    postBody.innerText = '';
-    postTitle.innerText = '';
+    updatePostBody.innerText = '';
+    updatePostTitle.innerText = '';
+    updateCommentBody.innerText = '';
 }
 
-// [5] - Update a post (GET request)
+// [5] - Update a comment (GET request)
 async function getPostById(postId) {
     await fetch(`${baseUrl}/${postId}`, {
             method: "GET",
@@ -174,7 +183,7 @@ async function handleDelete(postId) {
         })
         .catch(err => console.error(err));
 
-        return getAllSectionPosts(sectionId);
+        return getAllPostComments(sectionId);
 }
 
 // Prevents line breaks in our textarea
@@ -194,17 +203,18 @@ const youAreHere = () => {
 }
 
 // HTML changes
-async function displayPostInfo(sectionId) {
-    await fetch(`${baseUrl}/post-section/${sectionId}`, {
+async function displayPostInfo(postId) {
+    await fetch(`${baseUrl}/comment-post/${postId}`, {
         method: "GET",
         headers: headers
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
-        titleText.innerHTML = `I Know About ${data.sectionTitle}`;
-        sectionCreatorName.innerHTML = `${data.userName}`;
-        pageTitle.innerHTML = `${data.sectionTitle}`;
+        titleText.innerHTML = `I Know About ${data.sectionDto.sectionTitle}`;
+        postCreatorName.innerHTML = `${data.userDto.username}`;
+        pageTitle.innerHTML = `${data.sectionDto.sectionTitle}`;
+        postTitleContainer.innerHTML = `${data.postTitle}`;
+        postBodyContainer.innerHTML = `${data.postBody}`;
     })
 
     // Error handling.
@@ -220,12 +230,12 @@ const revertCookie = async () => {
 }
 
 // Event listeners
-postForm.addEventListener("submit", submitPost);
-postTitle.addEventListener("keypress", noEnter);
-addCommentBtn.addEventListener("click", addComment());
+commentForm.addEventListener("submit", submitPost);
+updatePostTitle.addEventListener("keypress", noEnter);
+//addCommentBtn.addEventListener("submit", addComment());
 whereAmILink.addEventListener("click", revertCookie);
 
 // Instant runs
-displayPostInfo(sectionId);
-getAllSectionPosts(sectionId);
+displayPostInfo(postId);
+getAllPostComments(postId);
 youAreHere();

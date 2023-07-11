@@ -28,3 +28,14 @@
     border-radius: 12px;
     padding: 1rem;
 }
+
+hr {
+    border: 0;
+    border-top: 1rem solid #000000;
+    border-radius: 12px;
+    margin-top: 4rem;
+}
+
+#add-comment-body {
+  resize: none;
+}

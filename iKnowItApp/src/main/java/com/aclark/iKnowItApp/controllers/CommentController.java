@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.controllers;
 
 import com.aclark.iKnowItApp.dtos.CommentDto;
+import com.aclark.iKnowItApp.dtos.PostDto;
 import com.aclark.iKnowItApp.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,12 @@ public class CommentController {
 
     // End-points
 
-    @GetMapping("/user/{userId}")
-    public List<CommentDto> getAllUserComments(@PathVariable Long userId) {
-        return commentService.getAllUserComments(userId);
+    @GetMapping("/posts/{postId}")
+    public List<CommentDto> getAllPostComments(@PathVariable Long postId) {
+        return commentService.getAllPostComments(postId);
     }
 
-    @PostMapping("user/{userId}")
+    @PostMapping("/post/{postId}/user/{userId}")
     public void addComment(@RequestBody CommentDto commentDto, @PathVariable Long userId, @PathVariable Long postId) {
         commentService.addComment(commentDto, userId, postId);
     }
@@ -40,5 +41,10 @@ public class CommentController {
     @GetMapping("/{commentId}")
     public Optional<CommentDto> findComment(@PathVariable Long commentId) {
         return commentService.findComment(commentId);
+    }
+
+    @GetMapping("/comment-post/{postId}")
+    public PostDto getPost(@PathVariable Long postId) {
+        return commentService.getPost(postId);
     }
 }

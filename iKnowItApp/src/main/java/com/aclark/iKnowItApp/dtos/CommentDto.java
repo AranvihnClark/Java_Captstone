@@ -16,15 +16,18 @@ public class CommentDto {
     private UserDto userDto;
     private PostDto postDto;
 
-    private Long postId; // May not be needed, we'll see.
-
     public CommentDto(Comment comment) {
         if (comment.getId() != null) {
             this.id = comment.getId();
-            this.postId = comment.getPost().getId();
         }
         if (comment.getCommentBody() != null) {
             this.commentBody = comment.getCommentBody();
+        }
+        if (comment.getUser() != null) {
+            this.userDto = new UserDto(comment.getUser());
+        }
+        if (comment.getPost() != null) {
+            this.postDto = new PostDto((comment.getPost()));
         }
     }
 }
