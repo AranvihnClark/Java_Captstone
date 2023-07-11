@@ -117,40 +117,81 @@ const createCommentCards = (arr) => {
     console.log(arr);
     arr.forEach(obj => {
         if (obj.userDto.id == userId) {
+            // The overarching 'div'
             let card = document.createElement("div");
             card.classList.add("row");
-            card.innerHTML = `
-                <div class="col-11 col-auto card d-flex mb-5">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <p class="card-text">${obj.commentBody}</p>
-                        <p>${obj.userDto.username}</p>
-                    </div>
+            card.classList.add("mb-3");
+
+            // The user's card div
+            let userCard = document.createElement("div");
+            userCard.classList.add("col");
+            userCard.classList.add("col-sm-2");
+            userCard.classList.add("user-card");
+            userCard.classList.add("d-flex");
+            userCard.classList.add("flex-column");
+            userCard.innerHTML = `
+                <div class="d-flex flex-column user-name-position">
+                    <p>${obj.userDto.username}</p>
                 </div>
             `
+
+            // The comment's body div
+            let bodyCard = document.createElement("div");
+            bodyCard.classList.add("col");
+            bodyCard.classList.add("card");
+            bodyCard.classList.add("d-flex");
+            bodyCard.innerHTML = `
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text">${obj.commentBody}</p>
+                </div>
+            `
+
+            // The delete/update comment div.
             let buttonCard = document.createElement("div");
             buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
-            buttonCard.classList.add("col-1");
+            buttonCard.classList.add("col-auto");
             buttonCard.classList.add("padding-zero-override");
-            buttonCard.classList.add("align-self-end");
             buttonCard.innerHTML = `
-                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+                <button class="btn btn-primary margin-buttonCard-override" onclick="handleDelete(${obj.id})">Edit</button>
+                <button class="btn btn-danger margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
             `
+            card.append(userCard)
+            card.append(bodyCard)
             card.append(buttonCard)
             commentContainer.append(card);
-//            commentContainer.append(buttonCard);
         } else if (obj.userDto.id !== userId) {
+            // The overarching 'div'
             let card = document.createElement("div");
-            card.classList.add("col");
-            card.classList.add("col-sm-12");
-            card.innerHTML = `
-                <div class="card d-flex card-style">
-                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
-                        <p>${obj.userDto.username}</p>
-                        <p class="card-text">${obj.commentBody}</p>
-                    </div>
+            card.classList.add("row");
+            card.classList.add("mb-3");
+
+            // The user's card div
+            let userCard = document.createElement("div");
+            userCard.classList.add("col");
+            userCard.classList.add("col-sm-2");
+            userCard.classList.add("user-card");
+            userCard.classList.add("d-flex");
+            userCard.classList.add("flex-column");
+            userCard.innerHTML = `
+                <div class="d-flex flex-column user-name-position">
+                    <p>${obj.userDto.username}</p>
                 </div>
             `
+
+            // The comment's body div
+            let bodyCard = document.createElement("div");
+            bodyCard.classList.add("col");
+            bodyCard.classList.add("card");
+            bodyCard.classList.add("d-flex");
+            bodyCard.innerHTML = `
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text">${obj.commentBody}</p>
+                </div>
+            `
+
+            card.append(userCard)
+            card.append(bodyCard)
             commentContainer.append(card);
         }
     })

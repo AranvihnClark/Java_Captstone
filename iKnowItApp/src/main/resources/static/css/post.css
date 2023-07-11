@@ -39,3 +39,13 @@ hr {
 #add-comment-body {
   resize: none;
 }
+
+.user-card {
+    height: 10rem;
+    width: 10rem;
+    justify-content: end;
+}
+
+.user-name-position {
+    align-items: center;
+}
