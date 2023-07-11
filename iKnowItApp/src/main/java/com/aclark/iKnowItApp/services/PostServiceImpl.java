@@ -81,8 +81,6 @@ public class PostServiceImpl implements PostService {
                 // This is how we set the section_id in our Post table database.
                 post.setSection(sectionOptional.get());
 
-                // Set to false as default.
-                post.setIsAnswered(false);
             if (userOptional.isPresent()) {
 
                 // This is how we set the user_id in our Post table database.

@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,12 +20,9 @@ public class PostDto {
     private String postHtmlName;
 
     private UserDto userDto;
-
-    // Using this since JS can't read Java Objects.
-//    private String userName;
-    private Long userId;
-
     private SectionDto sectionDto;
+
+    private Set<CommentDto> commentDtoSet = new HashSet<>();
 
 //    [EXTRA] - Not sure if needed yet.
 //    private String postPath;
@@ -44,8 +44,11 @@ public class PostDto {
             this.isAnswered = post.getIsAnswered();
         }
         if (post.getUser() != null) {
-            this.userId = post.getUser().getId();
-//            this.userName = post.getUser().getUsername();
+            this.userDto = new UserDto(post.getUser());
+            this.userDto.setPassword(null);
+        }
+        if (post.getSection() != null) {
+            this.sectionDto = new SectionDto((post.getSection()));
         }
     }
 }

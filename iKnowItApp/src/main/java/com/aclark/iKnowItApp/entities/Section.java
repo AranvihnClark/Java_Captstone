@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class Section {
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
 
-    @OneToMany(mappedBy = "section", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "section", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     // Prevents infinite recursion
     @JsonBackReference
     private Set<Post> postSet = new HashSet<>();

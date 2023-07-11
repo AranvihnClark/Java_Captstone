@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Posts")
 @Data
@@ -38,9 +41,14 @@ public class Post {
     @JsonBackReference // Prevents infinite recursion when delivering resource as Json through RESTful API endpoint.
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private Section section;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    // Prevents infinite recursion
+    @JsonBackReference
+    private Set<Comment> commentSet = new HashSet<>();
 
     public Post(PostDto postDto) {
         if (postDto.getPostTitle() != null) {
@@ -52,9 +60,7 @@ public class Post {
         if (postDto.getPostHtmlName() != null) {
             this.postHtmlName = postDto.getPostHtmlName();
         }
-        if (postDto.getIsAnswered() != null) {
-            this.isAnswered = postDto.getIsAnswered();
-        }
+        this.isAnswered = false;
     }
 
 //    [EXTRA] - maybe. Not sure if this is needed yet or not.

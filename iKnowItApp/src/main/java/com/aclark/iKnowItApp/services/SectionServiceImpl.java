@@ -1,8 +1,10 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.SectionDto;
+import com.aclark.iKnowItApp.entities.Post;
 import com.aclark.iKnowItApp.entities.Section;
 import com.aclark.iKnowItApp.entities.User;
+import com.aclark.iKnowItApp.repositories.PostRepository;
 import com.aclark.iKnowItApp.repositories.SectionRepository;
 import com.aclark.iKnowItApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Override
     @Transactional
@@ -114,25 +119,41 @@ public class SectionServiceImpl implements SectionService {
         // This searches for the user's sections based on the section's id.
         Optional<Section> sectionOptional = sectionRepository.findById(sectionId);
 
+        // Needed to make sure no posts exists in the section.
+        List<Post> postList = postRepository.findAll();
+
+        for (int i = 0; i < postList.size(); i++) {
+            if (!postList.get(i).getSection().getId().equals(sectionId)) {
+                postList.remove(i);
+                i--;
+            }
+        }
+
         // Leaving this as below for practice.
         // If the section exists, it will be deleted.
         if (sectionOptional.isPresent()) {
-            sectionRepository.delete(sectionOptional.get());
 
-            // For readability, putting file path in a variable.
-            String htmlPath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/sections/";
+            // Checks to make sure there are no posts in the section - mainly so a person doesn't accidentally delete a section by mistake.
+            if (postList.isEmpty()) {
+                sectionRepository.delete(sectionOptional.get());
 
-            // Then we locate where we save our file and delete it.
-            File deletedObj = new File(htmlPath + sectionOptional.get().getSectionHtmlName());
+                // For readability, putting file path in a variable.
+                String htmlPath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/sections/";
 
-            // The below is just in case if for some reason deleting failed, so we can see what file it was for.
-            System.out.println();
-            if (deletedObj.delete()) {
-                System.out.println("Deleted section file: " + deletedObj.getName());
+                // Then we locate where we save our file and delete it.
+                File deletedObj = new File(htmlPath + sectionOptional.get().getSectionHtmlName());
+
+                // The below is just in case if for some reason deleting failed, so we can see what file it was for.
+                System.out.println();
+                if (deletedObj.delete()) {
+                    System.out.println("Deleted section file: " + deletedObj.getName());
+                } else {
+                    System.out.println("Failed to delete a section file: " + deletedObj.getName());
+                }
+                System.out.println();
             } else {
-                System.out.println("Failed to delete a section file: " + deletedObj.getName());
+                System.out.println("\nUnable to delete section '" + sectionOptional.get().getSectionTitle() + "' due to posts existing in said section.\n");
             }
-            System.out.println();
         }
     }
 

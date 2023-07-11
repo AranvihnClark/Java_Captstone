@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,22 +18,21 @@ public class SectionDto {
     private String sectionHtmlName;
 
     private UserDto userDto;
-
-    // Doing this for JS since it can't use Java objects - or at least I can't figure it out lol
-    private Long userId;
-    private String userName;
+    private Set<PostDto> postDtoSet = new HashSet<>();
 
     public SectionDto(Section section) {
         if (section.getId() != null) {
             this.id = section.getId();
-            this.userId = section.getUser().getId();
-            this.userName = section.getUser().getUsername();
         }
         if (section.getSectionTitle() != null) {
             this.sectionTitle = section.getSectionTitle();
         }
         if (section.getSectionHtmlName() != null) {
             this.sectionHtmlName = section.getSectionHtmlName();
+        }
+        if (section.getUser() != null) {
+            this.userDto = new UserDto(section.getUser());
+            this.userDto.setPassword(null);
         }
     }
 }
