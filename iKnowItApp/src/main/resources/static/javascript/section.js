@@ -119,7 +119,7 @@ const createPostQuestionCards = (arr) => {
     postQuestionContainer.innerHTML = '';
 
     arr.forEach(obj => {
-        if (obj.userId == userId) {
+        if (obj.userDto.id == userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-xxl-11");
@@ -140,7 +140,7 @@ const createPostQuestionCards = (arr) => {
             `
             postQuestionContainer.append(card);
             postQuestionContainer.append(buttonCard);
-        } else if (obj.userId !== userId) {
+        } else if (obj.userDto.id !== userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-12");
@@ -160,7 +160,7 @@ const createPostAnsweredCards = (arr) => {
     // We clear the update post container first so we can add the posts.
     postAnsweredContainer.innerHTML = '';
     arr.forEach(obj => {
-        if (obj.userId == userId) {
+        if (obj.userDto.id == userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-11");
@@ -181,7 +181,7 @@ const createPostAnsweredCards = (arr) => {
             `
             postAnsweredContainer.append(card);
             postAnsweredContainer.append(buttonCard);
-        } else if (obj.userId !== userId) {
+        } else if (obj.userDto.id !== userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-12");
@@ -272,7 +272,7 @@ async function displayPostInfo(sectionId) {
     .then(data => {
         console.log(data);
         titleText.innerHTML = `I Know About ${data.sectionTitle}`;
-        sectionCreatorName.innerHTML = `${data.userName}`;
+        sectionCreatorName.innerHTML = `${data.userDto.username}`;
         pageTitle.innerHTML = `${data.sectionTitle}`;
     })
 

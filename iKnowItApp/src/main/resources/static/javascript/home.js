@@ -97,11 +97,10 @@ async function getSections() {
 const createSectionCards = (arr) => {
     // We clear the update section container first so we can add the sections.
     sectionContainer.innerHTML = '';
-
     console.log(arr);
 
     arr.forEach(obj => {
-        if (obj.userId == userId) {
+        if (obj.userDto.id == userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-10");
@@ -123,14 +122,14 @@ const createSectionCards = (arr) => {
             `
             sectionContainer.append(card);
             sectionContainer.append(buttonCard);
-        } else if (obj.userId != userId) {
+        } else if (obj.userDto.id != userId) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-12");
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                        <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
+                        <a class="card-text overflow-auto link" onclick="getToSection(${obj.userDto.id})">${obj.sectionTitle}</a>
                     </div>
                 </div>
             `
