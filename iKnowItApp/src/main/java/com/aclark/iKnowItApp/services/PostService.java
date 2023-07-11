@@ -18,12 +18,6 @@ public interface PostService {
     void deletePost(Long postId);
 
     @Transactional
-    void updatePostTitle(PostDto postDto);
-
-    @Transactional
-    void updatePostBody(PostDto postDto);
-
-    @Transactional
     Optional<PostDto> findPost(Long postId);
 
     @Transactional

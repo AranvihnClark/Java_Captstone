@@ -37,12 +37,6 @@ public class PostController {
         postService.deletePost(postId);
     }
 
-    @PutMapping
-    public void updatePost(@RequestBody PostDto postDto) {
-        postService.updatePostTitle(postDto);
-        postService.updatePostBody(postDto);
-    }
-
     @GetMapping("/{postId}")
     public Optional<PostDto> findPost(@PathVariable Long postId) {
         return postService.findPost(postId);

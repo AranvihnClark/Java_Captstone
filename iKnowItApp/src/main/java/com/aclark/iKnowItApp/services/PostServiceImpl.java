@@ -164,66 +164,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void updatePostTitle(PostDto postDto) {
-        // Searches for the post we want to update.
-        Optional<Post> postOptional = postRepository.findById(postDto.getId());
-
-        // If the post exists, we will update the post as below.
-        // Changed the below to Intellij's format for practice.
-        postOptional.ifPresent(post -> {
-            post.setPostTitle(postDto.getPostTitle());
-
-            // Need to update html name in our database and in the file.
-            StringBuilder htmlName = new StringBuilder();
-            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts/";
-
-            // We also need to save the old file name to change it as well.
-            String oldName = post.getPostHtmlName();
-
-            htmlName.append("post_");
-
-            for (String s : postDto.getPostTitle().toLowerCase().split(" ")) {
-                htmlName.append(s.replaceAll("[^a-zA-Z0-9]", ""));
-                htmlName.append("_");
-            }
-
-            htmlName.deleteCharAt(htmlName.length() - 1);
-            htmlName.append(".html");
-
-            post.setPostHtmlName(htmlName.toString());
-
-            File updateFile = new File(basePath + oldName);
-
-            File renameFile = new File(basePath + htmlName);
-
-            boolean isUpdated = updateFile.renameTo(renameFile);
-
-            if (isUpdated) {
-                System.out.println(oldName + " was changed to " + htmlName);
-            } else {
-                System.out.println("Renaming failed.");
-            }
-
-            postRepository.saveAndFlush(post);
-        });
-    }
-
-    @Override
-    @Transactional
-    public void updatePostBody(PostDto postDto) {
-        // Searches for the post we want to update.
-        Optional<Post> postOptional = postRepository.findById(postDto.getId());
-
-        // If the post exists, we will update the post as below.
-        // Changed the below to Intellij's format for practice.
-        postOptional.ifPresent(post -> {
-            post.setPostBody(postDto.getPostBody());
-            postRepository.saveAndFlush(post);
-        });
-    }
-
-    @Override
-    @Transactional
     public Optional<PostDto> findPost(Long postId) {
         // First we need to create an optional to search for the post to avoid nulls.
         Optional<Post> postOptional = postRepository.findById(postId);
