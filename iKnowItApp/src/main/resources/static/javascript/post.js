@@ -13,22 +13,26 @@ console.log("Cookie User ID: " + userId);
 console.log("Cookie Section ID: " + sectionId);
 console.log("Cookie Post ID: " + postId);
 
-// DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
-const commentForm = document.getElementById('add-comment-form')
-const commentContainer = document.getElementById('comment-container');
+// DOM Elements
 const postTitleContainer = document.getElementById('post-title-container');
 const postBodyContainer = document.getElementById('post-body-container');
 const whereAmILink = document.getElementById('where-am-i');
-const addCommentBody = document.getElementById('add-comment-body');
-//const addCommentBtn = document.getElementById('add-comment-button');
-const updatePostTitleBtn = document.getElementById('update-post-title-button');
-const updatePostBodyBtn = document.getElementById('update-post-body-button');
-const updateCommentBody = document.getElementById('update-comment-body');
-const updatePostTitle = document.getElementById('update-post-title');
-const updatePostBody = document.getElementById('update-post-body');
 const postCreatorName = document.getElementById('post-creator-name');
 const pageTitle = document.getElementById('page-title');
 const titleText = document.getElementById('title-text');
+
+// Comment DOM Elements
+const commentForm = document.getElementById('add-comment-form')
+const commentContainer = document.getElementById('comment-container');
+const addCommentBody = document.getElementById('add-comment-body');
+const updateCommentBtn = document.getElementById('update-comment-button');
+const updateCommentBody = document.getElementById('update-comment-body');
+
+// Post DOM Elements
+const postDiv = document.getElementById('post-div');
+const updatePostTitle = document.getElementById('update-post-title');
+const updatePostBody = document.getElementById('update-post-body');
+const updatePostBtn = document.getElementById('update-post-button');
 
 // Header
 const headers = {
@@ -67,7 +71,6 @@ const submitPost = async (e) => {
     }
 
     // Just following the instructions. I suppose we could have the entire function just written below if desired.
-    console.log(bodyObj);
     await addComment(bodyObj);
 
     // This resets the textarea's body to be blank.
@@ -109,12 +112,13 @@ async function getAllPostComments(postId) {
 
         // Error handling.
         .catch(err => console.error(err));
+
 }
 
 const createCommentCards = (arr) => {
     // We clear the update post container first so we can add the posts.
     commentContainer.innerHTML = '';
-    console.log(arr);
+
     arr.forEach(obj => {
         if (obj.userDto.id == userId) {
             // The overarching 'div'
@@ -153,8 +157,8 @@ const createCommentCards = (arr) => {
             buttonCard.classList.add("col-auto");
             buttonCard.classList.add("padding-zero-override");
             buttonCard.innerHTML = `
-                <button class="btn btn-primary margin-buttonCard-override" onclick="handleDelete(${obj.id})">Edit</button>
-                <button class="btn btn-danger margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+                <button class="btn btn-primary margin-buttonCard-override" onclick="getCommentById(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#comment-edit-modal">Edit</button>
+                <button class="btn btn-danger margin-buttonCard-override" onclick="handleCommentDelete(${obj.id})">Delete</button>
             `
             card.append(userCard)
             card.append(bodyCard)
@@ -199,34 +203,113 @@ const createCommentCards = (arr) => {
 
 // [4]-[3] - Append them to the HTML container
 // 'Populates' our modal for us.
-const populateModal = () => {
-    updatePostBody.innerText = '';
-    updatePostTitle.innerText = '';
+const populateCommentModal = (obj) => {
+//    updatePostBody.innerText = '';
+//    updatePostTitle.innerText = '';
+
     updateCommentBody.innerText = '';
+    updateCommentBody.innerText = obj.commentBody;
+    updateCommentBtn.setAttribute('data-comment-id', obj.id);
 }
 
 // [5] - Update a comment (GET request)
-async function getPostById(postId) {
-    await fetch(`${baseUrl}/${postId}`, {
+//async function getPostById(postId) {
+//    await fetch(`${baseUrl}/${postId}`, {
+//            method: "GET",
+//            headers: headers
+//        })
+//        .then(res => res.json())
+//        .then(data => populateCommentModal(data))
+//        .catch(err => console.err(err.message))
+//}
+
+async function getCommentById(commentId) {
+    await fetch(`${baseUrl}/${commentId}`, {
             method: "GET",
             headers: headers
         })
         .then(res => res.json())
-        .then(data => populateModal(data))
+        .then(data => populateCommentModal(data))
         .catch(err => console.err(err.message))
 }
 
-// [6] - Delete a post
-async function handleDelete(postId) {
-    await fetch(`${baseUrl}/${postId}`, {
+async function handleCommentEdit(commentId) {
+console.log("Here I am!");
+    let bodyObj = {
+        id: commentId,
+        commentBody: updateCommentBody.value
+    }
+
+    await fetch(baseUrl, {
+        method: "PUT",
+        body: JSON.stringify(bodyObj),
+        headers: headers
+        })
+        .catch(err => console.error(err));
+
+    return getAllPostComments(postId);
+}
+
+// Delete a comment
+async function handleCommentDelete(commentId) {
+    await fetch(`${baseUrl}/${commentId}`, {
         method: "DELETE",
         headers: headers
         })
         .catch(err => console.error(err));
 
-        return getAllPostComments(sectionId);
+        return getAllPostComments(postId);
 }
 
+const confirmCommentUpdate = (e) => {
+    let id = e.target.getAttribute('data-comment-id');
+    handleCommentEdit(id);
+}
+
+//===================
+// 'Populates' our modal for us for the post's body.
+const populatePostModal = (obj) => {
+    updatePostBody.innerText = '';
+    updatePostTitle.innerText = '';
+    updatePostBody.innerText = obj.postBody;
+    updatePostTitle.innerText = obj.postTitle;
+
+    updatePostBtn.setAttribute('data-post-id', obj.id);
+}
+
+async function getPostById(postId) {
+    await fetch(`${baseUrl}/comment-post/${postId}`, {
+            method: "GET",
+            headers: headers
+        })
+        .then(res => res.json())
+        .then(data => populatePostModal(data))
+        .catch(err => console.err(err.message))
+}
+
+async function handlePostEdit(postId) {
+    let bodyObj = {
+        id: postId,
+        postTitle: updatePostTitle.value,
+        postBody: updatePostBody.value
+    }
+
+    await fetch(`${baseUrl}/post`, {
+        method: "PUT",
+        body: JSON.stringify(bodyObj),
+        headers: headers
+        })
+        .catch(err => console.error(err));
+
+    return displayPostInfo(postId);
+}
+
+const confirmPostUpdate = (e) => {
+    let id = e.target.getAttribute('data-post-id');
+    handlePostEdit(id);
+}
+
+//====================
 // Prevents line breaks in our textarea
 const noEnter = (e) => {
     if (e.keyCode === 13 && e.shiftKey) {
@@ -255,12 +338,34 @@ async function displayPostInfo(postId) {
         postCreatorName.innerHTML = `${data.userDto.username}`;
         pageTitle.innerHTML = `${data.sectionDto.sectionTitle}`;
         postTitleContainer.innerHTML = `${data.postTitle}`;
-        postBodyContainer.innerHTML = `${data.postBody}`;
+
+        // In case if no body was entered
+        if (data.postBody === "") {
+            postBodyContainer.innerHTML = `${data.userDto.username} was too lazy to talk about their situation.`;
+        } else {
+            postBodyContainer.innerHTML = `${data.postBody}`;
+        }
     })
 
     // Error handling.
     .catch(err => console.error(err));
+}
 
+async function displayExtraItems() {
+    await fetch(`${baseUrl}/comment-post/${postId}`, {
+            method: "GET",
+            headers: headers
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.userDto.id == userId) {
+                postDiv.innerHTML += `
+                    <button id="update-title-modal-button" class="col-auto btn btn-primary align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Update?</button>`;
+            }
+        })
+
+        // Error handling.
+        .catch(err => console.error(err));
 }
 
 // Needed to remove section from cookie
@@ -272,11 +377,15 @@ const revertCookie = async () => {
 
 // Event listeners
 commentForm.addEventListener("submit", submitPost);
-updatePostTitle.addEventListener("keypress", noEnter);
-//addCommentBtn.addEventListener("submit", addComment());
+//updatePostTitle.addEventListener("keypress", noEnter);
+
+updateCommentBtn.addEventListener("click", confirmCommentUpdate);
+updatePostBtn.addEventListener("click", confirmPostUpdate);
+
 whereAmILink.addEventListener("click", revertCookie);
 
 // Instant runs
 displayPostInfo(postId);
 getAllPostComments(postId);
 youAreHere();
+displayExtraItems();

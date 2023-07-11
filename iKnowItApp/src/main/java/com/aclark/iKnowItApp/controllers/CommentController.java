@@ -47,4 +47,9 @@ public class CommentController {
     public PostDto getPost(@PathVariable Long postId) {
         return commentService.getPost(postId);
     }
+
+    @PutMapping("/post")
+    public void updatePost(@RequestBody PostDto postDto) {
+        commentService.updatePost(postDto);
+    }
 }

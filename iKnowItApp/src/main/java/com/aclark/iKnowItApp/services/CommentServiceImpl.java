@@ -10,9 +10,11 @@ import com.aclark.iKnowItApp.repositories.CommentRepository;
 import com.aclark.iKnowItApp.repositories.PostRepository;
 import com.aclark.iKnowItApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
         if (postOptional.isPresent()) {
 
             // A list of comments is created based on all comments of the userOptional (user) from the database.
-            List<Comment> comments = commentRepository.findAll();
+            List<Comment> comments = commentRepository.findAll(Sort.by("id"));
 
             for (int i = 0; i < comments.size(); i++) {
                 if (!comments.get(i).getPost().getId().equals(postId)) {
@@ -142,5 +144,53 @@ public class CommentServiceImpl implements CommentService {
     public PostDto getPost(Long postId) {
         // We're going to use the sectionId to locate our section and make a new dto out of it to send to the front end.
         return new PostDto(postRepository.getReferenceById(postId));
+    }
+    @Override
+    @Transactional
+    public void updatePost(PostDto postDto) {
+
+        // Searches for the post we want to update.
+        Optional<Post> postOptional = postRepository.findById(postDto.getId());
+
+        // If the post exists, we will update the post as below.
+        // Changed the below to Intellij's format for practice.
+        postOptional.ifPresent(post -> {
+
+            post.setPostBody(postDto.getPostBody());
+            post.setPostTitle(postDto.getPostTitle());
+
+            // Need to update html name in our database and in the file.
+            StringBuilder htmlName = new StringBuilder();
+            String basePath = "C:/Users/Kuma/Documents/Perficient/DevmountainBP/Specializations/Java_Capstone/iKnowItApp/src/main/resources/static/posts/";
+
+            // We also need to save the old file name to change it as well.
+            String oldName = post.getPostHtmlName();
+
+            htmlName.append("post_");
+
+            for (String s : postDto.getPostTitle().toLowerCase().split(" ")) {
+                htmlName.append(s.replaceAll("[^a-zA-Z0-9]", ""));
+                htmlName.append("_");
+            }
+
+            htmlName.deleteCharAt(htmlName.length() - 1);
+            htmlName.append(".html");
+
+            post.setPostHtmlName(htmlName.toString());
+
+            File updateFile = new File(basePath + oldName);
+
+            File renameFile = new File(basePath + htmlName);
+
+            boolean isUpdated = updateFile.renameTo(renameFile);
+
+            if (isUpdated) {
+                System.out.println(oldName + " was changed to " + htmlName);
+            } else {
+                System.out.println("Renaming failed.");
+            }
+
+            postRepository.saveAndFlush(post);
+        });
     }
 }

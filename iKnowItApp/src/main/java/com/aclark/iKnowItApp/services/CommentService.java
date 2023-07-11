@@ -25,4 +25,7 @@ public interface CommentService {
 
     @Transactional
     PostDto getPost(Long postId);
+
+    @Transactional
+    void updatePost(PostDto postDto);
 }
