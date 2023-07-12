@@ -19,12 +19,10 @@ public class UserDto implements Serializable {
     private Long id;
     private String username;
     private String password;
-
-//    [EXTRA]
-//    private Boolean isAdmin;
-//    private String emailAddress;
-//    private String nickname;
-//    private String imageUrl;
+    private String emailAddress;
+    private Boolean isAdmin;
+    private String nickname;
+    private String imageUrl;
 
 //    private Set<SectionDto> sectionDtoSet = new HashSet<>();
 //    private Set<PostDto> postDtoSet = new HashSet<>();
@@ -40,6 +38,18 @@ public class UserDto implements Serializable {
         }
         if (user.getPassword() != null) {
             this.password = user.getPassword();
+        }
+        if (user.getEmailAddress() != null) {
+            this.emailAddress = user.getEmailAddress();
+        }
+        if (user.getIsAdmin() != null) {
+            this.isAdmin = user.getIsAdmin();
+        }
+        if (user.getNickname() != null) {
+            this.nickname = user.getNickname();
+        }
+        if (user.getImageUrl() != null) {
+            this.imageUrl = user.getImageUrl();
         }
     }
 }

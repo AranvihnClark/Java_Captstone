@@ -272,7 +272,7 @@ async function displayPostInfo(sectionId) {
     .then(data => {
         console.log(data);
         titleText.innerHTML = `I Know About ${data.sectionTitle}`;
-        sectionCreatorName.innerHTML = `${data.userDto.username}`;
+        sectionCreatorName.innerHTML = `${data.userDto.nickname}`;
         pageTitle.innerHTML = `${data.sectionTitle}`;
     })
 

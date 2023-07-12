@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.SectionDto;
+import com.aclark.iKnowItApp.dtos.UserDto;
 import com.aclark.iKnowItApp.entities.Post;
 import com.aclark.iKnowItApp.entities.Section;
 import com.aclark.iKnowItApp.entities.User;
@@ -239,5 +240,23 @@ public class SectionServiceImpl implements SectionService {
         }
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public Optional<UserDto> getUserInfo(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+
+        if (userOptional.isPresent()) {
+            Optional<UserDto> optionalUserDto = Optional.of(new UserDto(userOptional.get()));
+
+            optionalUserDto.get().setPassword(null);
+
+            return optionalUserDto;
+        } else {
+            return Optional.empty();
+        }
+
     }
 }

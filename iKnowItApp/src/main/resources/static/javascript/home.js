@@ -2,12 +2,12 @@
 
 // Separates the cookie into an array.
 const cookieArr = document.cookie.split("=");
-console.log(cookieArr);
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
 const sectionForm = document.getElementById('section-form');
+const sectionFormContainer = document.getElementById('section-form-container');
 const sectionContainer = document.getElementById('section-container');
 const newBody = document.getElementById('section-title');
 const whereAmILink = document.getElementById('where-am-i');
@@ -97,10 +97,9 @@ async function getSections() {
 const createSectionCards = (arr) => {
     // We clear the update section container first so we can add the sections.
     sectionContainer.innerHTML = '';
-    console.log(arr);
 
     arr.forEach(obj => {
-        if (obj.userDto.id == userId) {
+        if (obj.userDto.isAdmin == true) {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-10");
@@ -122,7 +121,7 @@ const createSectionCards = (arr) => {
             `
             sectionContainer.append(card);
             sectionContainer.append(buttonCard);
-        } else if (obj.userDto.id != userId) {
+        } else {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-12");
@@ -214,6 +213,22 @@ const noEnter = (e) => {
     console.log(e);
 }
 
+async function displayHtmlPage(userId) {
+    await fetch(`${baseUrl}/user/${userId}`, {
+            method: "GET",
+            headers: headers
+        })
+        .then(res => res.json())
+        .then(data => {
+        console.log(data);
+            if (data.isAdmin) {
+                sectionFormContainer.classList.remove("visually-hidden")
+            }
+        })
+        .catch(err => console.err(err.message))
+
+}
+
 
 const youAreHere = () => {
     // Just basic shit until I have time to figure it out.
@@ -232,3 +247,4 @@ updateSectionBtn.addEventListener("click", (e) => {
 // Instant runs
 getSections();
 youAreHere();
+displayHtmlPage(userId);

@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.services;
 
 import com.aclark.iKnowItApp.dtos.SectionDto;
+import com.aclark.iKnowItApp.dtos.UserDto;
 import com.aclark.iKnowItApp.entities.Section;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,4 +26,7 @@ public interface SectionService {
 
     @Transactional
     List<String> getToSection(Long sectionId);
+
+    @Transactional
+    Optional<UserDto> getUserInfo(Long userId);
 }

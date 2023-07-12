@@ -26,43 +26,45 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-//    [EXTRA]
-//    @Column
-//    private Boolean isAdmin;
-//
-//    @Column
-//    private String emailAddress;
-//
-//    @Column
-//    private String nickname;
-//
-//    @Column
-//    private String imageUrl;
+    @Column(unique = true, nullable = false)
+    private String emailAddress;
 
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    // Prevents infinite recursion
-//    @JsonManagedReference
-//    private Set<Section> sectionSet = new HashSet<>();
-/*
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    // Prevents infinite recursion
-    @JsonManagedReference
-    private Set<Comment> commentSet = new HashSet<>();
-*/
-    // This creates a new User using the UserDto (or a user's input).
+    @Column(nullable = false)
+    private Boolean isAdmin;
+
+    @Column(unique = true)
+    private String nickname;
+
+    @Column
+    private String imageUrl;
+
     public User(UserDto userDto){
-        if (userDto.getUsername() != null){
+        if (userDto.getUsername() != null) {
             this.username = userDto.getUsername();
         }
-        if (userDto.getPassword() != null){
+        if (userDto.getPassword() != null) {
             this.password = userDto.getPassword();
         }
+        if (userDto.getEmailAddress() != null) {
+            this.emailAddress = userDto.getEmailAddress();
+            if (userDto.getEmailAddress().equals("aranvihn.clark@gmail.com")) {
+                this.isAdmin = true;
+            } else {
+                this.isAdmin = false;
+            }
+        }
+        if (!userDto.getNickname().equals("")) {
+            this.nickname = userDto.getNickname();
+        } else {
+            this.nickname = userDto.getUsername();
+        }
+        this.imageUrl = "../profileImages/template_profile_image.png";
     }
 
 }

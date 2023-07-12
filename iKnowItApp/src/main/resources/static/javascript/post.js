@@ -135,7 +135,8 @@ const createCommentCards = (arr) => {
             userCard.classList.add("flex-column");
             userCard.innerHTML = `
                 <div class="d-flex flex-column user-name-position">
-                    <p>${obj.userDto.username}</p>
+                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
+                    <p class="mb-2">${obj.userDto.username}</p>
                 </div>
             `
 
@@ -335,7 +336,7 @@ async function displayPostInfo(postId) {
     .then(res => res.json())
     .then(data => {
         titleText.innerHTML = `I Know About ${data.sectionDto.sectionTitle}`;
-        postCreatorName.innerHTML = `${data.userDto.username}`;
+        postCreatorName.innerHTML = `${data.userDto.nickname}`;
         pageTitle.innerHTML = `${data.sectionDto.sectionTitle}`;
         postTitleContainer.innerHTML = `${data.postTitle}`;
 

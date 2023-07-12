@@ -1,6 +1,7 @@
 package com.aclark.iKnowItApp.controllers;
 
 import com.aclark.iKnowItApp.dtos.SectionDto;
+import com.aclark.iKnowItApp.dtos.UserDto;
 import com.aclark.iKnowItApp.services.PostService;
 import com.aclark.iKnowItApp.services.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,11 @@ public class SectionController {
     @PostMapping ("/{sectionId}")
     public List<String> getToSection(@PathVariable Long sectionId) {
         return sectionService.getToSection(sectionId);
+    }
+
+    @GetMapping("user/{userId}")
+    public Optional<UserDto> getUserInfo(@PathVariable Long userId) {
+        return sectionService.getUserInfo(userId);
     }
 
 }

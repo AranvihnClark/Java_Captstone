@@ -2,6 +2,9 @@
 const signupForm = document.getElementById('signup-form');
 const signupUsername = document.getElementById('signup-username');
 const signupPassword = document.getElementById('signup-password');
+const signupNickname = document.getElementById('signup-nickname');
+const signupEmailAddress = document.getElementById('signup-email-address');
+const errorLog = document.getElementById('error-log');
 
 // Header
 const headers = {
@@ -17,41 +20,56 @@ const submitForm = async (e) => {
     // We override a form's default actions with the line below.
     e.preventDefault();
 
-    // Like how we did with Axios, we need a 'body' object to send with a POST request to update our database with.
-    let bodyObj = {
+    // We will encompass the rest of this in an if-statement to check for password length.
+    if (signupPassword.value.length < 8) {
+        errorLog.innerHTML = "Password must be greater than 8 characters in length.";
+    } else {
 
-        // 'username' is the name of the column in our database
-        username: signupUsername.value,
+        // Like how we did with Axios, we need a 'body' object to send with a POST request to update our database with.
+        let bodyObj = {
 
-        // 'password' is the name of the column in our database
-        password: signupPassword.value
-    }
+            // 'username' is the name of the column in our database
+            username: signupUsername.value,
 
-    // Not familiar with this but I assume this is JavaScript's default http request syntax.
-    // fetch/catch is the equivalent to Axios' then/catch.
-    const response = await fetch( `${baseUrl}/signup`, {
+            // 'password' is the name of the column in our database
+            password: signupPassword.value,
 
-        // We identify the type of http request we want with 'method:'
-        method: "POST",
+            // The rest below is as above but for their respective table columns
+            nickname: signupNickname.value,
+            emailAddress: signupEmailAddress.value
+        }
 
-        // We turn our bodyObj variable into a JSON file using JSON.stringify
-        body: JSON.stringify(bodyObj),
+        // Not familiar with this but I assume this is JavaScript's default http request syntax.
+        // fetch/catch is the equivalent to Axios' then/catch.
+        const response = await fetch( `${baseUrl}/signup`, {
 
-        // We use the header we set above.
-        headers: headers
-        })
+            // We identify the type of http request we want with 'method:'
+            method: "POST",
 
-        // Used to report errors if there are any/ensures the app doesn't crash if an error does occur by giving it something to do, I assume.
-        .catch(err => console.error(err.message));
+            // We turn our bodyObj variable into a JSON file using JSON.stringify
+            body: JSON.stringify(bodyObj),
 
-    // JS will wait until we get a response from the DB after sending it.
-    const responseArr = await response.json();
+            // We use the header we set above.
+            headers: headers
+            })
 
-    // If the response was ok (code 200), we will run the below code.
-    if (response.status === 200) {
+            // Used to report errors if there are any/ensures the app doesn't crash if an error does occur by giving it something to do, I assume.
+            .catch(err => console.error(err.message));
 
-        // This replaces our current html page to a new html page that was set in our interface implementation.
-        window.location.replace(responseArr[0]);
+        // JS will wait until we get a response from the DB after sending it.
+        const responseArr = await response.json();
+
+        // If the response was ok (code 200), we will run the below code.
+        if (response.status === 200) {
+
+            // In case if there is a duplicate somewhere.
+            if (responseArr.length > 1) {
+                errorLog.innerHTML = responseArr[0];
+            } else {
+                // This replaces our current html page to a new html page that was set in our interface implementation.
+                window.location.replace(responseArr[0]);
+            }
+        }
     }
 }
 

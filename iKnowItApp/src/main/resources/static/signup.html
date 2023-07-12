@@ -9,32 +9,54 @@
 <body>
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-3">
-            <h1>SIGN UP</h1>
+        <div class="col mt-3">
+            <h1 class="headers">I KNOW IT!</h1>
         </div>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-3">
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="signup-username">Username</label>
-                    <input type="text" class="form-control" id="signup-username" placeholder="Username">
-                </div>
-
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" class="form-control" id="signup-password" placeholder="Password">
-                </div>
-
-                <div class="form-group mt-3">
-                    <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
-                    <a href="./login.html" class="btn btn-secondary">Login</a>
-                </div>
-            </form>
+        <div class="col mt-3">
+            <h2 class="headers">SIGN UP</h2>
         </div>
 
     </div>
+
+    <div class="row mt-5">
+        <p id="error-log" class="text-danger text-center fs-4"></p>
+    </div>
+
+    <div class="mt-2 d-flex justify-content-center text-end">
+        <form id="signup-form">
+            <div class="form-group d-flex">
+                <label class="align-self-center col- col-4 me-2" for="signup-username">Username</label>
+                <input type="text" class="form-control col" id="signup-username" placeholder="Username">
+            </div>
+
+            <div class="form-group d-flex">
+                <label class="align-self-center col- col-4 me-2" for="signup-nickname">Nickname</label>
+                <input type="text" class="form-control col" id="signup-nickname" placeholder="Nickname">
+            </div>
+
+            <div class="form-group d-flex">
+                <label class="align-self-center col col-4 me-2" for="signup-password">Password</label>
+                <input type="password" class="form-control col" id="signup-password" placeholder="Password">
+            </div>
+
+            <div class="form-group d-flex">
+                <label class="align-self-center col col-4 me-2" for="signup-email-address">Email Address</label>
+                <input type="text" class="form-control col-auto" id="signup-email-address" placeholder="Email Address">
+            </div>
+
+            <div class="form-group mt-3 d-flex justify-content-center align-items-center">
+                <div class="d-block text-center">
+                    <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+                    <h6 class="d-block my-4">Already have an account?</h6>
+                    <a href="./login.html" class="d-block btn btn-secondary w-50 m-auto">Login</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 <script src="./javascript/signup.js" type="application/javascript"></script>

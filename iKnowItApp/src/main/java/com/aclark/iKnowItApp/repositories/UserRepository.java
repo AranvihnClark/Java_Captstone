@@ -9,6 +9,12 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // Supposedly this will let JPA run an SQL query based on 'username'.
+    // This will let JPA run an SQL query based on the 'username' database table.
     Optional<User> findByUsername(String username);
+
+    // This will let JPA run an SQL query based on the 'nickname' database table.
+    Optional<User> findByNickname(String nickname);
+
+    // This will let JPA run an SQL query based on the 'emailAddress' database table.
+    Optional<User> findByEmailAddress(String emailAddress);
 }
