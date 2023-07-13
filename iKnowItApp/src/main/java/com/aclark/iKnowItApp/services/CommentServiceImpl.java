@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -44,13 +45,18 @@ public class CommentServiceImpl implements CommentService {
 
             // A list of comments is created based on all comments of the userOptional (user) from the database.
             List<Comment> comments = commentRepository.findAll(Sort.by("id"));
-
+            Comment knewItComment = new Comment();
             for (int i = 0; i < comments.size(); i++) {
                 if (!comments.get(i).getPost().getId().equals(postId)) {
                     comments.remove(i);
                     i--;
+                } else if (comments.get(i).getKnewIt()) {
+                    knewItComment = (comments.get(i));
+                    comments.remove(i);
+                    i--;
                 }
             }
+            comments.add(0,knewItComment);
 
             // The .stream() lets us search for all notes and the .map() converts each comment found into a new CommentDto.
             // This is needed as one, we want to return a list of CommentDto and, two, we need it to be so because we don't want to use the actual comments themselves but a copy of them.
@@ -191,6 +197,25 @@ public class CommentServiceImpl implements CommentService {
             }
 
             postRepository.saveAndFlush(post);
+        });
+    }
+
+    // Update a comment's 'knewIt' boolean.
+    @Override
+    @Transactional
+    public void updateCommentKnowIt(CommentDto commentDto) {
+        // Searches for the comment we want to update.
+        Optional<Comment> commentOptional = commentRepository.findById(commentDto.getId());
+
+        // If the comment exists, we will update the comment as below.
+        // Changed the below to Intellij's format for practice.
+        commentOptional.ifPresent(comment -> {
+            comment.setKnewIt(commentDto.getKnewIt());
+            commentRepository.saveAndFlush(comment);
+
+            // Then we need to also consider the post's 'isAnswered' variable as well.
+            comment.getPost().setIsAnswered(true);
+            postRepository.saveAndFlush(comment.getPost());
         });
     }
 }

@@ -21,6 +21,15 @@ public class Comment {
     @Column(columnDefinition = "text")
     private String commentBody;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean knewIt;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean almostKnewIt;
+
+    @Column
+    private Long likes;
+
     // Creates 'user_id' column in Posts table.
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -37,6 +46,9 @@ public class Comment {
         if (commentDto.getCommentBody() != null) {
             this.commentBody = commentDto.getCommentBody();
         }
+        this.knewIt = false;
+        this.almostKnewIt = false;
+        this.likes = 0L;
     }
 
 //    [EXTRA] - maybe. Not sure if this is needed yet or not.

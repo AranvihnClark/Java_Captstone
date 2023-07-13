@@ -52,4 +52,9 @@ public class CommentController {
     public void updatePost(@RequestBody PostDto postDto) {
         commentService.updatePost(postDto);
     }
+
+    @PutMapping("comment/status")
+    public void updateCommentKnowIt(@RequestBody CommentDto commentDto) {
+        commentService.updateCommentKnowIt(commentDto);
+    }
 }

@@ -12,6 +12,9 @@ public class CommentDto {
 
     private Long id;
     private String commentBody;
+    private Boolean knewIt;
+    private Boolean almostKnewIt;
+    private Long likes;
 
     private UserDto userDto;
     private PostDto postDto;
@@ -22,6 +25,15 @@ public class CommentDto {
         }
         if (comment.getCommentBody() != null) {
             this.commentBody = comment.getCommentBody();
+        }
+        if (comment.getKnewIt() != null) {
+            this.knewIt = comment.getKnewIt();
+        }
+        if (comment.getAlmostKnewIt() != null) {
+            this.almostKnewIt = comment.getAlmostKnewIt();
+        }
+        if (comment.getLikes() != null) {
+            this.likes = comment.getLikes();
         }
         if (comment.getUser() != null) {
             this.userDto = new UserDto(comment.getUser());

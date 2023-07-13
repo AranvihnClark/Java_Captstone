@@ -28,4 +28,7 @@ public interface CommentService {
 
     @Transactional
     void updatePost(PostDto postDto);
+
+    @Transactional
+    void updateCommentKnowIt(CommentDto commentDto);
 }
