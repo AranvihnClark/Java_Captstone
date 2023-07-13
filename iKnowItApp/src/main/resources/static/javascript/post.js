@@ -9,9 +9,6 @@ const cookieArr = document.cookie.split(/[&=]/g);
 const userId = cookieArr[1];
 const sectionId = cookieArr[3];
 const postId = cookieArr[5];
-console.log("Cookie User ID: " + userId);
-console.log("Cookie Section ID: " + sectionId);
-console.log("Cookie Post ID: " + postId);
 
 // DOM Elements
 const postTitleContainer = document.getElementById('post-title-container');
@@ -33,6 +30,7 @@ const postDiv = document.getElementById('post-div');
 const updatePostTitle = document.getElementById('update-post-title');
 const updatePostBody = document.getElementById('update-post-body');
 const updatePostBtn = document.getElementById('update-post-button');
+const answeredPost = document.getElementById('answered-post');
 
 // Header
 const headers = {
@@ -41,6 +39,7 @@ const headers = {
 
 // URL
 const baseUrl = 'http://localhost:8080/api/v1/comments';
+
 // [2] - Clear cookie for logging out
 function logout() {
 
@@ -107,6 +106,12 @@ async function getAllPostComments(postId) {
         // If the request is good, we complete the 'promises'.
         .then(response => response.json())
         .then(data => {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].knewIt) {
+                    answeredPost.innerHTML = 'Someone already knows this...';
+                }
+            }
             createCommentCards(data);
         })
 
@@ -115,10 +120,9 @@ async function getAllPostComments(postId) {
 
 }
 
-const createCommentCards = (arr) => {
+const createCommentCards = (arr, numOfLikes) => {
     // We clear the update post container first so we can add the posts.
     commentContainer.innerHTML = '';
-
     arr.forEach(obj => {
         if (obj.userDto.id == userId) {
             // The overarching 'div'
@@ -151,20 +155,44 @@ const createCommentCards = (arr) => {
                 </div>
             `
 
-            // The delete/update comment div.
+        // The delete/update comment div with like button.
             let buttonCard = document.createElement("div");
             buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
             buttonCard.classList.add("col-auto");
             buttonCard.classList.add("padding-zero-override");
-            buttonCard.innerHTML = `
-                <button class="btn btn-primary margin-buttonCard-override" onclick="getCommentById(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#comment-edit-modal">Edit</button>
-                <button class="btn btn-danger margin-buttonCard-override" onclick="handleCommentDelete(${obj.id})">Delete</button>
-            `
-            card.append(userCard)
-            card.append(bodyCard)
-            card.append(buttonCard)
+            buttonCard.classList.add("card");
+            buttonCard.classList.add("card-no-border");
+
+            if (obj.knewIt === true) {
+                buttonCard.innerHTML = `
+                        <img src="../images/know_it_button.png" alt="profile-pic" class="knew-it-border">
+                `;
+            } else {
+                buttonCard.innerHTML = `
+                        <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
+                `;
+            }
+            buttonCard.innerHTML += `
+                <div class="text-center">
+                    <p class="like-count">${obj.likes}</p>
+                    <img src="../images/like_button.png" alt="profile-pic">
+                    <p>Likes</p>
+                </div>
+            `;
+
+            if (obj.knewIt === false) {
+                buttonCard.innerHTML += `
+                    <button class="btn btn-primary margin-buttonCard-override" onclick="getCommentById(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#comment-edit-modal">Edit</button>
+                    <button class="btn btn-danger margin-buttonCard-override" onclick="handleCommentDelete(${obj.id})">Delete</button>
+                `;
+            }
+
+            card.append(userCard);
+            card.append(bodyCard);
+            card.append(buttonCard);
             commentContainer.append(card);
+
         } else if (obj.userDto.id !== userId) {
             // The overarching 'div'
             let card = document.createElement("div");
@@ -179,7 +207,7 @@ const createCommentCards = (arr) => {
             userCard.classList.add("d-flex");
             userCard.classList.add("flex-column");
             userCard.innerHTML = `
-                <div class="d-flex flex-column user-name-position">
+                <div class="d-flex flex-column user-name-position"><img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
                     <p>${obj.userDto.username}</p>
                 </div>
             `
@@ -195,8 +223,40 @@ const createCommentCards = (arr) => {
                 </div>
             `
 
-            card.append(userCard)
-            card.append(bodyCard)
+            // The like/unlike button
+            let likeCard = document.createElement("div");
+            likeCard.classList.add("col");
+            likeCard.classList.add("col-auto");
+            likeCard.classList.add("card");
+            likeCard.classList.add("card-no-border");
+
+            if (obj.knewIt === false && obj.postDto.userDto.id == userId) {
+                likeCard.innerHTML = `
+                    <button type="button" onclick="theyKnewIt(${obj.id})" class="btn">
+                        <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
+                    </button>
+                `;
+            } else if (obj.knewIt === true) {
+                likeCard.innerHTML = `
+                    <img src="../images/know_it_button.png" alt="profile-pic" class="knew-it-border">
+                `;
+            } else {
+                likeCard.innerHTML = `
+                    <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
+                `;
+            }
+            likeCard.innerHTML += `
+                    <hr>
+                    <div class="text-center">
+                        <p class="like-count">${obj.likes}</p>
+                        <img src="../images/like_button.png" alt="profile-pic">
+                        <p>Likes</p>
+                    </div>
+            `;
+
+            card.append(userCard);
+            card.append(bodyCard);
+            card.append(likeCard);
             commentContainer.append(card);
         }
     })
@@ -367,6 +427,22 @@ async function displayExtraItems() {
 
         // Error handling.
         .catch(err => console.error(err));
+}
+
+async function theyKnewIt(commentId) {
+    let bodyObj = {
+        id: commentId,
+        knewIt: true,
+    }
+
+    await fetch(`${baseUrl}/comment/status`, {
+        method: "PUT",
+        body: JSON.stringify(bodyObj),
+        headers: headers
+        })
+        .catch(err => console.error(err));
+
+    return getAllPostComments(postId);
 }
 
 // Needed to remove section from cookie
