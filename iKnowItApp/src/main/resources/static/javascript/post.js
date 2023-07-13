@@ -40,6 +40,9 @@ const headers = {
 // URL
 const baseUrl = 'http://localhost:8080/api/v1/comments';
 
+// Global Variable
+var answerExists = false;
+
 // [2] - Clear cookie for logging out
 function logout() {
 
@@ -110,6 +113,7 @@ async function getAllPostComments(postId) {
             for (let i = 0; i < data.length; i++) {
                 if (data[i].knewIt) {
                     answeredPost.innerHTML = 'Someone already knows this...';
+                    answerExists = true;
                 }
             }
             createCommentCards(data);
@@ -173,6 +177,7 @@ const createCommentCards = (arr, numOfLikes) => {
                         <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
                 `;
             }
+            /* [EXTRA]
             buttonCard.innerHTML += `
                 <div class="text-center">
                     <p class="like-count">${obj.likes}</p>
@@ -180,7 +185,7 @@ const createCommentCards = (arr, numOfLikes) => {
                     <p>Likes</p>
                 </div>
             `;
-
+            */
             if (obj.knewIt === false) {
                 buttonCard.innerHTML += `
                     <button class="btn btn-primary margin-buttonCard-override" onclick="getCommentById(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#comment-edit-modal">Edit</button>
@@ -245,6 +250,7 @@ const createCommentCards = (arr, numOfLikes) => {
                     <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
                 `;
             }
+            /* [EXTRA]
             likeCard.innerHTML += `
                     <hr>
                     <div class="text-center">
@@ -253,7 +259,7 @@ const createCommentCards = (arr, numOfLikes) => {
                         <p>Likes</p>
                     </div>
             `;
-
+            */
             card.append(userCard);
             card.append(bodyCard);
             card.append(likeCard);

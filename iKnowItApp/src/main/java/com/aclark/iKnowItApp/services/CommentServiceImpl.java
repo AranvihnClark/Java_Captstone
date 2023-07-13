@@ -40,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
         // We need an optional for users as we will be using their id as the identifier
         Optional<Post> postOptional = postRepository.findById(postId);
 
+        boolean answerExists = false;
         // Now to check if the user id exists.
         if (postOptional.isPresent()) {
 
@@ -53,10 +54,13 @@ public class CommentServiceImpl implements CommentService {
                 } else if (comments.get(i).getKnewIt()) {
                     knewItComment = (comments.get(i));
                     comments.remove(i);
+                    answerExists = true;
                     i--;
                 }
             }
-            comments.add(0,knewItComment);
+            if (answerExists) {
+                comments.add(0, knewItComment);
+            }
 
             // The .stream() lets us search for all notes and the .map() converts each comment found into a new CommentDto.
             // This is needed as one, we want to return a list of CommentDto and, two, we need it to be so because we don't want to use the actual comments themselves but a copy of them.
