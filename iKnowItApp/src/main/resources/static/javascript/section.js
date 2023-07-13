@@ -174,10 +174,10 @@ const createPostAnsweredCards = (arr) => {
             let buttonCard = document.createElement("div");
             buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
-            buttonCard.classList.add("col-sm-1");
+            buttonCard.classList.add("col-auto");
             buttonCard.classList.add("padding-zero-override");
             buttonCard.innerHTML = `
-                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+                <button class="btn btn-danger margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
             `
             postAnsweredContainer.append(card);
             postAnsweredContainer.append(buttonCard);
