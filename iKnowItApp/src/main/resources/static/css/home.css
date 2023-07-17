@@ -2,7 +2,7 @@ body {
     height: 100%;
     background-size: 100vw 100vh;
     background-repeat: repeat-y;
-    background-color: #F5EFE6;
+    background-color: #E8DFCA;
 }
 
 .card-style {
@@ -10,7 +10,7 @@ body {
   height: 3rem;
   margin-right: auto;
   margin-left: auto;
-  background-color: #E8DFCA;
+  background-color: #F5EFE6;
 }
 
 .card-size {
@@ -23,6 +23,8 @@ body {
 #section-title {
   overflow:hidden;
   resize: none;
+  background: #F5EFE6;
+  color: #6885A2;
 }
 
 #update-section-title {
@@ -32,10 +34,6 @@ body {
 
 #where-am-i-div {
   font-size: 20px;
-}
-
-.padding-zero-overide {
-  padding: 0;
 }
 
 .margin-buttonCard-override {
@@ -67,6 +65,10 @@ body {
 
 .txt-color {
     color: #E8DFCA;
+}
+
+.add-section-color {
+    color: #6885A2;
 }
 
 .gap-fill {

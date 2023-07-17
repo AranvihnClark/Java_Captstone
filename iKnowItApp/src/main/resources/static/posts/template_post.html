@@ -20,12 +20,15 @@
 
         <!-- Top of screen - Poster's post -->
 
-        <div class="row">
-            <div class="col text-center">
-                <!-- Post Title -->
-                <h1 class="header-text">I Know About <em id="page-title"></em></h1>
-                <p>Post created by: <em id="post-creator-name"></em></p>
+        <div class="row justify-content-between d-flex">
+            <div class="col col-1"></div>
+            <div class="col-auto mt-3 text-center element-bg d-inline-block">
+                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                    <h1 class="header-title txt-color">I Know About <em id="page-title"></em></h1>
+                    <p class="owner-text txt-color">Post created by: <em id="post-creator-name"></em></p>
+                </div>
             </div>
+            <div class="col col-1"></div>
         </div>
 
         <div class="row my-3">
@@ -33,34 +36,38 @@
         </div>
 
         <div id="post-div" class="row mt-4 justify-content-between">
-            <h3 class="col-auto post-layout">Poster's Question:</h3>
+            <h3 class="col-auto post-layout question-color">Poster's Question:</h3>
         </div>
         <div class="row mt-3 col-xxl-12 post-box">
-            <h4 id="post-title-container"></h4>
+            <h4 id="post-title-container txt-color"></h4>
         </div>
 
         <div id="post-body" class="row mt-4 justify-content-between">
-            <h3 class="col-auto post-layout">Poster's Situation:</h3>
+            <h3 class="col-auto post-layout question-color">Poster's Situation:</h3>
         </div>
         <div class="row mt-3 col-xxl-12 post-box">
-            <h5 id="post-body-container"></h5>
+            <h5 id="post-body-container txt-color"></h5>
         </div>
 
         <!-- Middle of Screen -->
 
         <hr id="top-divider">
         <div class="row mt-5">
-            <h5 class="col">Give advice?</h5>
+            <h3 class="col question-color">Give advice?</h3>
         </div>
         <form id="add-comment-form" class="row justify-content-between">
             <textarea id="add-comment-body" class="col col-sm-10" placeholder="My advice is..." rows="4"></textarea>
             <button type="submit" id="add-comment-button" class="col-auto btn btn-primary align-self-end">Answer?</button>
         </form>
 
-        <div class="row mt-5">
-            <div class="col text-center">
-                <h2>Advice Below:</h2>
+        <div class="row mt-5 justify-content-center d-flex">
+            <div class="col col-1"></div>
+            <div class="col-auto mt-3 text-center element-bg d-inline-block">
+                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                    <h2 class="advice-text txt-color">Advice Below:</h2>
+                </div>
             </div>
+        <div class="col col-1"></div>
         </div>
 
         <div id="comment-container" class="my-2 container"></div>

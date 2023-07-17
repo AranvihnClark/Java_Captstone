@@ -18,12 +18,15 @@
     <section id="home-container" class="container">
 
         <!-- Top of screen -->
-        <div class="row">
-            <div class="col text-center">
-                <!-- Post Title -->
-                <h1 class="header-text">I Know About <em id="page-title"></em></h1>
-                <p>Section created by: <em id="section-creator-name"></em></p>
+        <div class="row justify-content-between d-flex">
+            <div class="col col-1"></div>
+            <div class="col-auto mt-3 text-center element-bg d-inline-block">
+                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                    <h1 class="header-title txt-color">I Know About <em id="page-title"></em></h1>
+                    <p class="owner-text txt-color">Section created by: <em id="section-creator-name"></em></p>
+                </div>
             </div>
+            <div class="col col-1"></div>
         </div>
 
         <div class="row justify-content-center mt-4">
@@ -31,21 +34,29 @@
                 <button type="submit" id="submit-button" class="btn btn-primary margin-buttonCard-override" onclick="" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Ask</button>
             </div>
             <div class="col-auto remove-left-right-padding">
-                <h2>A Question?</h2>
+                <h2 class="ask-question-color">A Question?</h2>
             </div>
         </div>
 
         <!-- Middle of Screen -->
-        <div class="row my-5">
-            <div class="col text-center">
-                <h2>Answer A Question</h2>
+        <div class="row my-5 justify-content-center d-flex">
+            <div class="col col-1"></div>
+            <div class="col-auto mt-3 text-center element-bg d-inline-block">
+                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                    <h2 class="question-text txt-color">Questions</h2>
+                </div>
             </div>
+            <div class="col col-1"></div>
         </div>
         <div id="post-question-container" class="row my-2 container"></div>
-        <div class="row my-5">
-            <div class="col text-center">
-                <h2>Answered Questions</h2>
+        <div class="row my-5 justify-content-center d-flex">
+            <div class="col col-1"></div>
+            <div class="col-auto mt-3 text-center element-bg d-inline-block">
+                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                    <h2 class="question-text txt-color">Answered</h2>
+                </div>
             </div>
+            <div class="col col-1"></div>
         </div>
         <div id="post-answer-container" class="row my-2 container"></div>
     </section>

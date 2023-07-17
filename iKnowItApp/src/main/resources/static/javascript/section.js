@@ -125,7 +125,7 @@ const createPostQuestionCards = (arr) => {
             card.classList.add("col-xxl-11");
             card.innerHTML = `
                 <div class="card d-flex card-style">
-                    <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
+                    <div class="card-body d-flex flex-column justify-content-between card-size card-style" style="height: available">
                         <a class="card-text overflow-auto link" onclick="getToPost(${obj.id})">${obj.postTitle}</a>
                     </div>
                 </div>
