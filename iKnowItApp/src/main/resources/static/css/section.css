@@ -24,6 +24,13 @@ body {
   background-color: #F5EFE6;
 }
 
+.card-size {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 2.8rem;
+  padding-right: 2.8rem;
+}
+
 #add-post-title {
    resize: none;
 }
@@ -62,7 +69,7 @@ body {
 }
 
 .txt-color {
-    color: #E8DFCA;
+    color: #F5EFE6;
 }
 
 .gap-fill {
@@ -70,5 +77,5 @@ body {
 }
 
 .ask-question-color {
-    color: #6885A2;
+    color: #486592;
 }

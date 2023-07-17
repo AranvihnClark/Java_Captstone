@@ -19,11 +19,13 @@ const pageTitle = document.getElementById('page-title');
 const titleText = document.getElementById('title-text');
 
 // Comment DOM Elements
+const addCommentHeader = document.getElementById('add-comment-header');
 const commentForm = document.getElementById('add-comment-form')
 const commentContainer = document.getElementById('comment-container');
 const addCommentBody = document.getElementById('add-comment-body');
 const updateCommentBtn = document.getElementById('update-comment-button');
 const updateCommentBody = document.getElementById('update-comment-body');
+
 
 // Post DOM Elements
 const postDiv = document.getElementById('post-div');
@@ -143,19 +145,20 @@ const createCommentCards = (arr, numOfLikes) => {
             userCard.classList.add("flex-column");
             userCard.innerHTML = `
                 <div class="d-flex flex-column user-name-position">
-                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
-                    <p class="mb-2">${obj.userDto.username}</p>
+                    <p class="mb-2 question-color user-text-weight">${obj.userDto.username}</p>
                 </div>
             `
+//                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
 
             // The comment's body div
             let bodyCard = document.createElement("div");
             bodyCard.classList.add("col");
             bodyCard.classList.add("card");
             bodyCard.classList.add("d-flex");
+            bodyCard.classList.add("card-bg");
             bodyCard.innerHTML = `
                 <div class="card-body d-flex flex-column">
-                    <p class="card-text">${obj.commentBody}</p>
+                    <p class="card-text question-color">${obj.commentBody}</p>
                 </div>
             `
 
@@ -186,12 +189,6 @@ const createCommentCards = (arr, numOfLikes) => {
                 </div>
             `;
             */
-            if (obj.knewIt === false) {
-                buttonCard.innerHTML += `
-                    <button class="btn btn-primary margin-buttonCard-override" onclick="getCommentById(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#comment-edit-modal">Edit</button>
-                    <button class="btn btn-danger margin-buttonCard-override" onclick="handleCommentDelete(${obj.id})">Delete</button>
-                `;
-            }
 
             card.append(userCard);
             card.append(bodyCard);
@@ -212,19 +209,21 @@ const createCommentCards = (arr, numOfLikes) => {
             userCard.classList.add("d-flex");
             userCard.classList.add("flex-column");
             userCard.innerHTML = `
-                <div class="d-flex flex-column user-name-position"><img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
-                    <p>${obj.userDto.username}</p>
+                <div class="d-flex flex-column user-name-position">
+                    <p class="question-text user-text-weight">${obj.userDto.username}</p>
                 </div>
             `
+//                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
 
             // The comment's body div
             let bodyCard = document.createElement("div");
             bodyCard.classList.add("col");
             bodyCard.classList.add("card");
             bodyCard.classList.add("d-flex");
+            bodyCard.classList.add("card-bg");
             bodyCard.innerHTML = `
                 <div class="card-body d-flex flex-column">
-                    <p class="card-text">${obj.commentBody}</p>
+                    <p class="card-text question-color">${obj.commentBody}</p>
                 </div>
             `
 
@@ -232,14 +231,16 @@ const createCommentCards = (arr, numOfLikes) => {
             let likeCard = document.createElement("div");
             likeCard.classList.add("col");
             likeCard.classList.add("col-auto");
-            likeCard.classList.add("card");
             likeCard.classList.add("card-no-border");
 
             if (obj.knewIt === false && obj.postDto.userDto.id == userId) {
                 likeCard.innerHTML = `
-                    <button type="button" onclick="theyKnewIt(${obj.id})" class="btn">
-                        <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
-                    </button>
+                    <div class="text-center">
+                        <button type="button" onclick="theyKnewIt(${obj.id})" class="btn">
+                            <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
+                        </button>
+                        <p>Best Advice?</p>
+                    </div>
                 `;
             } else if (obj.knewIt === true) {
                 likeCard.innerHTML = `
@@ -268,27 +269,12 @@ const createCommentCards = (arr, numOfLikes) => {
     })
 }
 
-// [4]-[3] - Append them to the HTML container
 // 'Populates' our modal for us.
 const populateCommentModal = (obj) => {
-//    updatePostBody.innerText = '';
-//    updatePostTitle.innerText = '';
-
     updateCommentBody.innerText = '';
     updateCommentBody.innerText = obj.commentBody;
     updateCommentBtn.setAttribute('data-comment-id', obj.id);
 }
-
-// [5] - Update a comment (GET request)
-//async function getPostById(postId) {
-//    await fetch(`${baseUrl}/${postId}`, {
-//            method: "GET",
-//            headers: headers
-//        })
-//        .then(res => res.json())
-//        .then(data => populateCommentModal(data))
-//        .catch(err => console.err(err.message))
-//}
 
 async function getCommentById(commentId) {
     await fetch(`${baseUrl}/${commentId}`, {
@@ -427,7 +413,11 @@ async function displayExtraItems() {
         .then(data => {
             if (data.userDto.id == userId) {
                 postDiv.innerHTML += `
-                    <button id="update-title-modal-button" class="col-auto btn btn-primary align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Update?</button>`;
+                    <button id="update-title-modal-button" class="col-auto btn btn-primary align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Update?</button>
+                `;
+
+                addCommentHeader.classList.add("d-none");
+                commentForm.classList.add("d-none");
             }
         })
 

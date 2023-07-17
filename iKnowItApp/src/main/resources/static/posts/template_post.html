@@ -1,127 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="../css/post.css" type="text/css">
-        <title id="title-text">I Know About</title> <!-- [Section] - [Post] -->
-    </head>
-    <body>
-    <section class="container">
-        <div class="row justify-content-end">
-            <!-- Just for now, need to figure out how to create a link path -->
-            <div id="where-am-i-div" class="col-10">Where am I? <a id="where-am-i" href="../home.html"></a></div>
-            <a class="btn btn-danger col col-2" href="../login.html" onclick="logout()">Logout</a>
-        </div>
-    </section>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/post.css" type="text/css">
+    <title id="title-text">I Know About</title> <!-- [Section] - [Post] -->
+</head>
+<body>
+<section class="container">
+    <div class="row justify-content-end">
+        <!-- Just for now, need to figure out how to create a link path -->
+        <div id="where-am-i-div" class="col-10">Where am I? <a id="where-am-i" href="../home.html"></a></div>
+        <a class="btn btn-danger col col-2" href="../login.html" onclick="logout()">Logout</a>
+    </div>
+</section>
 
 
-    <section id="home-container" class="container">
+<section id="home-container" class="container">
 
-        <!-- Top of screen - Poster's post -->
+    <!-- Top of screen - Poster's post -->
 
-        <div class="row justify-content-between d-flex">
-            <div class="col col-1"></div>
-            <div class="col-auto mt-3 text-center element-bg d-inline-block">
-                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
-                    <h1 class="header-title txt-color">I Know About <em id="page-title"></em></h1>
-                    <p class="owner-text txt-color">Post created by: <em id="post-creator-name"></em></p>
-                </div>
-            </div>
-            <div class="col col-1"></div>
-        </div>
-
-        <div class="row my-3">
-            <h2 id="answered-post" class="text-center text-success"></h2>
-        </div>
-
-        <div id="post-div" class="row mt-4 justify-content-between">
-            <h3 class="col-auto post-layout question-color">Poster's Question:</h3>
-        </div>
-        <div class="row mt-3 col-xxl-12 post-box">
-            <h4 id="post-title-container txt-color"></h4>
-        </div>
-
-        <div id="post-body" class="row mt-4 justify-content-between">
-            <h3 class="col-auto post-layout question-color">Poster's Situation:</h3>
-        </div>
-        <div class="row mt-3 col-xxl-12 post-box">
-            <h5 id="post-body-container txt-color"></h5>
-        </div>
-
-        <!-- Middle of Screen -->
-
-        <hr id="top-divider">
-        <div class="row mt-5">
-            <h3 class="col question-color">Give advice?</h3>
-        </div>
-        <form id="add-comment-form" class="row justify-content-between">
-            <textarea id="add-comment-body" class="col col-sm-10" placeholder="My advice is..." rows="4"></textarea>
-            <button type="submit" id="add-comment-button" class="col-auto btn btn-primary align-self-end">Answer?</button>
-        </form>
-
-        <div class="row mt-5 justify-content-center d-flex">
-            <div class="col col-1"></div>
-            <div class="col-auto mt-3 text-center element-bg d-inline-block">
-                <div class="my-3 mx-3 px-4 py-4 element-2-bg">
-                    <h2 class="advice-text txt-color">Advice Below:</h2>
-                </div>
-            </div>
+    <div class="row justify-content-between d-flex">
         <div class="col col-1"></div>
+        <div class="col-auto mt-3 text-center element-bg d-inline-block">
+            <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                <h1 class="header-title txt-color">I Know About <em id="page-title"></em></h1>
+                <p class="owner-text txt-color">Post created by: <em id="post-creator-name"></em></p>
+            </div>
         </div>
+        <div class="col col-1"></div>
+    </div>
 
-        <div id="comment-container" class="my-2 container"></div>
-    </section>
+    <div class="row my-3">
+        <h2 id="answered-post" class="text-center text-success"></h2>
+    </div>
+
+    <div id="post-div" class="row mt-4 justify-content-between">
+        <h3 class="col-auto post-layout question-color">Poster's Question:</h3>
+    </div>
+    <div class="row mt-3 col-xxl-12 post-box">
+        <h4 id="post-title-container" class="question-txt-color"></h4>
+    </div>
+
+    <div id="post-body" class="row mt-4 justify-content-between">
+        <h3 class="col-auto post-layout question-color">Poster's Situation:</h3>
+    </div>
+    <div class="row mt-3 col-xxl-12 post-box">
+        <h5 id="post-body-container" class="question-txt-color"></h5>
+    </div>
+
+    <!-- Middle of Screen -->
+
+    <hr id="top-divider">
+    <div class="row mt-5">
+        <h3 id="add-comment-header" class="col question-color">Give advice?</h3>
+    </div>
+    <form id="add-comment-form" class="row justify-content-between">
+        <textarea id="add-comment-body" class="col col-sm-10" placeholder="My advice is..." rows="4"></textarea>
+        <button type="submit" id="add-comment-button" class="col-auto btn btn-primary align-self-end">Answer?</button>
+    </form>
+
+    <div class="row mt-5 justify-content-center d-flex">
+        <div class="col col-1"></div>
+        <div class="col-auto mt-3 text-center element-bg d-inline-block">
+            <div class="my-3 mx-3 px-4 py-4 element-2-bg">
+                <h2 class="advice-text txt-color">Advice Below:</h2>
+            </div>
+        </div>
+        <div class="col col-1"></div>
+    </div>
+
+    <div id="comment-container" class="mt-4 mb-2 container"></div>
+
+    <div class="row gap-fill">
+        <div class="d-flex justify-content-end">
+            <p>Copyright © 2023 By Aranvihn Clark</p>
+        </div>
+    </div>
+</section>
 
 
-    <!-- Modal For Comment Update -->
-    <section class="modal fade" id="comment-edit-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="comment-edit-modal-title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="comment-modal-title">Edit your post's title.</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal For Comment Update -->
+<section class="modal fade" id="comment-edit-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="comment-edit-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="comment-modal-title">Edit your post's title.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="comment-form">
+                <div class="modal-body d-flex">
+                    <textarea id="update-comment-body" class="form-control" rows="4"></textarea>
                 </div>
-                <form id="comment-form">
-                    <div class="modal-body d-flex">
-                        <textarea id="update-comment-body" class="form-control" rows="4"></textarea>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="update-comment-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Modal For Post Update -->
+<section class="modal fade" id="post-edit-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="post-edit-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="post-modal-title">Edit your post's title.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="post-title-form">
+                <div class="modal-body d-flex-column">
+                    <div class="d-inline">
+                        <p>Your Question:</p>
+                        <textarea id="update-post-title" class="form-control" maxlength="128" rows="3"></textarea>
+                        <p class="mt-3">Your Situation:</p>
+                        <textarea id="update-post-body" class="form-control" rows="5"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" id="update-comment-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                        <button type="button" id="update-post-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                     </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal For Post Update -->
-    <section class="modal fade" id="post-edit-modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="post-edit-modal-title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="post-modal-title">Edit your post's title.</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="post-title-form">
-                    <div class="modal-body d-flex-column">
-                        <div class="d-inline">
-                            <p>Your Question:</p>
-                            <textarea id="update-post-title" class="form-control" maxlength="128" rows="3"></textarea>
-                            <p class="mt-3">Your Situation:</p>
-                            <textarea id="update-post-body" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="update-post-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="../javascript/post.js" type="application/javascript"></script>
-    </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="../javascript/post.js" type="application/javascript"></script>
+</body>
 </html>

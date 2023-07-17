@@ -58,6 +58,10 @@ body {
     align-items: center;
 }
 
+.user-text-weight {
+    font-weight: bold;
+}
+
 /**/
 @keyframes rainbow {
 	from, to { box-shadow: inset 0 0 18px 10px red }
@@ -81,8 +85,8 @@ body {
 	animation: rainbow 6s infinite;
 }
 
-.card {
-    background-color: transparent;
+.card-bg {
+    background-color: #F5EFE6;
 }
 
 .card-no-border {
@@ -123,8 +127,12 @@ body {
     border-radius: 70%;
 }
 
-.txt-color {
+.question-txt-color {
     color: #E8DFCA;
+}
+
+.txt-color {
+    color: #F5EFE6;
 }
 
 .gap-fill {
@@ -132,7 +140,7 @@ body {
 }
 
 .question-color {
-    color: #6885A2;
+    color: #486592;
 }
 
 #add-comment-body {

@@ -34,7 +34,11 @@ body {
 }
 
 .txt-color {
-    color: #E8DFCA;
+    color: #F5EFE6;
+}
+
+.form-color {
+    background-color: #F5EFE6;
 }
 
 .gap-fill {
