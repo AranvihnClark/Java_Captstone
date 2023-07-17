@@ -94,48 +94,59 @@ async function getSections() {
 }
 
 // [4]-[2] - Create 'cards' for each section.
-const createSectionCards = (arr) => {
+async function createSectionCards(arr) {
     // We clear the update section container first so we can add the sections.
     sectionContainer.innerHTML = '';
 
-    arr.forEach(obj => {
-        if (obj.userDto.isAdmin == true) {
-            let card = document.createElement("div");
-            card.classList.add("col");
-            card.classList.add("col-sm-10");
-            card.innerHTML = `
-                <div class="card d-flex card-style">
-                    <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                        <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
-                    </div>
-                </div>
-            `// href="./${obj.sectionHtmlName}"
-            let buttonCard = document.createElement("div");
-            buttonCard.classList.add("d-flex");
-            buttonCard.classList.add("stify-content-between");
-            buttonCard.classList.add("col-sm-2");
-            buttonCard.classList.add("padding-zero-override");
-            buttonCard.innerHTML = `
-                <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
-                <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
-            `
-            sectionContainer.append(card);
-            sectionContainer.append(buttonCard);
-        } else {
-            let card = document.createElement("div");
-            card.classList.add("col");
-            card.classList.add("col-sm-12");
-            card.innerHTML = `
-                <div class="card d-flex card-style">
-                    <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
-                        <a class="card-text overflow-auto link" onclick="getToSection(${obj.userDto.id})">${obj.sectionTitle}</a>
-                    </div>
-                </div>
-            `
-            sectionContainer.append(card);
-        }
+    //
+    await fetch(`${baseUrl}/user/${userId}`, {
+            method: "GET",
+            headers: headers
+        })
+        // If the request is good, we complete the 'promises'.
+        .then(response => response.json())
+        .then(data => {
+            arr.forEach(obj => {
+                if (data.isAdmin) {
+                    let card = document.createElement("div");
+                    card.classList.add("col");
+                    card.classList.add("col-sm-10");
+                    card.innerHTML = `
+                        <div class="card d-flex card-style">
+                            <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
+                                <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
+                            </div>
+                        </div>
+                    `// href="./${obj.sectionHtmlName}"
+                    let buttonCard = document.createElement("div");
+                    buttonCard.classList.add("d-flex");
+                    buttonCard.classList.add("stify-content-between");
+                    buttonCard.classList.add("col-sm-2");
+                    buttonCard.classList.add("padding-zero-override");
+                    buttonCard.innerHTML = `
+                        <button onclick="getSectionById(${obj.id})" type="button" class="btn btn-primary col-xxl-6 margin-buttonCard-override" data-bs-toggle="modal" data-bs-target="#section-edit-modal">Edit</button>
+                        <button class="btn btn-danger col-xxl-6 margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
+                    `
+                    sectionContainer.append(card);
+                    sectionContainer.append(buttonCard);
+                } else {
+                    let card = document.createElement("div");
+                    card.classList.add("col");
+                    card.classList.add("col-sm-12");
+                    card.innerHTML = `
+                        <div class="card d-flex card-style">
+                            <div class="card-body d-flex flex-column justify-content-between card-size card-img-overlay" style="height: available">
+                                <a class="card-text overflow-auto link" onclick="getToSection(${obj.id})">${obj.sectionTitle}</a>
+                            </div>
+                        </div>
+                    `
+                    sectionContainer.append(card);
+                }
+            })
+        })
 
-    })
+        // Error handling.
+        .catch(err => console.error(err));
 }
 
 // [4]-[3] - Append them to the HTML container
@@ -220,9 +231,8 @@ async function displayHtmlPage(userId) {
         })
         .then(res => res.json())
         .then(data => {
-        console.log(data);
             if (data.isAdmin) {
-                sectionFormContainer.classList.remove("visually-hidden")
+                sectionFormContainer.classList.remove("d-none")
             }
         })
         .catch(err => console.err(err.message))
