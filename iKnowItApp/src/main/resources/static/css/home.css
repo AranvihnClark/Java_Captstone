@@ -1,8 +1,16 @@
+body {
+    height: 100%;
+    background-size: 100vw 100vh;
+    background-repeat: repeat-y;
+    background-color: #F5EFE6;
+}
+
 .card-style {
   width: 100%;
   height: 3rem;
   margin-right: auto;
   margin-left: auto;
+  background-color: #E8DFCA;
 }
 
 .card-size {
@@ -34,4 +42,33 @@
   margin: auto;
   margin-left: 4px;
   margin-right: 4px;
+}
+
+.header-title {
+    font-size: 10vh;
+}
+
+.sign-text {
+    font-size: 6vh;
+}
+
+.element-bg {
+    background: #AEBDCA;
+    margin: auto;
+    padding: auto;
+    width: auto;
+    border-radius: 50%;
+}
+
+.element-2-bg {
+    background: #7895B2;
+    border-radius: 70%;
+}
+
+.txt-color {
+    color: #E8DFCA;
+}
+
+.gap-fill {
+    height: 100px;
 }
