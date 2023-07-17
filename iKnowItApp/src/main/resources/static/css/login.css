@@ -2,9 +2,71 @@ body {
     height: 100%;
     background-size: 100vw 100vh;
     background-repeat: repeat-y;
-    background-image: url("https://images.unsplash.com/photo-1522836924445-4478bdeb860c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80");
+    background-color: #F5EFE6;
 }
 
 .col-height {
     margin-top: 5%;
+}
+
+.header-title {
+    font-size: 10vh;
+}
+
+.bg-box {
+    background-color: #AEBDCA;
+    margin-bottom: auto;
+    border-radius: 18px;
+}
+
+.bg-box-padding {
+    padding: 2rem;
+}
+
+.lg-box-padding {
+    padding: 2rem;
+}
+.element-bg {
+    background: #AEBDCA;
+    margin: auto;
+    padding: auto;
+    width: auto;
+    border-radius: 50%;
+}
+
+.element-2-bg {
+    background: #7895B2;
+    border-radius: 70%;
+}
+
+.txt-color {
+    color: #E8DFCA;
+}
+
+.auto-width {
+    width: auto;
+}
+
+.screen {
+    height: 100%;
+}
+
+.gap-fill {
+    height: 100px;
+}
+
+.image-screen {
+    height: 600px;
+    width: 180px;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    z-index: -1;
+}
+
+.image-box {
+    padding: auto;
+}
+
+.login-box {
+    padding: 0;
 }
