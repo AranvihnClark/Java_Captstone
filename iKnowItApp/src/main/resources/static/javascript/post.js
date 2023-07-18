@@ -130,6 +130,8 @@ async function getAllPostComments(postId) {
 const createCommentCards = (arr, numOfLikes) => {
     // We clear the update post container first so we can add the posts.
     commentContainer.innerHTML = '';
+    console.log(arr);
+    console.log(userId);
     arr.forEach(obj => {
         if (obj.userDto.id == userId) {
             // The overarching 'div'
@@ -149,7 +151,6 @@ const createCommentCards = (arr, numOfLikes) => {
                     <p class="mb-2 question-text user-text-weight">${obj.userDto.username}</p>
                 </div>
             `
-//                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
 
             // The comment's body div
             let bodyCard = document.createElement("div");
@@ -169,6 +170,8 @@ const createCommentCards = (arr, numOfLikes) => {
             buttonCard.classList.add("stify-content-between");
             buttonCard.classList.add("col-auto");
             buttonCard.classList.add("card-no-border");
+            buttonCard.classList.add("text-center");
+            buttonCard.classList.add("box");
 
             if (obj.knewIt === true) {
                 buttonCard.innerHTML = `
@@ -177,8 +180,17 @@ const createCommentCards = (arr, numOfLikes) => {
             } else {
                 buttonCard.innerHTML = `
                         <img src="../images/know_it_button.png" alt="profile-pic" class="know-it-border">
-                `;
+                `
+                if (!obj.postDto.isAnswered) {
+                buttonCard.innerHTML += `
+                    <div>
+                        <button id="update-title-modal-button" class="col-auto btn btn-primary align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
+                        <button id="update-title-modal-button" class="col-auto btn btn-danger align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Delete</button>
+                    </div>
+                    `;
+                }
             }
+
             /* [EXTRA]
             buttonCard.innerHTML += `
                 <div class="text-center">
@@ -396,6 +408,11 @@ async function displayPostInfo(postId) {
         postCreatorName.innerHTML = `${data.userDto.nickname}`;
         pageTitle.innerHTML = `${data.sectionDto.sectionTitle}`;
         postTitleContainer.innerHTML = `${data.postTitle}`;
+
+        if (data.isAnswered) {
+            addCommentHeader.classList.add("d-none");
+            commentForm.classList.add("d-none");
+        }
 
         // In case if no body was entered
         if (data.postBody === "") {

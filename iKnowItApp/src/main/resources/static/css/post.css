@@ -146,3 +146,12 @@ body {
 #add-comment-body {
     background-color: #F5EFE6;
 }
+
+.box {
+    flex-flow: column;
+    height: auto;
+}
+
+.buttons-fill {
+    flex: 1 1 auto;
+}
