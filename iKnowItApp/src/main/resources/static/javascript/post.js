@@ -13,7 +13,9 @@ const postId = cookieArr[5];
 // DOM Elements
 const postTitleContainer = document.getElementById('post-title-container');
 const postBodyContainer = document.getElementById('post-body-container');
-const whereAmILink = document.getElementById('where-am-i');
+const iAmHome = document.getElementById('i-am-home');
+const iAmSection = document.getElementById('i-am-section');
+const iAmPost = document.getElementById('i-am-post');
 const postCreatorName = document.getElementById('post-creator-name');
 const pageTitle = document.getElementById('page-title');
 const titleText = document.getElementById('title-text');
@@ -111,7 +113,6 @@ async function getAllPostComments(postId) {
         // If the request is good, we complete the 'promises'.
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 if (data[i].knewIt) {
                     answeredPost.innerHTML = 'Someone already knows this...';
@@ -373,10 +374,13 @@ const noEnter = (e) => {
     console.log(e);
 }
 
-const youAreHere = () => {
+const youAreHere = (obj) => {
     // Just basic shit until I have time to figure it out.
-    whereAmILink.innerHTML = "/Home";
-//    displayPostInfo(sectionId);
+    iAmSection.href = obj.sectionDto.sectionHtmlName;
+    iAmSection.innerHTML = `${obj.sectionDto.sectionTitle}`;
+
+    iAmPost.href = obj.postHtmlName;
+    iAmPost.innerHTML = `${obj.postTitle}`;
 }
 
 // HTML changes
@@ -387,6 +391,7 @@ async function displayPostInfo(postId) {
     })
     .then(res => res.json())
     .then(data => {
+        youAreHere(data);
         titleText.innerHTML = `I Know About ${data.sectionDto.sectionTitle}`;
         postCreatorName.innerHTML = `${data.userDto.nickname}`;
         pageTitle.innerHTML = `${data.sectionDto.sectionTitle}`;
@@ -442,10 +447,17 @@ async function theyKnewIt(commentId) {
 }
 
 // Needed to remove section from cookie
-const revertCookie = async () => {
+const revertToHomeCookie = async () => {
     let newCookie = document.cookie;
     newCookie = newCookie.split(/[&]/g);
     document.cookie = newCookie[0];
+}
+
+// Needed to remove post from cookie
+const revertToSectionCookie = async () => {
+    let newCookie = document.cookie;
+    newCookie = newCookie.split(/[&]/g);
+    document.cookie = newCookie[0] + "&" + newCookie[1];
 }
 
 // Event listeners
@@ -455,10 +467,10 @@ commentForm.addEventListener("submit", submitPost);
 updateCommentBtn.addEventListener("click", confirmCommentUpdate);
 updatePostBtn.addEventListener("click", confirmPostUpdate);
 
-whereAmILink.addEventListener("click", revertCookie);
+iAmHome.addEventListener("click", revertToHomeCookie);
+iAmSection.addEventListener("click", revertToSectionCookie);
 
 // Instant runs
 displayPostInfo(postId);
 getAllPostComments(postId);
-youAreHere();
 displayExtraItems();

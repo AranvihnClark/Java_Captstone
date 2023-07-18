@@ -263,7 +263,7 @@ const noEnter = (e) => {
 
 const youAreHere = (obj) => {
     // Just basic shit until I have time to figure it out.
-    iAmSection.href.value = `obj.sectionHtmlName`;
+    iAmSection.href = obj.sectionHtmlName;
     iAmSection.innerHTML = `${obj.sectionTitle}`;
 }
 
