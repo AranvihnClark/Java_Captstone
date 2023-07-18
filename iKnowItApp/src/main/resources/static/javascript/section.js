@@ -8,17 +8,20 @@ const cookieArr = document.cookie.split(/[&=]/g);
 // Assigns our variable with the userId from the cookie.
 const userId = cookieArr[1];
 const sectionId = cookieArr[3];
-console.log("Cookie User ID: " + userId);
-console.log("Cookie Section ID: " + sectionId);
 
 // DOM Elements (I guess it is more correct to say DOM as opposed to HTML like the instructions do. Left the other two js files as is.)
+const iAmSection = document.getElementById('i-am-section');
+const iAmHome = document.getElementById('i-am-home');
+
+// Post DOM Elements
 const postQuestionContainer = document.getElementById('post-question-container');
 const postForm = document.getElementById('post-form')
 const postAnsweredContainer = document.getElementById('post-answer-container');
-const whereAmILink = document.getElementById('where-am-i');
 const addPostBtn = document.getElementById('add-post-button')
 const postTitle = document.getElementById('post-title');
 const postBody = document.getElementById('post-body');
+
+// Section DOM Elements
 const sectionCreatorName = document.getElementById('section-creator-name');
 const pageTitle = document.getElementById('page-title');
 const titleText = document.getElementById('title-text');
@@ -258,21 +261,21 @@ const noEnter = (e) => {
     console.log(e);
 }
 
-const youAreHere = () => {
+const youAreHere = (obj) => {
     // Just basic shit until I have time to figure it out.
-    whereAmILink.innerHTML = "/Home";
-//    displayPostInfo(sectionId);
+    iAmSection.href.value = `obj.sectionHtmlName`;
+    iAmSection.innerHTML = `${obj.sectionTitle}`;
 }
 
 // HTML changes
-async function displayPostInfo(sectionId) {
+async function displaySectionInfo(sectionId) {
     await fetch(`${baseUrl}/post-section/${sectionId}`, {
         method: "GET",
         headers: headers
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        youAreHere(data);
         titleText.innerHTML = `I Know About ${data.sectionTitle}`;
         sectionCreatorName.innerHTML = `${data.userDto.nickname}`;
         pageTitle.innerHTML = `${data.sectionTitle}`;
@@ -294,9 +297,8 @@ const revertCookie = async () => {
 postForm.addEventListener("submit", submitPost);
 postTitle.addEventListener("keypress", noEnter);
 addPostBtn.addEventListener("click", addPost());
-whereAmILink.addEventListener("click", revertCookie);
+iAmHome.addEventListener("click", revertCookie);
 
 // Instant runs
-displayPostInfo(sectionId);
+displaySectionInfo(sectionId);
 getAllSectionPosts(sectionId);
-youAreHere();
