@@ -123,6 +123,7 @@ const createPostQuestionCards = (arr) => {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-xxl-11");
+//            card.classList.add("d-flex");
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size card-style" style="height: available">
@@ -131,7 +132,7 @@ const createPostQuestionCards = (arr) => {
                 </div>
             `
             let buttonCard = document.createElement("div");
-            buttonCard.classList.add("d-flex");
+//            buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
             buttonCard.classList.add("col-auto");
             buttonCard.classList.add("padding-zero-override");
@@ -144,6 +145,7 @@ const createPostQuestionCards = (arr) => {
             let card = document.createElement("div");
             card.classList.add("col");
             card.classList.add("col-sm-12");
+//            card.classList.add("d-flex");
             card.innerHTML = `
                 <div class="card d-flex card-style">
                     <div class="card-body d-flex flex-column justify-content-between card-size " style="height: available">
