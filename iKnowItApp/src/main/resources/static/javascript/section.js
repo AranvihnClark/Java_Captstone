@@ -125,7 +125,7 @@ const createPostQuestionCards = (arr) => {
         if (obj.userDto.id == userId) {
             let card = document.createElement("div");
             card.classList.add("col");
-            card.classList.add("col-xxl-11");
+            card.classList.add("col-sm-11");
 //            card.classList.add("d-flex");
             card.innerHTML = `
                 <div class="card d-flex card-style">
@@ -137,7 +137,8 @@ const createPostQuestionCards = (arr) => {
             let buttonCard = document.createElement("div");
 //            buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
-            buttonCard.classList.add("col-auto");
+            buttonCard.classList.add("col");
+            buttonCard.classList.add("col-sm-1");
             buttonCard.classList.add("padding-zero-override");
             buttonCard.innerHTML = `
                 <button class="btn btn-danger margin-buttonCard-override" onclick="handleDelete(${obj.id})">Delete</button>
