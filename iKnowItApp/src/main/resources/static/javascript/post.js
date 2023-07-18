@@ -145,7 +145,7 @@ const createCommentCards = (arr, numOfLikes) => {
             userCard.classList.add("flex-column");
             userCard.innerHTML = `
                 <div class="d-flex flex-column user-name-position">
-                    <p class="mb-2 question-color user-text-weight">${obj.userDto.username}</p>
+                    <p class="mb-2 question-text user-text-weight">${obj.userDto.username}</p>
                 </div>
             `
 //                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
@@ -167,8 +167,6 @@ const createCommentCards = (arr, numOfLikes) => {
             buttonCard.classList.add("d-flex");
             buttonCard.classList.add("stify-content-between");
             buttonCard.classList.add("col-auto");
-            buttonCard.classList.add("padding-zero-override");
-            buttonCard.classList.add("card");
             buttonCard.classList.add("card-no-border");
 
             if (obj.knewIt === true) {
@@ -210,7 +208,7 @@ const createCommentCards = (arr, numOfLikes) => {
             userCard.classList.add("flex-column");
             userCard.innerHTML = `
                 <div class="d-flex flex-column user-name-position">
-                    <p class="question-text user-text-weight">${obj.userDto.username}</p>
+                    <p class="question-color user-text-weight">${obj.userDto.username}</p>
                 </div>
             `
 //                    <img src="../profileImages/template_profile_image.png" alt="profile-pic" class="mb-3">
@@ -232,6 +230,8 @@ const createCommentCards = (arr, numOfLikes) => {
             likeCard.classList.add("col");
             likeCard.classList.add("col-auto");
             likeCard.classList.add("card-no-border");
+            likeCard.classList.add("d-flex");
+            likeCard.classList.add("stify-content-between");
 
             if (obj.knewIt === false && obj.postDto.userDto.id == userId) {
                 likeCard.innerHTML = `
