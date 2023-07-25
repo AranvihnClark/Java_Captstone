@@ -184,8 +184,8 @@ const createCommentCards = (arr, numOfLikes) => {
                 if (!obj.postDto.isAnswered) {
                 buttonCard.innerHTML += `
                     <div>
-                        <button id="update-title-modal-button" class="col-auto btn btn-primary align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Edit</button>
-                        <button id="update-title-modal-button" class="col-auto btn btn-danger align-self-start" onclick="getPostById(${postId})" type="button" data-bs-toggle="modal" data-bs-target="#post-edit-modal">Delete</button>
+                        <button id="update-comment-modal-button" class="col-auto btn btn-primary align-self-start" onclick="getCommentById(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#comment-edit-modal">Edit</button>
+                        <button id="delete-comment-modal-button" class="col-auto btn btn-danger align-self-start" onclick="handleCommentDelete(${obj.id})" type="button" data-bs-toggle="modal" data-bs-target="#delete-edit-modal">Delete</button>
                     </div>
                     `;
                 }
