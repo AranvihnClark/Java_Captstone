@@ -24,9 +24,6 @@ public class PostDto {
 
     private Set<CommentDto> commentDtoSet = new HashSet<>();
 
-//    [EXTRA] - Not sure if needed yet.
-//    private String postPath;
-
     public PostDto(Post post) {
         if (post.getId() != null) {
             this.id = post.getId();
