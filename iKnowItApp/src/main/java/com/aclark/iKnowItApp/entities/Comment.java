@@ -50,8 +50,4 @@ public class Comment {
         this.almostKnewIt = false;
         this.likes = 0L;
     }
-
-//    [EXTRA] - maybe. Not sure if this is needed yet or not.
-//    @Column
-//    private String threadPath;
 }

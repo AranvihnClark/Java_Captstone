@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,8 +46,4 @@ public class Section {
             this.sectionHtmlName = sectionDto.getSectionHtmlName();
         }
     }
-
-//    [EXTRA] - maybe. Not sure if this is needed yet or not.
-//    @Column
-//    private String threadPath;
 }

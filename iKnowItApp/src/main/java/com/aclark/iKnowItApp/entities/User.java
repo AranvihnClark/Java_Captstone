@@ -1,14 +1,11 @@
 package com.aclark.iKnowItApp.entities;
 
 import com.aclark.iKnowItApp.dtos.UserDto;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 // This generates a table in our database.
 // @Data creates the setters and getters.

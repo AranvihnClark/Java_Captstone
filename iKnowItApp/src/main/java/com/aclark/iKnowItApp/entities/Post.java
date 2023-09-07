@@ -20,9 +20,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
-//    [UNSURE] - not sure if needed to create user_id column.
-//    @Column(name = "user_id")
-//    private Long userId;
 
     @Column
     private String postTitle;
@@ -64,8 +61,4 @@ public class Post {
         }
         this.isAnswered = false;
     }
-
-//    [EXTRA] - maybe. Not sure if this is needed yet or not.
-//    @Column
-//    private String threadPath;
 }
