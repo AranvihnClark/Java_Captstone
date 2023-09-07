@@ -5,21 +5,6 @@ body {
     background-color: #E8DFCA;
 }
 
-.remove-left-right-padding {
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-.margin-buttonCard-override {
-    margin: auto;
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-#add-post-title {
-   resize: none;
-}
-
 #page-title {
     text-decoration: underline;
 }
@@ -98,10 +83,6 @@ body {
     margin-bottom: 0.5rem;;
 }
 
-.header-spacing {
-    padding: auto;
-}
-
 .header-title {
     font-size: 10vh;
 }
@@ -150,8 +131,4 @@ body {
 .box {
     flex-flow: column;
     height: auto;
-}
-
-.buttons-fill {
-    flex: 1 1 auto;
 }

@@ -32,16 +32,8 @@ body {
   padding-right: 2.8rem;
 }
 
-#add-post-title {
-   resize: none;
-}
-
 #page-title {
     text-decoration: underline;
-}
-
-.header-spacing {
-    padding: auto;
 }
 
 .header-title {
